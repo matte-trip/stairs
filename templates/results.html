@@ -1,0 +1,474 @@
+<!--{% if user == current_user %}
+                <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
+                {% endif %}
+-->
+
+<head>
+    <!--title-->
+    <title>Results</title>
+
+    <!--imported fonts and icons-->
+    <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Raleway:100,200,600,700" rel="stylesheet">
+
+    <!--css stylesheet-->  <!--try4-->
+    <style>
+                /* Add a black background color to the top navigation bar */
+        .topnav {
+            font-family: 'Raleway', sans-serif ;
+            overflow: hidden;
+            background-color: #fbfbfb;
+            box-shadow: 0 1px 25px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
+        }
+
+
+
+        /* Style the links inside the navigation bar */
+        .topnav a {
+            float: left;
+            display: block;
+            color: gray;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        /* Change the color of links on hover */
+        .topnav a:hover {
+            background-color: sandybrown;
+            color: white;
+            opacity: 0.5;
+
+        }
+
+        /* Style the "active" element to highlight the current page */
+        .topnav a.active {
+            background-color: sandybrown;
+            color: white;
+        }
+
+        /* Style the search box inside the navigation bar */
+        .topnav input[type=text] {
+            float: right;
+            padding: 6px;
+            border: none;
+            margin-top: 8px;
+            margin-right: 16px;
+            font-size: 17px;
+        }
+
+        /* When the screen is less than 600px wide, stack the links and the search field vertically instead of horizontally */
+        @media screen and (max-width: 600px) {
+            .topnav a, .topnav input[type=text] {
+                float: none;
+                display: block;
+                text-align: left;
+                width: 100%;
+                margin: 0;
+                padding: 14px;
+            }
+            .topnav input[type=text] {
+                border: 1px solid #ccc;
+            }
+        }
+    </style><!--the style fo the menu bar-->
+    <style>
+
+        body {
+            background-color: white;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .clearfix {
+            content: '';
+            display: table;
+            clear: both;
+        }
+
+        .top_menu{
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 3em 1em;
+        }
+
+
+        .container {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0em 0em;
+        }hh
+
+        .download-cards {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .download-card {
+            display: flex;
+            flex-direction: column;
+            width: calc(100% - 2em);
+            background: #fbfbfb;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 2em;
+            box-shadow: 0 1px 25px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid #d2d2d2;
+            border-left: 1px solid #dadada;
+            margin: 0 1em 2em 1em;
+        }
+
+        .download-card__icon-box {
+            display: flex;
+            align-items: center;
+            background: #f1f1f1;
+            padding: 0; /*padding do frame da foto*/
+            text-align: center;
+        }
+
+        @media (min-width: 700px) {
+            .download-card__icon-box {
+                justify-content: center;
+            }
+        }
+
+        .download-card__icon-box img {
+            height: 100%;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0;
+        }
+
+        @media (min-width: 700px) {
+            .download-cards[data-view='list-view'] .download-card__icon-box {
+                width: 40%; /*found it mother fucker !!!!!!!*/
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                border-right: 1px solid #e6e6e6;
+
+            }
+        }
+
+        .download-card__content-box {
+            padding: 2em 2em 3em;
+            flex: 1;
+            height: 300px; /* this ajust the height of the white block */
+        }
+
+        @media (min-width: 700px) {
+            .download-cards[data-view="list-view"] .download-card__content-box {
+                margin-left: calc(40% + 2em);
+            }
+        }
+
+        .download-card__content-box__catagory {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 10px;
+            margin: 0 0 2em;
+        }
+
+        .download-card__content-box__catagory::before {
+            content: '| ';
+            color: sandybrown;
+        }
+
+        .download-card__content-box__title {
+            line-height: 1;
+            margin: 0 0 .5em;
+            font-size: 18px;
+        }
+
+        .download-card__content-box__description {
+            line-height: 1.5;
+            padding: 0;
+            margin: 0 0 1em;
+            clear: both;
+            color: #929292;
+            font-size: 16px;
+        }
+
+        .download-card__content-box .button {
+            position: absolute;
+            bottom: 2em;
+            margin: 0;
+            color: sandybrown;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .dc-view-switcher {
+            display: none;
+            margin: 1em;
+            text-align: right;
+        }
+
+        @media (min-width: 700px) {
+            .dc-view-switcher {
+                display: block;
+            }
+        }
+
+        .dc-view-switcher > button {
+            font-family: 'fontAwesome';
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: 0px 0px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5em;
+            vertical-align: middle;
+            color: gray;
+            opacity: 0.3;
+            outline: none;
+            transition: opacity .4s ease;
+        }
+
+        .dc-view-switcher > button[data-trigger="list-view"]::before {
+            content: "\f00b";
+        }
+
+        .dc-view-switcher > button[data-trigger="grid-view"]::before {
+            content: "\f009";
+        }
+
+        .dc-view-switcher > button[data-trigger].active {
+            opacity: 1;
+        }
+
+        .listing--amens {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+        }
+
+        .listing--amens .amen {
+            margin: 5px;
+            color: sandybrown;
+        }
+
+    </style><!--the style for the rest of the site-->
+
+    <script>
+
+        var downloadGrid = (function () {
+
+            "use strict";
+
+            var $cardContainer = $('.download-cards');
+            var $downloadCard = $('.download-card__content-box');
+            var $viewTrigger = $('button').attr('data', 'trigger');
+
+            function swapTriggerActiveClass(e) {
+                $viewTrigger.removeClass('active');
+                $(e.target).addClass('active');
+            }
+
+            function swapView(e) {
+                var $currentView = $(e.target).attr('data-trigger');
+                $cardContainer.attr('data-view', $currentView);
+            }
+
+            $(document).ready(function () {
+                // Event Listener
+                $viewTrigger.click(function (e) {
+                    swapTriggerActiveClass(e);
+                    swapView(e);
+                });
+            });
+
+        })();
+
+    </script>
+</head>
+
+<body>
+
+<!--============================================================-->
+<div class = "top_menu">
+    <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a>Option 1</a>
+        <a>Option 2</a>
+        <a>Option 3</a>
+        <a>Option 4</a>
+        <a>Option 5</a>
+        <a>Option 6</a>
+        <a>Option 7</a>
+        <a>Option 8</a>
+        <input type="text" placeholder="Search..">
+    </div>
+    <div class="topnav">
+        <a>Option 10</a>
+        <a>Option 11</a>
+        <a>Option 12</a>
+        <a>Option 13</a>
+        <a>Option 14</a>
+        <a>Option 15</a>
+        <a>Option 16</a>
+        <a>Option 17</a>
+        <a>Option 18</a>
+        <a>Option 19</a>
+    </div>
+</div>
+<!--============================================================-->
+
+
+
+<div class="container">
+    <div data-view="list-view" class="download-cards">
+        <!--============================================================-->
+
+
+        <!--============================================================-->
+        <article class="download-card">
+            <div class="download-card__icon-box"><img src="../static/homepage-background-1.png"/></div>
+            <div class="download-card__content-box">
+                <div class="content">
+                    <h2 class="download-card__content-box__catagory">Photos</h2>
+                    <h3 class="download-card__content-box__title">Tool Safety Products</h3>
+                    <p class="download-card__content-box__description">High & low-res photos for print and web
+                        media. </p>
+
+                    <div class="listing--amens">
+                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+
+                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                    </div>
+
+                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
+                </div>
+            </div>
+        </article>
+        <!--============================================================-->
+
+
+        <!--============================================================-->
+        <article class="download-card">
+            <div class="download-card__icon-box"><img src="../static/homepage-background-2.png"/></div>
+            <div class="download-card__content-box">
+                <div class="content">
+                    <h2 class="download-card__content-box__catagory">PDF</h2>
+                    <h3 class="download-card__content-box__title">Tool Safety Catalogues</h3>
+                    <p class="download-card__content-box__description">Print and web ready PDF's. </p>
+
+                    <div class="listing--amens">
+                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+
+                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                    </div>
+
+                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
+                </div>
+            </div>
+        </article>
+        <!--============================================================-->
+
+
+        <!--============================================================-->
+        <article class="download-card">
+            <div class="download-card__icon-box"><img src="../static/homepage-background-3.png"/></div>
+            <div class="download-card__content-box">
+                <div class="content">
+                    <h2 class="download-card__content-box__catagory">Photos</h2>
+                    <h3 class="download-card__content-box__title">Height Safety Products</h3>
+                    <p class="download-card__content-box__description">High & low-res photos for print and web
+                        media. </p>
+
+                    <div class="listing--amens">
+                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+
+                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                    </div>
+
+                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
+                </div>
+            </div>
+        </article>
+        <!--============================================================-->
+
+
+        <!--============================================================-->
+        <article class="download-card">
+            <div class="download-card__icon-box"><img src="../static/homepage-background-1.png"/></div>
+            <div class="download-card__content-box">
+                <div class="content">
+                    <h2 class="download-card__content-box__catagory">Document</h2>
+                    <h3 class="download-card__content-box__title">Course Booking Form</h3>
+                    <p class="download-card__content-box__description">Word document </p>
+
+                    <div class="listing--amens">
+                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+
+                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                    </div>
+
+                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
+                </div>
+            </div>
+        </article>
+        <!--============================================================-->
+
+
+        <!--============================================================-->
+        <article class="download-card">
+            <div class="download-card__icon-box"><img src="../static/homepage-background-2.png"/></div>
+            <div class="download-card__content-box">
+                <div class="content">
+                    <h2 class="download-card__content-box__catagory">Photos</h2>
+                    <h3 class="download-card__content-box__title">Height Safety Products</h3>
+                    <p class="download-card__content-box__description">High & low-res photos for print and web
+                        media. </p>
+
+                    <div class="listing--amens">
+                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+
+                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                    </div>
+
+                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
+                </div>
+            </div>
+        </article>
+        <!--============================================================-->
+
+
+        <!--============================================================-->
+        <article class="download-card">
+            <div class="download-card__icon-box"><img src="../static/homepage-background-3.png"/></div>
+            <div class="download-card__content-box">
+                <div class="content">
+                    <h2 class="download-card__content-box__catagory">Photos</h2>
+                    <h3 class="download-card__content-box__title">Height Safety Products</h3>
+                    <p class="download-card__content-box__description">High & low-res photos for print and web
+                        media. </p>
+
+
+
+                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
+                </div>
+            </div>
+        </article>
+
+
+    </div>
+</div>
+</body>

@@ -1,0 +1,150 @@
+<!--
+To DO:
+-# class selector is working for forms created in the py file!
+-->
+
+<head>
+    <!--bootstrap import to take advantage of forms-->
+    {% import "bootstrap/wtf.html" as wtf %}
+
+    <!--title-->
+    <title>Login and Registration</title>
+
+    <!--imported fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
+    <!--css stylesheet-->
+    <style>
+
+        body {
+            margin: 0;
+        }
+
+        .background {
+            background: url('../static/login_registration-background.png') center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.25);
+        }
+
+        .grid {
+            background: transparent;
+            display: grid;
+            grid-template-rows: 0.2fr 0.8fr;
+            grid-template-columns: 0.4fr 1fr 0.4fr 1fr 0.4fr;
+        }
+
+        .home_button {
+            margin: 2.5% -15%;
+            grid-row-start: 1;
+            grid-column-start: 2;
+        }
+
+        .login_form {
+            grid-row-start: 2;
+            grid-column-start: 2;
+
+            border: 1px solid white;
+        }
+
+        .registration_form {
+            grid-row-start: 2;
+            grid-column-start: 4;
+
+            border: 1px solid white;
+        }
+
+        /*Forms Classes*/
+        /* the two following classes are standard for Bootstrap
+        they control label and input dimension and fonts
+        Study the documentation of bootstrap to change css even further*/
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
+        input {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            padding: 5px;
+            border: 0;
+            border-radius: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.4;
+            transition: all 0.1s;
+        }
+
+        input:hover {
+            opacity: 0.9;
+        }
+
+        /* "#" identifies an element by variable name in python script: submit = SubmitField('Login')*/
+        #login, #register, #home_button {
+            position: relative;
+            margin-top: 10px;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #login:hover, #register:hover, #home_button:hover {
+            background-color: sandybrown;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="background">
+    <div class="overlay">
+
+
+        <div class="grid">
+
+            <div class="home_button">
+                <a href="{{ url_for('home') }}">
+                    <button id="home_button">RETURN</button>
+                </a>
+            </div>
+
+            <div class="login_form">
+                {{ wtf.quick_form(login_form) }}
+            </div>
+
+            <div class="registration_form">
+                {{ wtf.quick_form(registration_form) }}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
