@@ -62,6 +62,9 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def print_user(self):
+        print "Email: " + self.email + " ID: " + self.user_id
+
 
 # =========================================== FORMS ===========================================
 
@@ -133,24 +136,33 @@ def login_registration():
     if login_form.validate_on_submit():
         # User existence check by login_manager.user_loader
         existing_user = get_user(login_form.login_email.data)
-        if existing_user.check_password(login_form.login_password.data):
-            login_user(existing_user)
-            return redirect(url_for('personal_page'))
+        if existing_user:
+            if existing_user.check_password(login_form.login_password.data):
+                login_user(existing_user)
+                return redirect(url_for('personal_page'))
+            else:
+                return "Email/password wrong"
+        else:
+            return "Email/password wrong"
 
     registration_form = RegistrationForm()
     if registration_form.validate_on_submit():
-        new_user = User()
-        new_user.email = registration_form.email.data
-        new_user.first_name = registration_form.first_name.data
-        new_user.last_name = registration_form.last_name.data
-        new_user.password = registration_form.password.data
-        new_user.user_id = uuid.uuid4().hex[::4].capitalize()
-        # Add new user to db
-        db.session.add(new_user)
-        # Commit changes to db
-        db.session.commit()
-        login_user(new_user)
-        return redirect(url_for('personal_page'))
+        e_user = get_user(registration_form.email.data)
+        if e_user:
+            return "Email already registered"
+        else:
+            new_user = User()
+            new_user.email = registration_form.email.data
+            new_user.first_name = registration_form.first_name.data
+            new_user.last_name = registration_form.last_name.data
+            new_user.password = registration_form.password.data
+            new_user.user_id = uuid.uuid4().hex[::4].capitalize()
+            # Add new user to db
+            db.session.add(new_user)
+            # Commit changes to db
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('personal_page'))
 
     return render_template('login_registration.html', login_form=login_form, registration_form=registration_form)
 
@@ -228,7 +240,7 @@ def uploaded_file(filename):
 
 @app.route('/u/<user_id>')
 def u(user_id):
-    user = User.query.filter_by(user_id=user_id.capitalize()).first()
+    user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
     return render_template('newprofile.html', user=user)
 
 
@@ -237,6 +249,16 @@ def u(user_id):
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 
 # Start the server with run() method
