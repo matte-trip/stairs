@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, send_from_
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField
+from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
@@ -21,6 +21,7 @@ app.config[
     'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\static'
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['available_cities'] = [("TURIN", "Turin")]
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
@@ -47,9 +48,11 @@ class User(UserMixin, db.Model):
     # User fields
     first_name = db.Column('first_name', db.String(50), nullable=False)
     last_name = db.Column('last_name', db.String(50), nullable=False)
+    city = db.Column('city', db.String(30), nullable=False)
 
     # Bio fields
     age = db.Column('age', db.Integer)
+    study_field = db.Column('study_field', db.String(50), nullable=False)
     university = db.Column('university', db.String(50), nullable=False)
     bio = db.Column('bio', db.String(140), nullable=False)
     interests = db.Column('interests', db.String(140), nullable=False)
@@ -95,6 +98,7 @@ class RegistrationForm(FlaskForm):
     last_name = StringField('Last name', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password')])
+    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
     registration_button = SubmitField('Register')
 
     @staticmethod
@@ -110,11 +114,13 @@ class EditPrivateDataForm(FlaskForm):
     last_name = StringField('Last name')
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[EqualTo('password')])
+    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
     submit_button = SubmitField('Submit')
 
 
 class EditPublicDataForm(FlaskForm):
     age = IntegerField('Age')
+    study_field = StringField('Study Field')
     university = StringField('University')
     bio = TextAreaField('Bio')
     interests = TextAreaField('Interests')
@@ -165,6 +171,7 @@ def login_registration():
             new_user.last_name = registration_form.last_name.data
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
+            new_user.city = registration_form.city.data
             new_user.photo_id = 0
             destination_path = new_user.user_id + str(new_user.photo_id) + ".png"
             shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-icon.png'),
@@ -192,10 +199,12 @@ def personal_page():
             current_user.first_name = personal_profile_form.first_name.data
             current_user.last_name = personal_profile_form.last_name.data
             current_user.password = personal_profile_form.password.data
+            current_user.city = personal_profile_form.city.data
             db.session.commit()
             return redirect(url_for('personal_page'))
     elif bio_form.validate_on_submit():
         current_user.age = bio_form.age.data
+        current_user.study_field = bio_form.study_field.data
         current_user.university = bio_form.university.data
         current_user.bio = bio_form.bio.data
         current_user.interests = bio_form.interests.data
@@ -205,7 +214,9 @@ def personal_page():
         personal_profile_form.email.data = current_user.email
         personal_profile_form.first_name.data = current_user.first_name
         personal_profile_form.last_name.data = current_user.last_name
+        personal_profile_form.city = current_user.city
         bio_form.age.data = current_user.age
+        bio_form.study_field.data = current_user.study_field
         bio_form.university.data = current_user.university
         bio_form.bio.data = current_user.bio
         bio_form.interests.data = current_user.interests
