@@ -9,54 +9,41 @@
 
         body {
             margin: 0;
+            color: white;
         }
 
         .bg-img {
-            position: absolute;
             width: 100%;
             height: 100%;
-            background: url(../static/404.gif) center fixed;
+            background: url('../static/404_500.gif') center fixed;
             background-size: cover;
-            opacity: .5;
-            filter: alpha(opacity=80);
-        }
-
-        .content {
-            font-family: 'Avenir-Next', Avenir, Helvetica, sans-serif;
-            color: #fff;
-            background-color: transparent;
+            opacity: .8;
         }
 
         h1 {
-            font-size: 160px;
-            margin-bottom: 0;
-            margin-top: 0;
-        }
+            font-family: 'Oswald', sans-serif;
+            font-size: 100px;
+            letter-spacing: 2px;
+            font-weight: 500;
 
-        h2 {
-            margin-top: 0;
-            max-width: 700px;
-            font-size: 30px;
-            width: 90%;
+            grid-row-start: 1;
+            grid-column-start: 2;
+
+            position: relative;
+            top: 8%;
         }
 
         p {
-            text-align: left;
-            padding-bottom: 32px;
-        }
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
 
-        .btn {
-            display: inline-block;
-            border: 1px solid #aaa;
-            border-radius: 40px;
-            padding: 15px 30px;
-            margin-right: 15px;
-            margin-bottom: 10px;
-        }
+            grid-row-start: 2;
+            grid-column-start: 2;
 
-        .btn:hover {
-            color: #e2e2e2;
-            background: rgba(255, 255, 255, 0.1);
+            position: relative;
+            top: -8%;
+
         }
 
         button {
@@ -78,22 +65,33 @@
             background: sandybrown;
         }
 
+        .grid {
+            display: grid;
+            background-color: rgba(0, 0, 0, 0.25);
+            width: 100%;
+            height: 100%;
+            grid-template-columns: 0.4fr 1fr 0.4fr;
+            grid-template-rows: 0.01fr 0.1fr;
+            justify-items: center;
+
+        }
+
+        a {
+            grid-row-start: 2;
+            grid-column-start: 2;
+        }
 
     </style>
 </head>
 
 <body>
-<div class='bg-img'>
-    <div class='container'>
-        <div class='row content'>
-            <div>
-                <h1>404</h1>
-                <h2>Oops, the page you're looking for doesn't exist.</h2>
-                <a href="{{ url_for('login_registration') }}">
-                    <button id="login_button">BACK TO HOMEPAGE</button>
-                </a>
-            </div>
-        </div>
+<div class="bg-img">
+    <div class="grid">
+        <h1 class="title">404</h1>
+        <p>Oops, the page you're looking for doesn't exist.</p>
+        <a href="{{ url_for('home') }}">
+            <button id="login_button">BACK TO HOMEPAGE</button>
+        </a>
     </div>
 </div>
 </body>
