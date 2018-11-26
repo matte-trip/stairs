@@ -9,7 +9,6 @@ from flask_bootstrap import Bootstrap
 import uuid
 import os
 import shutil
-from os import path
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -141,11 +140,14 @@ def setup_db():
 
 @app.route('/')
 def home():
+    global errors_in_login_registration
+    errors_in_login_registration = 0
     return render_template('homepage.html')
 
 
 @app.route('/login_registration', methods=['GET', 'POST'])
 def login_registration():
+    global errors_in_login_registration
     login_form = LoginForm()
     if login_form.validate_on_submit():
         # User existence check by login_manager.user_loader
@@ -155,15 +157,18 @@ def login_registration():
                 login_user(existing_user)
                 return redirect(url_for('personal_page'))
             else:
-                return "Email/password wrong"
+                errors_in_login_registration = 1
+                return redirect(url_for('login_registration'))
         else:
-            return "Email/password wrong"
+            errors_in_login_registration = 1
+            return redirect(url_for('login_registration'))
 
     registration_form = RegistrationForm()
     if registration_form.validate_on_submit():
         e_user = get_user(registration_form.email.data)
         if e_user:
-            return "Email already registered"
+            errors_in_login_registration = 2
+            return redirect(url_for('login_registration'))
         else:
             new_user = User()
             new_user.email = registration_form.email.data
@@ -182,8 +187,9 @@ def login_registration():
             db.session.commit()
             login_user(new_user)
             return redirect(url_for('personal_page'))
-
-    return render_template('login_registration.html', login_form=login_form, registration_form=registration_form)
+    print errors_in_login_registration
+    return render_template('login_registration.html', login_form=login_form, registration_form=registration_form,
+                           error=errors_in_login_registration)
 
 
 @app.route('/user', methods=['GET', 'POST'])
@@ -192,7 +198,6 @@ def personal_page():
     personal_profile_form = EditPrivateDataForm()
     bio_form = EditPublicDataForm()
     image_name = current_user.user_id + str(current_user.photo_id) + ".png"
-    print image_name
     if personal_profile_form.validate_on_submit():
         if current_user.check_password(personal_profile_form.password.data):
             current_user.email = personal_profile_form.email.data
@@ -233,15 +238,15 @@ def send_image(filename):
 @login_required
 def upload():
     if request.method == 'POST':
-        # # check if the post request has the file part
-        # if 'file' not in request.files:
-        #     print 'No file part'
-        #     return redirect(request.url)
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            print 'No file part'
+            return redirect(request.url)
         profile_picture = request.files['file']
-        # # if user does not select file, browser also submit an empty part without filename
-        # if profile_picture.filename == '':
-        #     print 'No selected file'
-        #     return redirect(request.url)
+        # if user does not select file, browser also submit an empty part without filename
+        if profile_picture.filename == '':
+            print 'No selected file'
+            return redirect(request.url)
         if profile_picture:
             current_user.photo_id += 1
             db.session.commit()
@@ -267,15 +272,24 @@ def logout():
 
 @app.errorhandler(404)
 def page_not_found(e):
+    print e
     return render_template('404.html'), 404
 
 
 @app.errorhandler(500)
 def internal_server_error(e):
+    print e
     return render_template('500.html'), 500
 
-# =============================================================================================
 
+# ======================================= USEFUL VARIABLES ====================================
+
+errors_in_login_registration = 0
+# 1 is wrong email/password in login
+# 2 is user already registered in registration
+
+
+# ========================================== START SCRIPT =====================================
 
 # Start the server with run() method
 if __name__ == '__main__':

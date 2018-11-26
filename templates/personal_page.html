@@ -34,7 +34,7 @@ To DO:
         .grid {
             background: transparent;
             display: grid;
-            grid-template-rows: 0.2fr 0.7fr 0.1fr;
+            grid-template-rows: 0.1fr 0.8fr 0.05fr;
             grid-template-columns: 0.4fr 1fr 0.4fr 1fr 0.4fr;
         }
 
@@ -125,17 +125,32 @@ To DO:
             opacity: 1;
         }
 
-        #submit_button:hover, #save_button:hover, #logout_button:hover, #old_button:hover, #change_button:hover{
+        #submit_button:hover, #save_button:hover, #logout_button:hover, #old_button:hover, #change_button:hover {
             background-color: white;
             border: 1px solid sandybrown;
             color: sandybrown;
         }
 
         img {
-            width: 150px;
-            height: 150px;
-            margin-left: 5%;
-            margin-top: 2.5%;
+            width: 200px;
+            height: 200px;
+            margin-top: 5%;
+
+        }
+
+        .photo_grid {
+            background: transparent;
+            display: grid;
+            grid-template-rows: 0.1fr 0.1fr;
+            justify-items: center;
+        }
+
+        img {
+            grid-row-start: 1;
+        }
+
+        #change_btn {
+            grid-row-start: 2;
         }
 
     </style>
@@ -159,11 +174,15 @@ To DO:
         </div>
 
         <div class="bio_form">
-            <img src=" {{url_for('send_image', filename=image_name)}}" alt="User Image">
 
-            <a href="{{ url_for('upload') }}">
-                <button id="change_button">CHANGE</button>
-            </a>
+            <div class="photo_grid">
+                <img src=" {{ url_for('send_image', filename=image_name) }}" alt="User Image">
+
+                <a id=change_btn href="{{ url_for('upload') }}">
+                    <button id="change_button">CHANGE</button>
+                </a>
+            </div>
+
 
             <label>User id: {{ current_user.user_id }}</label>
 
