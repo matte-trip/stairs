@@ -8,13 +8,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
 import uuid
 import os
+import shutil
+from os import path
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'secret_key'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\media'
+    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\uploads'
+app.config[
+    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\static'
+
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
@@ -47,6 +53,9 @@ class User(UserMixin, db.Model):
     university = db.Column('university', db.String(50), nullable=False)
     bio = db.Column('bio', db.String(140), nullable=False)
     interests = db.Column('interests', db.String(140), nullable=False)
+
+    # Other fields
+    photo_id = db.Column('photo_id', db.Integer)
 
     def get_id(self):
         return self.email
@@ -124,7 +133,6 @@ def setup_db():
     db.create_all()
 
 
-# Use decorators to link the function to a url
 @app.route('/')
 def home():
     return render_template('homepage.html')
@@ -157,6 +165,10 @@ def login_registration():
             new_user.last_name = registration_form.last_name.data
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
+            new_user.photo_id = 0
+            destination_path = new_user.user_id + str(new_user.photo_id) + ".png"
+            shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-icon.png'),
+                        os.path.join(app.config['UPLOAD_FOLDER'], destination_path))
             # Add new user to db
             db.session.add(new_user)
             # Commit changes to db
@@ -172,6 +184,8 @@ def login_registration():
 def personal_page():
     personal_profile_form = EditPrivateDataForm()
     bio_form = EditPublicDataForm()
+    image_name = current_user.user_id + str(current_user.photo_id) + ".png"
+    print image_name
     if personal_profile_form.validate_on_submit():
         if current_user.check_password(personal_profile_form.password.data):
             current_user.email = personal_profile_form.email.data
@@ -180,7 +194,7 @@ def personal_page():
             current_user.password = personal_profile_form.password.data
             db.session.commit()
             return redirect(url_for('personal_page'))
-    if bio_form.validate_on_submit():
+    elif bio_form.validate_on_submit():
         current_user.age = bio_form.age.data
         current_user.university = bio_form.university.data
         current_user.bio = bio_form.bio.data
@@ -195,53 +209,42 @@ def personal_page():
         bio_form.university.data = current_user.university
         bio_form.bio.data = current_user.bio
         bio_form.interests.data = current_user.interests
-
-    return render_template('personal_page.html', personal_profile_form=personal_profile_form, bio_form=bio_form)
-
-
-# ============================================= CAN I MERGE IT INTO THE EDIT PROFILE PAGE?????
-@app.route('/upload', methods=['GET', 'POST'])
-@login_required
-def upload_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            print 'No file part'
-            return redirect(request.url)
-        file = request.files['file']
-        # if user does not select file, browser also
-        # submit an empty part without filename
-        if file.filename == '':
-            print 'No selected file'
-            return redirect(request.url)
-        if file:
-            filename = file.filename
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-    return '''
-        <!doctype html>
-        <title>Upload new File {{ user.first_name }}</title>
-        <h1>Upload new File {{ user.first_name }}</h1>
-        <form method=post enctype=multipart/form-data>
-          <input type=file name=file>
-          <input type=submit value=Upload>
-        </form>
-        '''
+    return render_template('personal_page.html', personal_profile_form=personal_profile_form, bio_form=bio_form,
+                           image_name=image_name)
 
 
 @app.route('/uploads/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
-                               filename)
+def send_image(filename):
+    return send_from_directory("uploads", filename)
 
-# =============================================
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        # # check if the post request has the file part
+        # if 'file' not in request.files:
+        #     print 'No file part'
+        #     return redirect(request.url)
+        profile_picture = request.files['file']
+        # # if user does not select file, browser also submit an empty part without filename
+        # if profile_picture.filename == '':
+        #     print 'No selected file'
+        #     return redirect(request.url)
+        if profile_picture:
+            current_user.photo_id += 1
+            db.session.commit()
+            filename = current_user.user_id + str(current_user.photo_id) + ".png"
+            profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('personal_page'))
+    return render_template('upload.html')
 
 
 @app.route('/u/<user_id>')
 def u(user_id):
     user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
-    return render_template('newprofile.html', user=user)
+    return render_template('newprofile.html', user=user,
+                           image_name=current_user.user_id + str(current_user.photo_id) + ".png")
 
 
 @app.route('/logout')

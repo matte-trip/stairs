@@ -106,7 +106,7 @@ To DO:
         }
 
         /* "#" identifies an element by variable name in python script: submit_button = SubmitField('Login')*/
-        #submit_button, #save_button, #logout_button, #old_button {
+        #submit_button, #save_button, #logout_button, #old_button, #change_button {
             position: relative;
             margin-top: 10px;
 
@@ -125,10 +125,17 @@ To DO:
             opacity: 1;
         }
 
-        #submit_button:hover, #save_button:hover, #logout_button:hover, #old_button:hover {
+        #submit_button:hover, #save_button:hover, #logout_button:hover, #old_button:hover, #change_button:hover{
             background-color: white;
             border: 1px solid sandybrown;
             color: sandybrown;
+        }
+
+        img {
+            width: 150px;
+            height: 150px;
+            margin-left: 5%;
+            margin-top: 2.5%;
         }
 
     </style>
@@ -152,6 +159,12 @@ To DO:
         </div>
 
         <div class="bio_form">
+            <img src=" {{url_for('send_image', filename=image_name)}}" alt="User Image">
+
+            <a href="{{ url_for('upload') }}">
+                <button id="change_button">CHANGE</button>
+            </a>
+
             <label>User id: {{ current_user.user_id }}</label>
 
             {{ wtf.quick_form(bio_form) }}
