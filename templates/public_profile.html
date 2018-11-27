@@ -53,8 +53,6 @@
         }
 
 
-
-
         #login_button, #logout_button {
             position: absolute;
             right: 0;
@@ -70,9 +68,15 @@
         #pro_pic {
             position: absolute;
             right: 30%;
-            height: 38px;
-            width: 38px;
+            height: 40px;
+            width: 40px;
             border: 1px solid white;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
         }
 
         * {
@@ -80,23 +84,20 @@
         }
 
         body {
-            background: url('../static/profile-background-01.png') fixed center;
+            background: url('../static/public_profile-background.png') fixed center;
             background-size: cover;
             display: grid;
             width: 100%;
             height: 100%;
             position: relative;
             text-align: center;
-
         }
-
-
-
 
         .container {
             display: grid;
             grid-template: 1fr /1fr 1fr;
-
+            position: relative;
+            top: 80px;
         }
 
         .basic-profile {
@@ -105,11 +106,7 @@
             width: 70%;
             height: 100%;
             border: 1px solid white;
-            border-radius: 10% 10%;
-            background: #536976; /* fallback for old browsers */
-            background: -webkit-linear-gradient(to left, #292E49, #536976); /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to left, #292E49, #536976); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            opacity: 0.8;
+            background-color: rgba(0, 0, 0, .25);
             grid-column-start: 1;
             grid-column-end: 2;
             text-align: center;
@@ -121,10 +118,8 @@
             width: 70%;
             height: 100%;
             border: 1px solid white;
-            border-radius: 10% 10%;
-            background: #536976;
-            background: -webkit-linear-gradient(to left, #292E49, #536976);
-            background: linear-gradient(to left, #292E49, #536976);
+
+            background-color: rgba(0, 0, 0, .25);
             grid-column-start: 2;
             grid-column-end: 3;
             text-align: center;
@@ -133,8 +128,10 @@
         }
 
         .profile-pic {
-            border: 3px white;
-            border-radius: 50% 50%;
+            width: 200px;
+            height: 200px;
+            margin-top: 5%;
+            background-color: rgba(0, 0, 0, .5);
         }
 
         .text-container {
@@ -142,12 +139,9 @@
         }
 
         table, th, td {
-            border: 1px solid black;
+            border: 1px solid white;
             border-collapse: collapse;
             color: white;
-            background: #536976; /* fallback for old browsers */
-            background: -webkit-linear-gradient(to left, #292E49, #536976); /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to left, #292E49, #536976); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
         }
 
@@ -163,7 +157,12 @@
     </style>
 </head>
 <body>
+<!-- NAV BAR -------------------------------------------------------------------------->
 <div id="nav_bar">
+
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
 
     {% if is_auth %}
         <a href="{{ url_for('u', user_id=current_user.user_id) }}">
@@ -228,6 +227,26 @@
             <tr>
                 <th><h3>I invite friends at home:</h3></th>
                 <td style="text-align:center"><h3>Often</h3></td>
+            </tr>
+            <tr>
+                <th><h3>I like to study:</h3></th>
+                <td style="text-align:center"><h3>with other people</h3></td>
+            </tr>
+            <tr>
+                <th><h3>I like to study:</h3></th>
+                <td style="text-align:center"><h3>with other people</h3></td>
+            </tr>
+            <tr>
+                <th><h3>I like to study:</h3></th>
+                <td style="text-align:center"><h3>with other people</h3></td>
+            </tr>
+            <tr>
+                <th><h3>I like to study:</h3></th>
+                <td style="text-align:center"><h3>with other people</h3></td>
+            </tr>
+            <tr>
+                <th><h3>I like to study:</h3></th>
+                <td style="text-align:center"><h3>with other people</h3></td>
             </tr>
             <tr>
                 <th><h3>I like to study:</h3></th>

@@ -1,0 +1,273 @@
+<!--
+To DO:
+-# class selector is working for forms created in the py file!
+-->
+
+<head>
+    <!--bootstrap import to take advantage of forms-->
+    {% import "bootstrap/wtf.html" as wtf %}
+
+    <!--title-->
+    <title>Personal Page</title>
+
+    <!--imported fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
+    <!--css stylesheet-->
+    <style>
+
+        body {
+            margin: 0;
+        }
+
+        /*TEXT*/
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 30px;
+        }
+
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+        }
+
+        button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        button:hover {
+            background: sandybrown;
+        }
+
+
+        #login_button, #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 38px;
+            width: 38px;
+            border: 1px solid white;
+        }
+
+        body {
+            margin: 0;
+            background: url('../static/private_profile-background.png') fixed center;
+            background-size: cover;
+            display: grid;
+            width: 100%;
+            height: 100%;
+        }
+
+        .background {
+            background-size: cover;
+            opacity: 0.95;
+            width: 100%;
+            position: relative;
+            height: auto;
+            min-height: 100%;
+        }
+
+        .grid {
+            background: transparent;
+            display: grid;
+            grid-template-rows: 0.1fr 0.8fr 0.05fr;
+            grid-template-columns: 0.4fr 1fr 0.4fr 1fr 0.4fr;
+        }
+
+        .bio_form {
+            grid-row-start: 2;
+
+            grid-column-start: 2;
+
+            border: 1px solid white;
+
+            background-color: rgba(0, 0, 0, .25);
+        }
+
+        .profile_form {
+            grid-row-start: 2;
+
+            grid-column-start: 4;
+
+            border: 1px solid white;
+
+            background-color: rgba(0, 0, 0, .25);
+        }
+
+        /*Forms Classes*/
+        /* the two following classes are standard for Bootstrap
+        they control label and input dimension and fonts
+        Study the documentation of bootstrap to change css even further*/
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
+        input, textarea, #city {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            padding: 5px;
+            border: 0;
+            border-radius: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: all 0.1s;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        input:hover, #city:hover {
+            opacity: 0.9;
+        }
+
+        /* "#" identifies an element by variable name in python script: submit_button = SubmitField('Login')*/
+        #submit_button, #save_button, #change_button {
+            position: relative;
+            margin-top: 10px;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #submit_button:hover, #save_button:hover, #change_button:hover {
+            background-color: white;
+            border: 1px solid sandybrown;
+            color: sandybrown;
+        }
+
+        #profile_picture {
+            width: 200px;
+            height: 200px;
+            margin-top: 5%;
+        }
+
+        .photo_grid {
+            background: transparent;
+            display: grid;
+            grid-template-rows: 0.1fr 0.1fr;
+            justify-items: center;
+        }
+
+        #profile_picture {
+            grid-row-start: 1;
+        }
+
+        #change_btn {
+            grid-row-start: 2;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<div class="background">
+
+    <div id="nav_bar">
+
+        <a href="{{ url_for('home') }}">
+                <button id="home_button">HOMEPAGE</button>
+        </a>
+        <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+        </a>
+        <a href="{{ url_for('personal_page') }}">
+            <button id="account_button">ACCOUNT</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button id="logout_button">LOGOUT</button>
+        </a>
+
+    </div>
+
+    <div class="grid">
+
+
+        <div class="bio_form">
+
+            <div class="photo_grid">
+                <img id="profile_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="User Image">
+
+                <a id=change_btn href="{{ url_for('upload') }}">
+                    <button id="change_button">CHANGE</button>
+                </a>
+            </div>
+
+
+            <label>User id: {{ current_user.user_id }}</label>
+
+            {{ wtf.quick_form(bio_form) }}
+
+        </div>
+
+        <div class="profile_form">
+            {{ wtf.quick_form(personal_profile_form) }}
+        </div>
+
+    </div>
+
+</div>
+
+</body>

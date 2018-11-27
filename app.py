@@ -55,6 +55,10 @@ class User(UserMixin, db.Model):
     bio = db.Column('bio', db.String(140), nullable=False)
     interests = db.Column('interests', db.String(140), nullable=False)
 
+    # Habits
+    # habits = db.Column('habits', db.String(8), nullable=False)
+    # languages = db.Column('languages', db.String(50), nullable=False)
+
     # Other fields
     photo_id = db.Column('photo_id', db.Integer)
 
@@ -77,46 +81,17 @@ class User(UserMixin, db.Model):
 
 
 class Residence(db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'houses'
 
-    # User Id field
-    user_id = db.Column('user_id', db.String(8), nullable=False)
+    # Id field
+    houses_id = db.Column('houses_id', db.String(8), primary_key=True, unique=True, nullable=False)
 
-    # User Authentication fields
-    email = db.Column('email', db.String(50), primary_key=True, nullable=False, unique=True)
-    password_hash = db.Column('password', db.String(50), nullable=False)
-
-    # User fields
-    first_name = db.Column('first_name', db.String(50), nullable=False)
-    last_name = db.Column('last_name', db.String(50), nullable=False)
     city = db.Column('city', db.String(30), nullable=False)
-
-    # Bio fields
-    age = db.Column('age', db.Integer)
-    study_field = db.Column('study_field', db.String(50), nullable=False)
-    university = db.Column('university', db.String(50), nullable=False)
-    bio = db.Column('bio', db.String(140), nullable=False)
-    interests = db.Column('interests', db.String(140), nullable=False)
-
-    # Other fields
-    photo_id = db.Column('photo_id', db.Integer)
-
-    def get_id(self):
-        return self.email
-
-    @property
-    def password(self):
-        raise StandardError('Password is write-only')
-
-    @password.setter
-    def password(self, value):
-        self.password_hash = generate_password_hash(value)
-
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
-
-    def print_user(self):
-        print "Email: " + self.email + " ID: " + self.user_id
+    street = db.Column('street', db.String(50), nullable=False)
+    civic = db.Column('civic', db.Integer)
+    neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
+    amenities = db.Column('amenities', db.String(8))
+    description = db.Column('description', db.String(1000), nullable=False)
 
 
 # =========================================== FORMS ===========================================
@@ -273,7 +248,7 @@ def personal_page():
         bio_form.university.data = current_user.university
         bio_form.bio.data = current_user.bio
         bio_form.interests.data = current_user.interests
-    return render_template('personal_page.html', personal_profile_form=personal_profile_form, bio_form=bio_form,
+    return render_template('private_profile.html', personal_profile_form=personal_profile_form, bio_form=bio_form,
                            image_name=image_name)
 
 
@@ -300,6 +275,9 @@ def upload():
             db.session.commit()
             filename = current_user.user_id + str(current_user.photo_id) + ".png"
             profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # delete old image
+            filename = current_user.user_id + str(current_user.photo_id-1) + ".png"
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('personal_page'))
     return render_template('upload.html')
 
@@ -343,6 +321,25 @@ errors_in_login_registration = 0
 # 1 is wrong email/password in login
 # 2 is user already registered in registration
 
+initial_habits = "00000000"
+smoking_habits = "10000000"
+vegetarian = "01000000"
+eat_together = "00100000"
+do_sports = "00010000"
+house_parties = "00001000"
+invite_friends = "00000100"
+stays_in_room = "00000010"
+overnight_guests = "00000001"
+
+initial_amenities = "00000000"
+amenities____beds = "10000000"
+amenities___baths = "01000000"
+amenities____lift = "00100000"
+floor = "00010000"
+washer = "00001000"
+bath_tub = "00000100"
+shower = "00000010"
+workplace = "00000001"
 
 # ========================================== START SCRIPT =====================================
 
