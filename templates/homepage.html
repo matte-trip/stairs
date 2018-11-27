@@ -67,90 +67,94 @@ To Do:
             background: sandybrown;
         }
 
-        /*Backgrounds*/
         .background1 {
             background: url('../static/homepage-background-1.png') fixed center;
-            background-size: cover;
-            display: grid;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            text-align: center;
-        }
-
-        #login_button {
-            position: relative;
-            top: 5%;
-            right: -40%;
         }
 
         .background2 {
-            background: url('../static/homepage-background-2.png') fixed center;
-            background-size: cover;
-            display: table;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            text-align: center;
+            background: url('../static/homepage-background-3.png') fixed center;
         }
 
         .background3 {
-            background: url('../static/homepage-background-3.png') fixed center;
-            background-size: cover;
-            display: table;
-            width: 100%;
-            height: 100%;
-            position: relative;
-            text-align: center;
+            background: url('../static/homepage-background-2.png') fixed center;
+
         }
 
-        /*Semi-transparent overlay*/
-        .overlay {
-            position: absolute;
-            width: 100%;
+        .background {
+            background-size: cover;
             height: 100%;
-            display: table;
             text-align: center;
-            background-color: rgba(0, 0, 0, 0.25);
         }
 
         .container {
-            display: table-cell;
-            vertical-align: middle;
+            width: 400px;
+            height: 300px;
+            margin-left: -200px;
+            margin-top: -150px;
+            position: absolute;
+            left: 50%; top: 50%;
+
+        }
+
+        .container2 {
+            width: 400px;
+            height: 250px;
+            margin-left: -200px;
+            margin-top: -125px;
+            position: absolute;
+            left: 50%; top: 150%;
+        }
+
+        .container3 {
+            width: 400px;
+            height: 550px;
+            margin-left: -200px;
+            margin-top: -275px;
+            position: absolute;
+            left: 50%; top: 250%;
+        }
+
+        #login_button {
+            position: absolute;
+            right: 0;
         }
 
     </style>
 </head>
 
 <body>
-<div class="background1">
-    <div class="overlay">
+<div class="background background1 ">
+
+    <div class="">
+        <div>
+            <a href="{{ url_for('login_registration') }}">
+                <button id="login_button">LOGIN</button>
+            </a>
+        </div>
         <div class="container">
 
             <h1 class="title">SOCIAL RENTING</h1>
             <p>Meet your Turin housemates since 2018</p>
+            <p>Start looking!</p>
+
             <a>
-                <button>SINGLE ROOM</button>
+                <button>ALL LISTINGS</button>
             </a>
             <a>
-                <button>DOUBLE ROOM</button>
+                <button>SINGLE ROOMS</button>
             </a>
             <a>
-                <button>COUCH</button>
+                <button>DOUBLE ROOMS</button>
             </a>
+
 
         </div>
     </div>
-    <div>
-        <a href="{{ url_for('login_registration') }}">
-            <button id="login_button">LOGIN</button>
-        </a>
-    </div>
+
 </div>
 
-<div class="background2">
-    <div class="overlay">
-        <div class="container">
+<div class="background2 background">
+        <div class="container2">
 
             <h1>OUR STORY</h1>
             <p>We are Engineering and Management students and we want to tackle the problem of renting a house from the
@@ -159,24 +163,20 @@ To Do:
             </p>
 
         </div>
-    </div>
 </div>
 
-<div class="background3">
-    <div class="overlay">
-        <div class="container">
+<div class="background3 background">
+        <div class="container3">
 
             <h1>THE BEST HOUSE RENTAL WEBSITE</h1>
-            <img src="../static/homepage-icon-1.png">
+            <img src="../static/homepage-icon-1.png" alt="">
             <h2>Best social system</h2>
-            <img src="../static/homepage-icon-2.png">
+            <img src="../static/homepage-icon-2.png" alt="">
             <h2>Best booking appointments system</h2>
-            <img src="../static/homepage-icon-3.png">
+            <img src="../static/homepage-icon-3.png" alt="">
             <h2>Best spam filter system</h2>
             <p>The only website you'll need to visit when you're looking for a house in Turin.</p>
-            <p>Other cities coming in fall 2019. Stay tuned.</p>
 
         </div>
-    </div>
 </div>
 </body>
