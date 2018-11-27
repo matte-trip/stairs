@@ -203,7 +203,7 @@ def login_registration():
             new_user.city = registration_form.city.data
             new_user.photo_id = 0
             destination_path = new_user.user_id + str(new_user.photo_id) + ".png"
-            shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-icon.png'),
+            shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
                         os.path.join(app.config['UPLOAD_FOLDER'], destination_path))
             # Add new user to db
             db.session.add(new_user)
