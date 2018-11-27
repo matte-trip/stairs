@@ -92,7 +92,8 @@ To Do:
             margin-left: -200px;
             margin-top: -150px;
             position: absolute;
-            left: 50%; top: 50%;
+            left: 50%;
+            top: 50%;
 
         }
 
@@ -102,7 +103,8 @@ To Do:
             margin-left: -200px;
             margin-top: -125px;
             position: absolute;
-            left: 50%; top: 150%;
+            left: 50%;
+            top: 150%;
         }
 
         .container3 {
@@ -111,72 +113,100 @@ To Do:
             margin-left: -200px;
             margin-top: -275px;
             position: absolute;
-            left: 50%; top: 250%;
+            left: 50%;
+            top: 250%;
         }
 
-        #login_button {
+        #login_button, #logout_button {
             position: absolute;
             right: 0;
+            width: 15%;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 38px;
+            width: 38px;
+            border: 1px solid white;
         }
 
     </style>
 </head>
 
 <body>
-<div class="background background1 ">
+<div class="background background1">
 
-    <div class="">
-        <div>
+    <div id="nav_bar">
+
+        {% if is_auth %}
+            <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+                <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            </a>
+            <a href="{{ url_for('personal_page') }}">
+                <button id="account_button">ACCOUNT</button>
+            </a>
+            <a href="{{ url_for('logout') }}">
+                <button id="logout_button">LOGOUT</button>
+            </a>
+        {% else %}
             <a href="{{ url_for('login_registration') }}">
                 <button id="login_button">LOGIN</button>
             </a>
-        </div>
-        <div class="container">
+        {% endif %}
 
-            <h1 class="title">SOCIAL RENTING</h1>
-            <p>Meet your Turin housemates since 2018</p>
-            <p>Start looking!</p>
+    </div>
 
-            <a>
-                <button>ALL LISTINGS</button>
-            </a>
-            <a>
-                <button>SINGLE ROOMS</button>
-            </a>
-            <a>
-                <button>DOUBLE ROOMS</button>
-            </a>
+    <div class="container">
 
+        <h1 class="title">SOCIAL RENTING</h1>
+        <p>Meet your Turin housemates since 2018</p>
+        <p>Start looking!</p>
 
-        </div>
+        <a>
+            <button>ALL LISTINGS</button>
+        </a>
+        <a>
+            <button>SINGLE ROOMS</button>
+        </a>
+        <a>
+            <button>DOUBLE ROOMS</button>
+        </a>
+
     </div>
 
 </div>
 
 <div class="background2 background">
-        <div class="container2">
+    <div class="container2">
 
-            <h1>OUR STORY</h1>
-            <p>We are Engineering and Management students and we want to tackle the problem of renting a house from the
-                point of view of new students in a new city.<br>With our system you can make friends more easily and let
-                your academic year be better by living with people who share the same interests as yours.
-            </p>
+        <h1>OUR STORY</h1>
+        <p>We are Engineering and Management students and we want to tackle the problem of renting a house from the
+            point of view of new students in a new city.<br>With our system you can make friends more easily and let
+            your academic year be better by living with people who share the same interests as yours.
+        </p>
 
-        </div>
+    </div>
 </div>
 
 <div class="background3 background">
-        <div class="container3">
+    <div class="container3">
 
-            <h1>THE BEST HOUSE RENTAL WEBSITE</h1>
-            <img src="../static/homepage-icon-1.png" alt="">
-            <h2>Best social system</h2>
-            <img src="../static/homepage-icon-2.png" alt="">
-            <h2>Best booking appointments system</h2>
-            <img src="../static/homepage-icon-3.png" alt="">
-            <h2>Best spam filter system</h2>
-            <p>The only website you'll need to visit when you're looking for a house in Turin.</p>
+        <h1>THE BEST HOUSE RENTAL WEBSITE</h1>
+        <img src="../static/homepage-icon-1.png" alt="">
+        <h2>Best social system</h2>
+        <img src="../static/homepage-icon-2.png" alt="">
+        <h2>Best booking appointments system</h2>
+        <img src="../static/homepage-icon-3.png" alt="">
+        <h2>Best spam filter system</h2>
+        <p>The only website you'll need to visit when you're looking for a house in Turin.</p>
 
-        </div>
+    </div>
 </div>
 </body>

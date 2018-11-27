@@ -142,7 +142,14 @@ def setup_db():
 def home():
     global errors_in_login_registration
     errors_in_login_registration = 0
-    return render_template('homepage.html')
+    if current_user.is_authenticated:
+        u_id = current_user.user_id
+        p_id = current_user.photo_id
+    else:
+        u_id = str(0)
+        p_id = str(0)
+    return render_template('homepage.html', is_auth=current_user.is_authenticated,
+                           image_name=u_id + str(p_id) + ".png")
 
 
 @app.route('/login_registration', methods=['GET', 'POST'])
@@ -155,7 +162,7 @@ def login_registration():
         if existing_user:
             if existing_user.check_password(login_form.login_password.data):
                 login_user(existing_user)
-                return redirect(url_for('personal_page'))
+                return redirect(url_for('home'))
             else:
                 errors_in_login_registration = 1
                 return redirect(url_for('login_registration'))
@@ -187,7 +194,6 @@ def login_registration():
             db.session.commit()
             login_user(new_user)
             return redirect(url_for('personal_page'))
-    print errors_in_login_registration
     return render_template('login_registration.html', login_form=login_form, registration_form=registration_form,
                            error=errors_in_login_registration)
 
@@ -258,9 +264,16 @@ def upload():
 
 @app.route('/u/<user_id>')
 def u(user_id):
+    if current_user.is_authenticated:
+        u_id = current_user.user_id
+        p_id = current_user.photo_id
+    else:
+        u_id = str(0)
+        p_id = str(0)
     user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
     return render_template('newprofile.html', user=user,
-                           image_name=current_user.user_id + str(current_user.photo_id) + ".png")
+                           image_name=user.user_id + str(user.photo_id) + ".png", is_auth=current_user.is_authenticated,
+                           pro_pic=u_id + str(p_id) + ".png")
 
 
 @app.route('/logout')
