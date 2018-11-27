@@ -31,7 +31,9 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login_registration'
 
 
-# =========================================== MODELS ===========================================
+# ======================================================================================================================
+# MODELS
+# ======================================================================================================================
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -94,7 +96,9 @@ class Residence(db.Model):
     description = db.Column('description', db.String(1000), nullable=False)
 
 
-# =========================================== FORMS ===========================================
+# ======================================================================================================================
+# FORMS
+# ======================================================================================================================
 
 class LoginForm(FlaskForm):
     login_email = StringField('Email', validators=[DataRequired()])
@@ -143,7 +147,12 @@ class EditPublicDataForm(FlaskForm):
     save_button = SubmitField('Save')
 
 
-# =========================================== VIEWS ===========================================
+# class EditSlidersDataForm(FlaskForm):
+
+
+# ======================================================================================================================
+# VIEWS
+# ======================================================================================================================
 
 @login_manager.user_loader
 def get_user(email):
@@ -157,6 +166,9 @@ def setup_db():
 
 @app.route('/')
 def home():
+    global last_url
+    last_url = ''
+
     global errors_in_login_registration
     errors_in_login_registration = 0
     if current_user.is_authenticated:
@@ -169,8 +181,45 @@ def home():
                            image_name=u_id + str(p_id) + ".png")
 
 
+# @app.route('/results')
+# def search_results(search):
+#     results = []
+#     search_string = search.data['search']
+#     if search_string:
+#         if search.data['select'] == 'Artist':
+#             qry = db_session.query(Album, Artist).filter(
+#                 Artist.id==Album.artist_id).filter(
+#                     Artist.name.contains(search_string))
+#             results = [item[0] for item in qry.all()]
+#         elif search.data['select'] == 'Album':
+#             qry = db_session.query(Album).filter(
+#                 Album.title.contains(search_string))
+#             results = qry.all()
+#         elif search.data['select'] == 'Publisher':
+#             qry = db_session.query(Album).filter(
+#                 Album.publisher.contains(search_string))
+#             results = qry.all()
+#         else:
+#             qry = db_session.query(Album)
+#             results = qry.all()
+#     else:
+#         qry = db_session.query(Album)
+#         results = qry.all()
+#     if not results:
+#         flash('No results found!')
+#         return redirect('/')
+#     else:
+#         # display results
+#         table = Results(results)
+#         table.border = True
+#         return render_template('results.html', table=table)
+
+
 @app.route('/login_registration', methods=['GET', 'POST'])
 def login_registration():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
     global errors_in_login_registration
     login_form = LoginForm()
     if login_form.validate_on_submit():
@@ -179,7 +228,7 @@ def login_registration():
         if existing_user:
             if existing_user.check_password(login_form.login_password.data):
                 login_user(existing_user)
-                return redirect(url_for('home'))
+                return redirect("http://127.0.0.1:5000/" + last_url)
             else:
                 errors_in_login_registration = 1
                 return redirect(url_for('login_registration'))
@@ -210,7 +259,7 @@ def login_registration():
             # Commit changes to db
             db.session.commit()
             login_user(new_user)
-            return redirect(url_for('personal_page'))
+            return redirect("http://127.0.0.1:5000/" + last_url)
     return render_template('login_registration.html', login_form=login_form, registration_form=registration_form,
                            error=errors_in_login_registration)
 
@@ -276,7 +325,7 @@ def upload():
             filename = current_user.user_id + str(current_user.photo_id) + ".png"
             profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # delete old image
-            filename = current_user.user_id + str(current_user.photo_id-1) + ".png"
+            filename = current_user.user_id + str(current_user.photo_id - 1) + ".png"
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('personal_page'))
     return render_template('upload.html')
@@ -284,6 +333,9 @@ def upload():
 
 @app.route('/u/<user_id>')
 def u(user_id):
+    global last_url
+    last_url = "u/" + user_id
+
     if current_user.is_authenticated:
         u_id = current_user.user_id
         p_id = current_user.photo_id
@@ -300,7 +352,7 @@ def u(user_id):
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect("http://127.0.0.1:5000/" + last_url)
 
 
 @app.errorhandler(404)
@@ -315,34 +367,37 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 
-# ======================================= GLOBAL VARIABLES ====================================
-
+# ======================================================================================================================
+# GLOBAL VARIABLES
+# ======================================================================================================================
 errors_in_login_registration = 0
 # 1 is wrong email/password in login
 # 2 is user already registered in registration
 
+last_url = ''
+# used to remember the last page the user has visited in public pages so after login he can get back to them
+
 initial_habits = "00000000"
-smoking_habits = "10000000"
-vegetarian = "01000000"
-eat_together = "00100000"
-do_sports = "00010000"
-house_parties = "00001000"
-invite_friends = "00000100"
-stays_in_room = "00000010"
-overnight_guests = "00000001"
+smoking_habits = "10000000"  # initial_habits[0]
+vegetarian = "01000000"  # initial_habits[1]
+eat_together = "00100000"  # initial_habits[2]
+do_sports = "00010000"  # initial_habits[3]
+house_parties = "00001000"  # initial_habits[4]
+invite_friends = "00000100"  # initial_habits[5]
+stays_in_room = "00000010"  # initial_habits[6]
+overnight_guests = "00000001"  # initial_habits[7]
 
-initial_amenities = "00000000"
-amenities____beds = "10000000"
-amenities___baths = "01000000"
-amenities____lift = "00100000"
-floor = "00010000"
-washer = "00001000"
-bath_tub = "00000100"
-shower = "00000010"
-workplace = "00000001"
+initial___amenities = "00000000"
+amenities______beds = "10000000"
+amenities_____baths = "01000000"
+amenities______lift = "00100000"
+amenities_____floor = "00010000"
+amenities____washer = "00001000"
+amenities__bath_tub = "00000100"
+amenities____shower = "00000010"
+amenities_workplace = "00000001"
 
-# ========================================== START SCRIPT =====================================
+# ======================================================================================================================
 
-# Start the server with run() method
 if __name__ == '__main__':
     app.run(debug=True)
