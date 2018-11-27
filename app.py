@@ -33,8 +33,50 @@ login_manager.login_view = 'login_registration'
 
 # =========================================== MODELS ===========================================
 
-# Define User data-model
 class User(UserMixin, db.Model):
+    __tablename__ = 'users'
+
+    # User Id field
+    user_id = db.Column('user_id', db.String(8), nullable=False)
+
+    # User Authentication fields
+    email = db.Column('email', db.String(50), primary_key=True, nullable=False, unique=True)
+    password_hash = db.Column('password', db.String(50), nullable=False)
+
+    # User fields
+    first_name = db.Column('first_name', db.String(50), nullable=False)
+    last_name = db.Column('last_name', db.String(50), nullable=False)
+    city = db.Column('city', db.String(30), nullable=False)
+
+    # Bio fields
+    age = db.Column('age', db.Integer)
+    study_field = db.Column('study_field', db.String(50), nullable=False)
+    university = db.Column('university', db.String(50), nullable=False)
+    bio = db.Column('bio', db.String(140), nullable=False)
+    interests = db.Column('interests', db.String(140), nullable=False)
+
+    # Other fields
+    photo_id = db.Column('photo_id', db.Integer)
+
+    def get_id(self):
+        return self.email
+
+    @property
+    def password(self):
+        raise StandardError('Password is write-only')
+
+    @password.setter
+    def password(self, value):
+        self.password_hash = generate_password_hash(value)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def print_user(self):
+        print "Email: " + self.email + " ID: " + self.user_id
+
+
+class Residence(db.Model):
     __tablename__ = 'users'
 
     # User Id field
@@ -271,7 +313,7 @@ def u(user_id):
         u_id = str(0)
         p_id = str(0)
     user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
-    return render_template('newprofile.html', user=user,
+    return render_template('public_profile.html', user=user,
                            image_name=user.user_id + str(user.photo_id) + ".png", is_auth=current_user.is_authenticated,
                            pro_pic=u_id + str(p_id) + ".png")
 
@@ -295,7 +337,7 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 
-# ======================================= USEFUL VARIABLES ====================================
+# ======================================= GLOBAL VARIABLES ====================================
 
 errors_in_login_registration = 0
 # 1 is wrong email/password in login
