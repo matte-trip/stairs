@@ -31,9 +31,10 @@
             height: 45px;
             margin: 0;
             padding: 0;
-            background: #005C97; /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #363795, #005C97); /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #363795, #005C97); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: #f12711; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to left, #f5af19, #f12711); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
             cursor: pointer;
             opacity: 0.8;
         }
@@ -75,7 +76,8 @@
             text-align: center;
             display: grid;
         }
-        .social-box{
+
+        .social-box {
             width: 100%;
             height: 50%;
             flex-direction: column;
@@ -111,7 +113,10 @@
         }
 
         .listing .listing--content {
-            background: #fff;
+            background: #f46b45; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #eea849, #f46b45); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
             padding: 10px;
         }
 
@@ -143,24 +148,25 @@
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
-            background: #e9edf0;
+            background: #f46b45;
+            background: -webkit-linear-gradient(to left, #eea849, #f46b45);
+            background: linear-gradient(to left, #eea849, #f46b45);
+            opacity: 0.8;
             padding: 10px;
         }
 
         .listing--amens .amen {
             margin: 5px;
-            color: #4b7bec;
+            color: black;
         }
-
-
-
 
         button:hover {
             background: red;
         }
 
-        * {
-            box-sizing: border-box
+        button {
+            position: relative;
+            right: -50%;
         }
 
         /* Slideshow container */
@@ -180,7 +186,7 @@
             cursor: pointer;
             position: absolute;
             top: 50%;
-            right:95%;
+            right: 95%;
             width: auto;
             margin-top: -22px;
             padding: 16px;
@@ -263,21 +269,30 @@
                 opacity: 1
             }
         }
-        .house-requests{
+
+        .house-requests {
             display: flex;
             width: 90%;
             height: 100px;
             border: 3px black;
-            background: white;
+            background: #f85032;
+            background: -webkit-linear-gradient(to left, #e73827, #f85032);
+            background: linear-gradient(to left, #e73827, #f85032);
+
         }
+
         .profile-box {
             position: relative;
             display: flex;
-            top:5%;
+            top: 5%;
             width: 90%;
             height: 150px;
             border: 5px #111111;
-            background: deepskyblue;
+            background: #f46b45;
+            background: -webkit-linear-gradient(to right, #eea849, #f46b45);
+            background: linear-gradient(to right, #eea849, #f46b45);
+            opacity: 0.9;
+
         }
     </style>
 
@@ -411,6 +426,9 @@
                 <div class="amen"><span class="bath">4</span> <i class="mdi mdi-toilet"></i></div>
                 <div class="amen"><i class="mdi mdi-paw"></i></div>
                 <div class="amen"><i class="mdi mdi-thermometer"></i></div>
+                <a>
+                    <button>BOOK APPOINTMENT</button>
+                </a>
             </div>
         </div>
     </div>
