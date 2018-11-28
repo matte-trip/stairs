@@ -13,10 +13,6 @@
             background-size: cover;
             width: 100%;
             height: 100%;
-
-            display: grid;
-            position: relative;
-            text-align: center;
         }
 
         h1 {
@@ -83,49 +79,58 @@
             width: 15%;
         }
 
-        .container {
-            position: relative;
+        .grid {
+            position: absolute;
+            width: 100%;
+            margin-left: -50%;
+            margin-top: 0;
+            left: 50%;
             top: 80px;
 
+            background: transparent;
             display: grid;
-            grid-template: 1fr / 1fr 1fr;
+            grid-template-rows: 0.95fr 0.05fr;
+            grid-template-columns: 0.25fr 1fr 0.1fr 1fr 0.25fr;
         }
 
-        .basic-profile {
-            position: relative;
-            left: 150px;
-            width: 70%;
-            height: 100%;
-            border: 1px solid white;
-            background-color: rgba(0, 0, 0, .25);
-            grid-column-start: 1;
-            grid-column-end: 2;
-            text-align: center;
-
-            margin-bottom: 5%;
-        }
-
-        .renter-profile {
-            position: relative;
-            width: 70%;
-            height: 100%;
-            border: 1px solid white;
-
-            background-color: rgba(0, 0, 0, .25);
+        .basic_profile {
+            grid-row-start: 1;
             grid-column-start: 2;
-            grid-column-end: 3;
-            text-align: center;
-            color: white;
 
-            margin-bottom: 5%;
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
         }
 
-        .profile-pic {
+        .profile_picture {
             width: 200px;
             height: 200px;
             margin-top: 5%;
-            background-color: rgba(0, 0, 0, .5);
+            background-color: rgba(0, 0, 0, .5); /*====================================================================*/
         }
+
+        .character_profile {
+            grid-row-start: 1;
+            grid-column-start: 4;
+
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .25);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         .text-container {
             color: white;
@@ -136,6 +141,10 @@
             border-collapse: collapse;
             color: white;
 
+        }
+
+        td {
+            text-align: center;
         }
 
         table.center {
@@ -149,8 +158,8 @@
         }
     </style>
 </head>
+
 <body>
-<!-- NAV BAR -------------------------------------------------------------------------->
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
@@ -175,75 +184,78 @@
 
 </div>
 
+<div class="grid">
 
-<div class="container">
-    <div class="basic-profile">
+    <div class="basic_profile">
 
-        <img class="profile-pic" id="prof1" src="{{ url_for('send_image', filename=image_name) }}" width="240px"
-             height="280px"/>
+        <img class="profile_picture" src="{{ url_for('send_image', filename=image_name) }}" alt="">
 
         <div class="text-container" id="tc">
-            <h1 class="username">
+            <h1 class="first_last_name">
                 {{ user.first_name }} {{ user.last_name }}
             </h1>
-            <div class="work">
-                <h3>Engineering student at Politecnico di Torino</h3>
+            <div class="age">
+                <h3>Age: {{ user.age }}</h3>
+            </div>
+            <div class="study_field">
+                <h3>Study Field: {{ user.study_field }}</h3>
+            </div>
+            <div class="university">
+                <h3>University: {{ user.university }} </h3>
             </div>
             <div class="city">
-                <h3>City: Turin</h3>
-            </div>
-            <div class="age">
-                <h3>Age: 25</h3>
+                <h3>City: {{ user.city }}</h3>
             </div>
         </div>
     </div>
-    <div class="renter-profile">  <!-- all answers are examples -->
-        <h1>I am the perfect housemate because:</h1>
+
+    <div class="character_profile">
+
         <table class="center">
             <tr>
                 <th><h3>I lived with other people:</h3></th>
-                <td style="text-align:center"><h3>four times</h3></td>
+                <td><h3>four times</h3></td>
             </tr>
             <tr>
                 <th><h3>Smoker:</h3></th>
-                <td style="text-align:center"><h3>No</h3></td>
+                <td><h3>No</h3></td>
             </tr>
             <tr>
                 <th><h3>I stay at home usually:</h3></th>
-                <td style="text-align:center"><h3>only at night</h3></td>
+                <td><h3>only at night</h3></td>
             </tr>
             <tr>
                 <th><h3>I usually have meals:</h3></th>
-                <td style="text-align:center"><h3>in company</h3></td>
+                <td><h3>in company</h3></td>
             </tr>
 
             <tr>
                 <th><h3>I invite friends at home:</h3></th>
-                <td style="text-align:center"><h3>Often</h3></td>
+                <td><h3>Often</h3></td>
             </tr>
             <tr>
                 <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
+                <td><h3>with other people</h3></td>
             </tr>
             <tr>
                 <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
+                <td><h3>with other people</h3></td>
             </tr>
             <tr>
                 <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
+                <td><h3>with other people</h3></td>
             </tr>
             <tr>
                 <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
+                <td><h3>with other people</h3></td>
             </tr>
             <tr>
                 <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
+                <td><h3>with other people</h3></td>
             </tr>
             <tr>
                 <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
+                <td><h3>with other people</h3></td>
             </tr>
         </table>
 

@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, url_for, request, send_from_
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
+from wtforms.fields.html5 import DecimalRangeField
 from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -56,10 +57,10 @@ class User(UserMixin, db.Model):
     university = db.Column('university', db.String(50), nullable=False)
     bio = db.Column('bio', db.String(140), nullable=False)
     interests = db.Column('interests', db.String(140), nullable=False)
+    languages = db.Column('languages', db.String(50), nullable=False)
 
     # Habits
-    # habits = db.Column('habits', db.String(8), nullable=False)
-    # languages = db.Column('languages', db.String(50), nullable=False)
+    habits = db.Column('habits', db.String(8), nullable=False)
 
     # Other fields
     photo_id = db.Column('photo_id', db.Integer)
@@ -143,10 +144,13 @@ class EditPublicDataForm(FlaskForm):
     university = StringField('University')
     bio = TextAreaField('Bio')
     interests = TextAreaField('Interests')
+    languages = TextAreaField('languages')
     save_button = SubmitField('Save')
 
 
-# class EditSlidersDataForm(FlaskForm):
+class EditSlidersDataForm(FlaskForm):
+    smoking_habits = DecimalRangeField('Do You Smoke?')
+    vegetarian = DecimalRangeField('Are you a Vegetarian?')
 
 
 # ======================================================================================================================
@@ -299,8 +303,14 @@ def personal_page():
         current_user.university = bio_form.university.data
         current_user.bio = bio_form.bio.data
         current_user.interests = bio_form.interests.data
+        current_user.languages = bio_form.languages.data
         db.session.commit()
         return redirect(url_for('personal_page'))
+
+    habits_form = EditSlidersDataForm()
+    if habits_form.validate_on_submit():
+        return redirect(url_for('personal_page'))
+
     if request.method == 'GET' or errors_in_private_page == 1:
         show_wrong_password_box = 0
         if errors_in_private_page == 1:
@@ -318,8 +328,9 @@ def personal_page():
         bio_form.university.data = current_user.university
         bio_form.bio.data = current_user.bio
         bio_form.interests.data = current_user.interests
+        bio_form.languages.data = current_user.languages
     return render_template('private_profile.html', personal_profile_form=personal_profile_form, bio_form=bio_form,
-                           image_name=image_name, error=show_wrong_password_box)
+                           image_name=image_name, error=show_wrong_password_box, habits_form=habits_form)
 
 
 @app.route('/uploads/<filename>')
