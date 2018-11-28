@@ -3,7 +3,7 @@
     <title>Listing</title>
 
     <!--icon-->
-    <link rel="shortcut_icon" type="image/x-icon" href='../static/homepage-icon-0.png'/>
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
 
     <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet"/>
 
@@ -31,8 +31,6 @@
             height: 45px;
             margin: 0;
             padding: 0;
-            background: #f12711; /* fallback for old browsers */
-            background: -webkit-linear-gradient(to left, #f5af19, #f12711); /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to left, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
             cursor: pointer;
@@ -113,8 +111,6 @@
         }
 
         .listing .listing--content {
-            background: #f46b45; /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #eea849, #f46b45); /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
             padding: 10px;
@@ -148,8 +144,6 @@
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
-            background: #f46b45;
-            background: -webkit-linear-gradient(to left, #eea849, #f46b45);
             background: linear-gradient(to left, #eea849, #f46b45);
             opacity: 0.8;
             padding: 10px;
@@ -275,8 +269,6 @@
             width: 90%;
             height: 100px;
             border: 3px black;
-            background: #f85032;
-            background: -webkit-linear-gradient(to left, #e73827, #f85032);
             background: linear-gradient(to left, #e73827, #f85032);
 
         }
@@ -288,8 +280,6 @@
             width: 90%;
             height: 150px;
             border: 5px #111111;
-            background: #f46b45;
-            background: -webkit-linear-gradient(to right, #eea849, #f46b45);
             background: linear-gradient(to right, #eea849, #f46b45);
             opacity: 0.9;
 

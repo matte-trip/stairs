@@ -19,6 +19,10 @@ To DO:
 
         body {
             margin: 0;
+            background: url('../static/private_profile-background.png') fixed center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
         }
 
         /*TEXT*/
@@ -88,15 +92,6 @@ To DO:
             border: 1px solid white;
         }
 
-        body {
-            margin: 0;
-            background: url('../static/private_profile-background.png') fixed center;
-            background-size: cover;
-            display: grid;
-            width: 100%;
-            height: 100%;
-        }
-
         .background {
             background-size: cover;
             opacity: 0.95;
@@ -155,7 +150,6 @@ To DO:
             margin-left: 5%;
             padding: 5px;
             border: 0;
-            border-radius: 0;
             font-family: "Oswald", sans-serif;
             font-size: 14px;
             opacity: 0.8;
@@ -217,6 +211,28 @@ To DO:
             grid-row-start: 2;
         }
 
+        #wrong_private_profile {
+            position: relative;
+            margin-top: 10px;
+            margin-left: 5%;
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            width: 90%;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #wrong_private_profile:hover {
+            background-color: sandybrown;
+        }
+
     </style>
 </head>
 
@@ -230,6 +246,7 @@ To DO:
         <a href="{{ url_for('home') }}">
                 <button id="home_button">HOMEPAGE</button>
         </a>
+
         <a href="{{ url_for('u', user_id=current_user.user_id) }}">
             <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
         </a>
@@ -263,6 +280,15 @@ To DO:
         </div>
 
         <div class="profile_form">
+
+            {% if error == 1 %}
+                <div class="wrong_private_profile">
+                    <a>
+                        <button id="wrong_private_profile">WRONG PASSWORD</button>
+                    </a>
+                </div>
+            {% endif %}
+
             {{ wtf.quick_form(personal_profile_form) }}
         </div>
 

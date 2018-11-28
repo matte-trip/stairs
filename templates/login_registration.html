@@ -27,36 +27,26 @@ To DO:
             min-height: 100%;
         }
 
-        .overlay {
-            min-height: 100%;
-            background: rgba(0, 0, 0, 0.25) fixed;
-        }
-
         .grid {
             background: transparent;
             display: grid;
-            grid-template-rows: 0.1fr 0.8fr 0.05fr;
             grid-template-columns: 0.4fr 1fr 0.4fr 1fr 0.4fr;
-        }
-
-        .home_button {
-            margin: 2.5% -15%;
-            grid-row-start: 1;
-            grid-column-start: 2;
+            position: relative;
+            top: 80px;
         }
 
         .login_form {
-            grid-row-start: 2;
             grid-column-start: 2;
-
+            background-color: rgba(0, 0, 0, .25);
             border: 1px solid white;
+            margin-bottom: 40px;
         }
 
         .registration_form {
-            grid-row-start: 2;
             grid-column-start: 4;
-
+            background-color: rgba(0, 0, 0, .25);
             border: 1px solid white;
+            margin-bottom: 40px;
         }
 
         /*Forms Classes*/
@@ -92,8 +82,27 @@ To DO:
             opacity: 0.9;
         }
 
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
         /* "#" identifies an element by variable name in python script: login_button = SubmitField('Login')*/
-        #login_button, #registration_button, #home_button {
+        #login_button, #registration_button {
             position: relative;
             margin-top: 10px;
 
@@ -144,44 +153,53 @@ To DO:
 <body>
 
 <div class="background">
-    <div class="overlay">
+
+    <div id="nav_bar">
+
+        <a href="{{ url_for('home') }}">
+            <button id="home_button">HOMEPAGE</button>
+        </a>
+
+    </div>
 
 
-        <div class="grid">
+    <div class="grid">
 
-            <div class="home_button">
-                <a href="{{ url_for('home') }}">
-                    <button id="home_button">RETURN</button>
-                </a>
-            </div>
+        <div class="login_form">
+            {% if error == 1 %}
+                <div class="wrong_login_registration">
+                    <a>
+                        <button id="wrong_login_registration">WRONG EMAIL/PASSWORD</button>
+                    </a>
+                </div>
+            {% endif %}
 
-            <div class="login_form">
-                {% if error == 1 %}
-                    <div class="wrong_login_registration">
-                        <a>
-                            <button id="wrong_login_registration">WRONG EMAIL/PASSWORD</button>
-                        </a>
-                    </div>
-                {% endif %}
+            {{ wtf.quick_form(login_form) }}
+        </div>
 
-                {{ wtf.quick_form(login_form) }}
-            </div>
+        <div class="registration_form">
+            {% if error == 2 %}
+                <div class="wrong_login_registration">
+                    <a>
+                        <button id="wrong_login_registration">USER ALREADY REGISTERED</button>
+                    </a>
+                </div>
+            {% endif %}
 
-            <div class="registration_form">
-                {% if error == 2 %}
-                    <div class="wrong_login_registration">
-                        <a>
-                            <button id="wrong_login_registration">USER ALREADY REGISTERED</button>
-                        </a>
-                    </div>
-                {% endif %}
+            {% if error == 3 %}
+                <div class="wrong_login_registration">
+                    <a>
+                        <button id="wrong_login_registration">PASSWORDS DO NOT MATCH</button>
+                    </a>
+                </div>
+            {% endif %}
 
-                {{ wtf.quick_form(registration_form) }}
-            </div>
-
+            {{ wtf.quick_form(registration_form) }}
         </div>
 
     </div>
+
+
 </div>
 
 </body>

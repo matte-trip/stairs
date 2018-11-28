@@ -116,9 +116,9 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     first_name = StringField('First name', validators=[DataRequired()])
     last_name = StringField('Last name', validators=[DataRequired()])
+    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password')])
-    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
     registration_button = SubmitField('Register')
 
     @staticmethod
@@ -132,9 +132,8 @@ class EditPrivateDataForm(FlaskForm):
     email = StringField('Email')
     first_name = StringField('First name')
     last_name = StringField('Last name')
-    password = PasswordField('Password', validators=[DataRequired()])
-    password2 = PasswordField('Repeat password', validators=[EqualTo('password')])
     city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
+    password = PasswordField('Password Verification', validators=[DataRequired()])
     submit_button = SubmitField('Submit')
 
 
@@ -168,6 +167,8 @@ def setup_db():
 def home():
     global last_url
     last_url = ''
+
+    print "home"
 
     global errors_in_login_registration
     errors_in_login_registration = 0
@@ -237,6 +238,9 @@ def login_registration():
             return redirect(url_for('login_registration'))
 
     registration_form = RegistrationForm()
+    if registration_form.password.data != registration_form.password2.data:
+        errors_in_login_registration = 3
+        return redirect(url_for('login_registration'))
     if registration_form.validate_on_submit():
         e_user = get_user(registration_form.email.data)
         if e_user:
@@ -267,11 +271,16 @@ def login_registration():
 @app.route('/user', methods=['GET', 'POST'])
 @login_required
 def personal_page():
+    global errors_in_private_page
+    global show_wrong_password_box
+
     personal_profile_form = EditPrivateDataForm()
     bio_form = EditPublicDataForm()
     image_name = current_user.user_id + str(current_user.photo_id) + ".png"
     if personal_profile_form.validate_on_submit():
+        print "sensitive"
         if current_user.check_password(personal_profile_form.password.data):
+            print "password check"
             current_user.email = personal_profile_form.email.data
             current_user.first_name = personal_profile_form.first_name.data
             current_user.last_name = personal_profile_form.last_name.data
@@ -279,7 +288,12 @@ def personal_page():
             current_user.city = personal_profile_form.city.data
             db.session.commit()
             return redirect(url_for('personal_page'))
+        else:
+            print "wrong pass"
+            errors_in_private_page = 1
+            redirect(url_for('personal_page'))
     elif bio_form.validate_on_submit():
+        print "nonsensitive"
         current_user.age = bio_form.age.data
         current_user.study_field = bio_form.study_field.data
         current_user.university = bio_form.university.data
@@ -287,7 +301,14 @@ def personal_page():
         current_user.interests = bio_form.interests.data
         db.session.commit()
         return redirect(url_for('personal_page'))
-    elif request.method == 'GET':
+    if request.method == 'GET' or errors_in_private_page == 1:
+        show_wrong_password_box = 0
+        if errors_in_private_page == 1:
+            show_wrong_password_box = 1
+        errors_in_private_page = 0
+        print "only_get"
+        print current_user.first_name
+        print current_user.email
         personal_profile_form.email.data = current_user.email
         personal_profile_form.first_name.data = current_user.first_name
         personal_profile_form.last_name.data = current_user.last_name
@@ -298,7 +319,7 @@ def personal_page():
         bio_form.bio.data = current_user.bio
         bio_form.interests.data = current_user.interests
     return render_template('private_profile.html', personal_profile_form=personal_profile_form, bio_form=bio_form,
-                           image_name=image_name)
+                           image_name=image_name, error=show_wrong_password_box)
 
 
 @app.route('/uploads/<filename>')
@@ -373,6 +394,11 @@ def internal_server_error(e):
 errors_in_login_registration = 0
 # 1 is wrong email/password in login
 # 2 is user already registered in registration
+# 3 password and password2 do not match
+
+errors_in_private_page = 0
+# 1 wrong password, user not allowed to change sensitive information
+show_wrong_password_box = 0
 
 last_url = ''
 # used to remember the last page the user has visited in public pages so after login he can get back to them
