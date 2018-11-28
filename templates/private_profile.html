@@ -230,11 +230,6 @@
             background-color: sandybrown;
         }
 
-
-
-
-
-
     </style>
 </head>
 
@@ -288,9 +283,18 @@
 
         {{ wtf.quick_form(personal_profile_form) }}
 
-        <div class="habits_divider"
-        {{ wtf.quick_form(habits_form) }}
-    </div>
+        {{ habits_form.smoking_habits.label }}
+        <div style="margin-top:0; display: flex;
+    justify-content: space-between; width: 90%; margin-left: 5%;"><p>YES</p>{{ habits_form.smoking_habits(min=0, max=1, step=1, oninput="outputUpdate(value)") }}
+        <p>NO</p></div>
+        <!--<output for="age" id="selected-age" style="color: #e6e6e6">{#  { habits_form.smoking_habits.data }}#}</output>-->
 
+    </div>
 </div>
 </body>
+
+<script>
+function outputUpdate(age) {
+    document.querySelector('#selected-age').value = age;
+}
+</script>

@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DecimalRangeField
-from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField
+from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, RadioField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
@@ -22,6 +22,7 @@ app.config[
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['available_cities'] = [("TURIN", "Turin")]
+app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
