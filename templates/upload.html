@@ -1,11 +1,10 @@
 <head>
-    <!--title-->
     <title>Upload Page</title>
 
-    <!--imported fonts-->
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
 
-    <!--css stylesheet-->
     <style>
 
         body {
@@ -84,10 +83,17 @@
 <body>
 <div class="container">
 
+    <script>
+        window.onload = function () {
+            document.getElementById('file').style.display = 'none';
+        };
+    </script>
+
     <form method=post enctype=multipart/form-data>
 
         <input class="choose_button" type=button value="CHOOSE FILE"
-               onclick="document.getElementById('file').click();"/>
+               onclick="document.getElementById('file').click();
+               document.getElementById('file').style.display = '';"/>
 
         <div class="container_crop">
             <input class="browse_label" type=file id="file" name="file">
