@@ -54,14 +54,14 @@ class User(UserMixin, db.Model):
 
     # Bio fields
     age = db.Column('age', db.Integer)
-    study_field = db.Column('study_field', db.String(50), nullable=False)
-    university = db.Column('university', db.String(50), nullable=False)
-    bio = db.Column('bio', db.String(140), nullable=False)
-    interests = db.Column('interests', db.String(140), nullable=False)
-    languages = db.Column('languages', db.String(50), nullable=False)
+    study_field = db.Column('study_field', db.String(50))
+    university = db.Column('university', db.String(50))
+    bio = db.Column('bio', db.String(140))
+    interests = db.Column('interests', db.String(140))
+    languages = db.Column('languages', db.String(50))
 
     # Habits
-    habits = db.Column('habits', db.String(8), nullable=False)
+    habits = db.Column('habits', db.String(8))
 
     # Other fields
     photo_id = db.Column('photo_id', db.Integer)
