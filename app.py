@@ -16,9 +16,9 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'secret_key'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['available_cities'] = [("TURIN", "Turin")]
