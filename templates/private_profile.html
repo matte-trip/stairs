@@ -187,6 +187,7 @@
         #stays_in_room {
             margin-left: 5%;
             margin-top: 18px;
+            opacity: 1;
         }
 
 
@@ -219,6 +220,10 @@
             height: 100px;
         }
 
+        #languages {
+            height: 60px;
+        }
+
         input:hover, #city:hover {
             opacity: 1;
         }
@@ -247,7 +252,7 @@
             background-color: sandybrown;
         }
 
-        #add_house_button {
+        #add_house_button, #modify_button {
             margin-left: 5%;
             margin-top: 10px;
             margin-bottom: 10px;
@@ -256,7 +261,20 @@
     </style>
 </head>
 
-<body>
+<script>
+function disableSlider() {
+    document.getElementById("smoking_habits").disabled = true;
+    document.getElementById("vegetarian").disabled = true;
+    document.getElementById("eat_together").disabled = true;
+    document.getElementById("do_sports").disabled = true;
+    document.getElementById("house_parties").disabled = true;
+    document.getElementById("invite_friends").disabled = true;
+    document.getElementById("overnight_guests").disabled = true;
+    document.getElementById("stays_in_room").disabled = true;
+}
+</script>
+
+<body onload="disableSlider()">
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
@@ -309,6 +327,7 @@
 
     </div>
 
+
     <div class="profile_form">
 
         {% if error == 1 %}
@@ -326,7 +345,7 @@
         {{ habits_form.smoking_habits.label }}
         <div class="slider_input">
             <label>NO</label>
-            {{ habits_form.smoking_habits(min=0, max=1, step=1, value=0, oninput="outputUpdate(value)") }}
+            {{ habits_form.smoking_habits(min=0, max=1, step=1, value=current_user.habits[0], oninput="outputUpdate(value)") }}
             <label>YES</label>
         </div>
 
@@ -335,7 +354,7 @@
         {{ habits_form.vegetarian.label }}
         <div class="slider_input">
             <label>NO</label>
-            {{ habits_form.vegetarian(min=0, max=1, step=1, oninput="outputUpdate(value)") }}
+            {{ habits_form.vegetarian(min=0, max=1, step=1, value=current_user.habits[1], oninput="outputUpdate(value)") }}
             <label>YES</label>
         </div>
 
@@ -344,7 +363,7 @@
         {{ habits_form.eat_together.label }}
         <div class="slider_input">
             <label>NEVER</label>
-            {{ habits_form.eat_together(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            {{ habits_form.eat_together(min=0, max=9, step=1, value=current_user.habits[2], oninput="outputUpdate(value)") }}
             <label>ALWAYS</label>
         </div>
 
@@ -353,7 +372,7 @@
         {{ habits_form.do_sports.label }}
         <div class="slider_input">
             <label>NEVER</label>
-            {{ habits_form.do_sports(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            {{ habits_form.do_sports(min=0, max=9, step=1, value=current_user.habits[3], oninput="outputUpdate(value)") }}
             <label>ALWAYS</label>
         </div>
 
@@ -362,7 +381,7 @@
         {{ habits_form.house_parties.label }}
         <div class="slider_input">
             <label>NEVER</label>
-            {{ habits_form.house_parties(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            {{ habits_form.house_parties(min=0, max=9, step=1, value=current_user.habits[4], oninput="outputUpdate(value)") }}
             <label>ALWAYS</label>
         </div>
 
@@ -371,7 +390,7 @@
         {{ habits_form.invite_friends.label }}
         <div class="slider_input">
             <label>NEVER</label>
-            {{ habits_form.invite_friends(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            {{ habits_form.invite_friends(min=0, max=9, step=1, value=current_user.habits[5], oninput="outputUpdate(value)") }}
             <label>ALWAYS</label>
         </div>
 
@@ -380,7 +399,7 @@
         {{ habits_form.overnight_guests.label }}
         <div class="slider_input">
             <label>NEVER</label>
-            {{ habits_form.overnight_guests(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            {{ habits_form.overnight_guests(min=0, max=9, step=1, value=current_user.habits[6], oninput="outputUpdate(value)") }}
             <label>ALWAYS</label>
         </div>
 
@@ -389,14 +408,15 @@
         {{ habits_form.stays_in_room.label }}
         <div class="slider_input">
             <label>NEVER</label>
-            {{ habits_form.stays_in_room(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            {{ habits_form.stays_in_room(min=0, max=9, step=1, value=current_user.habits[7], oninput="outputUpdate(value)") }}
             <label>ALWAYS</label>
         </div>
 
         <br><br>
 
-        {{ habits_form.save_habits }}
-
+        <a href="{{ url_for('habits') }}">
+                <button id="modify_button">MODIFY</button>
+        </a>
         <!--<output for="age" id="selected-age" style="color: #e6e6e6">{#  { habits_form.smoking_habits.data }}#}</output>-->
         <script>
             function outputUpdate(age) {

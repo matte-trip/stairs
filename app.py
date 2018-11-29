@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DecimalRangeField
-from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, RadioField
+from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
@@ -13,14 +13,13 @@ import shutil
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
-app.config['SECRET_KEY'] = 'secret_key'
+app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
     'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\uploads'
 app.config[
     'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\static'
 
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['available_cities'] = [("TURIN", "Turin")]
 app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]
 
@@ -93,8 +92,8 @@ class Residence(db.Model):
     city = db.Column('city', db.String(30), nullable=False)
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
-    neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(8))
+    neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)  # SELECTOR OR NOT????????????????????????
+    amenities = db.Column('amenities', db.String(8))  # NULLABLE OR NOT?????????????????????????????????????????????????
     description = db.Column('description', db.String(1000), nullable=False)
 
 
@@ -131,9 +130,9 @@ class RegistrationForm(FlaskForm):
 
 
 class EditPrivateDataForm(FlaskForm):
-    email = StringField('Email')
-    first_name = StringField('First name')
-    last_name = StringField('Last name')
+    email = StringField('Email', validators=[DataRequired()])
+    first_name = StringField('First name', validators=[DataRequired()])
+    last_name = StringField('Last name', validators=[DataRequired()])
     city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
     password = PasswordField('Password Verification', validators=[DataRequired()])
     submit_button = SubmitField('Submit')
@@ -177,21 +176,229 @@ def setup_db():
 
 @app.route('/')
 def home():
+    # a. Keeps track of user position and shows his pro_pic
     global last_url
     last_url = ''
 
-    print "home"
+    if current_user.is_authenticated:
+        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+    else:
+        pro_pic = ""
+    # a_end
 
     global errors_in_login_registration
     errors_in_login_registration = 0
+
+    return render_template('homepage.html',
+                           is_auth=current_user.is_authenticated,
+                           pro_pic=pro_pic)
+
+
+@app.route('/login_registration', methods=['GET', 'POST'])
+def login_registration():
+    # b. Sends away the user if he tries to come to login/register once already logged in
     if current_user.is_authenticated:
-        u_id = current_user.user_id
-        p_id = current_user.photo_id
+        return redirect(url_for('home'))
+    # b_end
+
+    global errors_in_login_registration
+
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        existing_user = get_user(login_form.login_email.data)
+        if existing_user:
+            if existing_user.check_password(login_form.login_password.data):
+                login_user(existing_user)
+                return redirect("http://127.0.0.1:5000/" + last_url)
+            else:
+                errors_in_login_registration = 1
+                return redirect(url_for('login_registration'))
+        else:
+            errors_in_login_registration = 1
+            return redirect(url_for('login_registration'))
+
+    registration_form = RegistrationForm()
+    if registration_form.password.data != registration_form.password2.data:
+        errors_in_login_registration = 3
+        return redirect(url_for('login_registration'))
+    if registration_form.validate_on_submit():
+        e_user = get_user(registration_form.email.data)
+        if e_user:
+            errors_in_login_registration = 2
+            return redirect(url_for('login_registration'))
+        else:
+            new_user = User()
+            new_user.email = registration_form.email.data
+            new_user.first_name = registration_form.first_name.data
+            new_user.last_name = registration_form.last_name.data
+            new_user.city = registration_form.city.data
+            new_user.password = registration_form.password.data
+            new_user.user_id = uuid.uuid4().hex[::4].capitalize()
+            new_user.photo_id = 0
+            new_user.habits = "00000000"
+            default_image_destination_path = new_user.user_id + "0.png"
+            shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
+                        os.path.join(app.config['UPLOAD_FOLDER'], default_image_destination_path))
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect("http://127.0.0.1:5000/" + last_url)
+
+    return render_template('login_registration.html',
+                           login_form=login_form,
+                           registration_form=registration_form,
+                           error=errors_in_login_registration)
+
+
+@app.route('/user', methods=['GET', 'POST'])
+@login_required
+def personal_page():
+    global errors_in_private_page
+    global show_wrong_password_box
+
+    personal_profile_form = EditPrivateDataForm()
+    bio_form = EditPublicDataForm()
+    if personal_profile_form.validate_on_submit():
+        if current_user.check_password(personal_profile_form.password.data):
+            current_user.email = personal_profile_form.email.data
+            current_user.first_name = personal_profile_form.first_name.data
+            current_user.last_name = personal_profile_form.last_name.data
+            current_user.city = personal_profile_form.city.data
+            db.session.commit()
+            return redirect(url_for('personal_page'))
+        else:
+            errors_in_private_page = 1
+            redirect(url_for('personal_page'))
+    elif bio_form.validate_on_submit():
+        current_user.age = bio_form.age.data
+        current_user.study_field = bio_form.study_field.data
+        current_user.university = bio_form.university.data
+        current_user.bio = bio_form.bio.data
+        current_user.interests = bio_form.interests.data
+        current_user.languages = bio_form.languages.data
+        db.session.commit()
+        return redirect(url_for('personal_page'))
+
+    habits_form = EditSlidersDataForm()
+    if request.method == 'GET' or errors_in_private_page:
+        show_wrong_password_box = 0
+        if errors_in_private_page:
+            show_wrong_password_box = 1
+        errors_in_private_page = 0
+
+        personal_profile_form.email.data = current_user.email
+        personal_profile_form.first_name.data = current_user.first_name
+        personal_profile_form.last_name.data = current_user.last_name
+        personal_profile_form.city = current_user.city
+
+        bio_form.age.data = current_user.age
+        bio_form.study_field.data = current_user.study_field
+        bio_form.university.data = current_user.university
+        bio_form.bio.data = current_user.bio
+        bio_form.interests.data = current_user.interests
+        bio_form.languages.data = current_user.languages
+
+    image_name = current_user.user_id + str(current_user.photo_id) + ".png"
+
+    return render_template('private_profile.html',
+                           personal_profile_form=personal_profile_form,
+                           bio_form=bio_form,
+                           image_name=image_name,
+                           error=show_wrong_password_box,
+                           habits_form=habits_form)
+
+
+@app.route('/uploads/<filename>')
+def send_image(filename):
+    return send_from_directory("uploads", filename)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+@login_required
+def upload():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            print 'No file part'
+            return redirect(request.url)
+        profile_picture = request.files['file']
+        # check if user has selected file
+        if profile_picture.filename == '':
+            print 'No selected file'
+            return redirect(request.url)
+        if profile_picture:
+            current_user.photo_id += 1
+            db.session.commit()
+            filename = current_user.user_id + str(current_user.photo_id) + ".png"
+            # saving new image to /uploads
+            profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # deleting old image associated to the user
+            filename = current_user.user_id + str(current_user.photo_id - 1) + ".png"
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('personal_page'))
+
+    return render_template('upload.html')
+
+
+@app.route('/habits', methods=['GET', 'POST'])
+@login_required
+def habits():
+    habits_form = EditSlidersDataForm()
+    if request.method == 'POST':
+        habits_list = [str(habits_form.smoking_habits.data), str(habits_form.vegetarian.data),
+                       str(habits_form.eat_together.data), str(habits_form.do_sports.data),
+                       str(habits_form.house_parties.data), str(habits_form.invite_friends.data),
+                       str(habits_form.overnight_guests.data), str(habits_form.stays_in_room.data)]
+        current_user.habits = "".join(habits_list)
+        db.session.commit()
+        return redirect(url_for('personal_page'))
+
+    return render_template('habits.html',
+                           habits_form=habits_form)
+
+
+@app.route('/u/<user_id>')
+def u(user_id):
+    # a. Keeps track of user position and shows his pro_pic
+    global last_url
+    last_url = "u/" + user_id
+
+    if current_user.is_authenticated:
+        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
     else:
-        u_id = str(0)
-        p_id = str(0)
-    return render_template('homepage.html', is_auth=current_user.is_authenticated,
-                           image_name=u_id + str(p_id) + ".png")
+        pro_pic = ""
+    # a_end
+
+    user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
+    user_image_name = user.user_id + str(user.photo_id) + ".png"
+
+    habits_form = EditSlidersDataForm()
+
+    return render_template('public_profile.html',
+                           user=user,
+                           image_name=user_image_name,
+                           is_auth=current_user.is_authenticated,
+                           pro_pic=pro_pic,
+                           habits_form=habits_form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("http://127.0.0.1:5000/" + last_url)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    print e
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    print e
+    return render_template('500.html'), 500
 
 
 # @app.route('/results')
@@ -228,197 +435,6 @@ def home():
 #         return render_template('results.html', table=table)
 
 
-@app.route('/login_registration', methods=['GET', 'POST'])
-def login_registration():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-
-    global initial_habits
-
-    global errors_in_login_registration
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        # User existence check by login_manager.user_loader
-        existing_user = get_user(login_form.login_email.data)
-        if existing_user:
-            if existing_user.check_password(login_form.login_password.data):
-                login_user(existing_user)
-                return redirect("http://127.0.0.1:5000/" + last_url)
-            else:
-                errors_in_login_registration = 1
-                return redirect(url_for('login_registration'))
-        else:
-            errors_in_login_registration = 1
-            return redirect(url_for('login_registration'))
-
-    registration_form = RegistrationForm()
-    if registration_form.password.data != registration_form.password2.data:
-        errors_in_login_registration = 3
-        return redirect(url_for('login_registration'))
-    if registration_form.validate_on_submit():
-        e_user = get_user(registration_form.email.data)
-        if e_user:
-            errors_in_login_registration = 2
-            return redirect(url_for('login_registration'))
-        else:
-            new_user = User()
-            new_user.email = registration_form.email.data
-            new_user.first_name = registration_form.first_name.data
-            new_user.last_name = registration_form.last_name.data
-            new_user.password = registration_form.password.data
-            new_user.user_id = uuid.uuid4().hex[::4].capitalize()
-            new_user.city = registration_form.city.data
-            new_user.photo_id = 0
-            new_user.habits = initial_habits
-            destination_path = new_user.user_id + str(new_user.photo_id) + ".png"
-            shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
-                        os.path.join(app.config['UPLOAD_FOLDER'], destination_path))
-            # Add new user to db
-            db.session.add(new_user)
-            # Commit changes to db
-            db.session.commit()
-            login_user(new_user)
-            return redirect("http://127.0.0.1:5000/" + last_url)
-    return render_template('login_registration.html', login_form=login_form, registration_form=registration_form,
-                           error=errors_in_login_registration)
-
-
-@app.route('/user', methods=['GET', 'POST'])
-@login_required
-def personal_page():
-    global errors_in_private_page
-    global show_wrong_password_box
-
-    personal_profile_form = EditPrivateDataForm()
-    bio_form = EditPublicDataForm()
-    image_name = current_user.user_id + str(current_user.photo_id) + ".png"
-    if personal_profile_form.validate_on_submit():
-        print "sensitive"
-        if current_user.check_password(personal_profile_form.password.data):
-            print "password check"
-            current_user.email = personal_profile_form.email.data
-            current_user.first_name = personal_profile_form.first_name.data
-            current_user.last_name = personal_profile_form.last_name.data
-            current_user.password = personal_profile_form.password.data
-            current_user.city = personal_profile_form.city.data
-            db.session.commit()
-            return redirect(url_for('personal_page'))
-        else:
-            print "wrong pass"
-            errors_in_private_page = 1
-            redirect(url_for('personal_page'))
-    elif bio_form.validate_on_submit():
-        print "nonsensitive"
-        current_user.age = bio_form.age.data
-        current_user.study_field = bio_form.study_field.data
-        current_user.university = bio_form.university.data
-        current_user.bio = bio_form.bio.data
-        current_user.interests = bio_form.interests.data
-        current_user.languages = bio_form.languages.data
-        db.session.commit()
-        return redirect(url_for('personal_page'))
-
-    habits_form = EditSlidersDataForm()
-    if habits_form.validate_on_submit():
-        current_user.habits[0] = habits_form.smoking_habits.data
-        current_user.habits[1] = habits_form.vegetarian.data
-        current_user.habits[2] = habits_form.eat_together.data
-        current_user.habits[3] = habits_form.do_sports.data
-        current_user.habits[4] = habits_form.house_parties.data
-        current_user.habits[5] = habits_form.invite_friends.data
-        current_user.habits[6] = habits_form.overnight_guests.data
-        current_user.habits[7] = habits_form.stays_in_room.data
-        db.session.commit()
-        return redirect(url_for('personal_page'))
-
-    if request.method == 'GET' or errors_in_private_page == 1:
-        show_wrong_password_box = 0
-        if errors_in_private_page == 1:
-            show_wrong_password_box = 1
-        errors_in_private_page = 0
-        print "only_get"
-        print current_user.first_name
-        print current_user.email
-        personal_profile_form.email.data = current_user.email
-        personal_profile_form.first_name.data = current_user.first_name
-        personal_profile_form.last_name.data = current_user.last_name
-        personal_profile_form.city = current_user.city
-        bio_form.age.data = current_user.age
-        bio_form.study_field.data = current_user.study_field
-        bio_form.university.data = current_user.university
-        bio_form.bio.data = current_user.bio
-        bio_form.interests.data = current_user.interests
-        bio_form.languages.data = current_user.languages
-    return render_template('private_profile.html', personal_profile_form=personal_profile_form, bio_form=bio_form,
-                           image_name=image_name, error=show_wrong_password_box, habits_form=habits_form)
-
-
-@app.route('/uploads/<filename>')
-def send_image(filename):
-    return send_from_directory("uploads", filename)
-
-
-@app.route('/upload', methods=['GET', 'POST'])
-@login_required
-def upload():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            print 'No file part'
-            return redirect(request.url)
-        profile_picture = request.files['file']
-        # if user does not select file, browser also submit an empty part without filename
-        if profile_picture.filename == '':
-            print 'No selected file'
-            return redirect(request.url)
-        if profile_picture:
-            current_user.photo_id += 1
-            db.session.commit()
-            filename = current_user.user_id + str(current_user.photo_id) + ".png"
-            profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # delete old image
-            filename = current_user.user_id + str(current_user.photo_id - 1) + ".png"
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('personal_page'))
-    return render_template('upload.html')
-
-
-@app.route('/u/<user_id>')
-def u(user_id):
-    global last_url
-    last_url = "u/" + user_id
-
-    if current_user.is_authenticated:
-        u_id = current_user.user_id
-        p_id = current_user.photo_id
-    else:
-        u_id = str(0)
-        p_id = str(0)
-    user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
-    return render_template('public_profile.html', user=user,
-                           image_name=user.user_id + str(user.photo_id) + ".png", is_auth=current_user.is_authenticated,
-                           pro_pic=u_id + str(p_id) + ".png")
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("http://127.0.0.1:5000/" + last_url)
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    print e
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    print e
-    return render_template('500.html'), 500
-
-
 # ======================================================================================================================
 # GLOBAL VARIABLES
 # ======================================================================================================================
@@ -430,19 +446,20 @@ errors_in_login_registration = 0
 errors_in_private_page = 0
 # 1 wrong password, user not allowed to change sensitive information
 show_wrong_password_box = 0
+# 1 wrong password box message showed
 
 last_url = ''
-# used to remember the last page the user has visited in public pages so after login he can get back to them
+# used to keep track of the last page the user was visiting (public pages)
+# in order to redirect him there after login/logout
 
-initial_habits = "00000000"
-smoking_habits = "10000000"  # initial_habits[0]
-vegetarian = "01000000"  # initial_habits[1]
-eat_together = "00100000"  # initial_habits[2]
-do_sports = "00010000"  # initial_habits[3]
-house_parties = "00001000"  # initial_habits[4]
-invite_friends = "00000100"  # initial_habits[5]
-stays_in_room = "00000010"  # initial_habits[6]
-overnight_guests = "00000001"  # initial_habits[7]
+#   smoking_habits = "10000000"
+#       vegetarian = "01000000"
+#     eat_together = "00900000"
+#        do_sports = "00090000"
+#    house_parties = "00009000"
+#   invite_friends = "00000900"
+#    stays_in_room = "00000090"
+# overnight_guests = "00000009"
 
 initial___amenities = "00000000"
 amenities______beds = "10000000"

@@ -18,20 +18,24 @@
         h1 {
             font-family: 'Oswald', sans-serif;
             color: white;
-            font-size: 30px;
+            font-size: 36px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         h2 {
             font-family: 'Oswald', sans-serif;
             color: white;
-            font-size: 16px;
+            font-size: 20px;
             text-transform: uppercase;
+            font-weight: 400;
         }
 
         p {
             font-family: 'Nunito', sans-serif;
             color: white;
             font-size: 16px;
+            font-weight: 400;
         }
 
         button {
@@ -62,8 +66,8 @@
         #pro_pic {
             position: absolute;
             right: 30%;
-            height: 40px;
-            width: 40px;
+            height: 38px;
+            width: 38px;
             border: 1px solid white;
         }
 
@@ -89,77 +93,107 @@
 
             background: transparent;
             display: grid;
-            grid-template-rows: 0.95fr 0.05fr;
+            grid-template-rows: 2fr 1fr 0.05fr;
             grid-template-columns: 0.25fr 1fr 0.1fr 1fr 0.25fr;
         }
 
         .basic_profile {
             grid-row-start: 1;
+            grid-row-end: 3;
             grid-column-start: 2;
 
             border: 1px solid white;
             background-color: rgba(0, 0, 0, .5);
+
+            text-align: center;
+        }
+
+        .basic_profile_container {
+            width: 90%;
+            margin-left: 5%;
+            align-content: center;
         }
 
         .profile_picture {
             width: 200px;
             height: 200px;
             margin-top: 5%;
-            background-color: rgba(0, 0, 0, .5); /*====================================================================*/
+        }
+
+        .name_surname {
+            font-size: 24px;
         }
 
         .character_profile {
             grid-row-start: 1;
+            grid-row-end: 3;
             grid-column-start: 4;
 
             border: 1px solid white;
             background-color: rgba(0, 0, 0, .25);
         }
 
+        .slider_input {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+            margin-left: 0;
+            height: 16px;
+        }
 
+        #smoking_habits, #vegetarian, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #stays_in_room {
+            margin-left: 5%;
+            margin-top: 18px;
+            opacity: 1;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        .text-container {
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
             color: white;
+
+            text-transform: uppercase;
         }
 
-        table, th, td {
-            border: 1px solid white;
-            border-collapse: collapse;
-            color: white;
-
-        }
-
-        td {
-            text-align: center;
-        }
-
-        table.center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        th, td {
+        input, textarea, #city {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
             padding: 5px;
-            text-align: left;
+            border: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.75;
+            transition: all 0.25s;
+        }
+
+        .adjust_page_height {
+
+            margin-bottom: 50px;
         }
     </style>
 </head>
 
-<body>
+<script>
+    function disableSlider() {
+        document.getElementById("smoking_habits").disabled = true;
+        document.getElementById("vegetarian").disabled = true;
+        document.getElementById("eat_together").disabled = true;
+        document.getElementById("do_sports").disabled = true;
+        document.getElementById("house_parties").disabled = true;
+        document.getElementById("invite_friends").disabled = true;
+        document.getElementById("overnight_guests").disabled = true;
+        document.getElementById("stays_in_room").disabled = true;
+    }
+</script>
+
+<body onload="disableSlider()">
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
@@ -168,7 +202,7 @@
 
     {% if is_auth %}
         <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
         </a>
         <a href="{{ url_for('personal_page') }}">
             <button id="account_button">ACCOUNT</button>
@@ -188,76 +222,98 @@
 
     <div class="basic_profile">
 
-        <img class="profile_picture" src="{{ url_for('send_image', filename=image_name) }}" alt="">
+        <div class="basic_profile_container">
 
-        <div class="text-container" id="tc">
-            <h1 class="first_last_name">
-                {{ user.first_name }} {{ user.last_name }}
-            </h1>
-            <div class="age">
-                <h3>Age: {{ user.age }}</h3>
-            </div>
-            <div class="study_field">
-                <h3>Study Field: {{ user.study_field }}</h3>
-            </div>
-            <div class="university">
-                <h3>University: {{ user.university }} </h3>
-            </div>
-            <div class="city">
-                <h3>City: {{ user.city }}</h3>
-            </div>
+            <img class="profile_picture" src="{{ url_for('send_image', filename=image_name) }}" alt="">
+
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+            <h2>Age: {{ user.age }}</h2>
+            <h2>Study Field: {{ user.study_field }}</h2>
+            <h2>University: {{ user.university }} </h2>
+            <h2>City: {{ user.city }}</h2>
+            <h2>Bio:</h2>
+            <p>{{ user.bio }}</p>
+            <h2>Interests:</h2>
+            <p>{{ user.interests }}</p>
+            <h2>Languages:</h2>
+            <p>{{ user.languages }}</p>
+
         </div>
     </div>
 
     <div class="character_profile">
 
-        <table class="center">
-            <tr>
-                <th><h3>I lived with other people:</h3></th>
-                <td><h3>four times</h3></td>
-            </tr>
-            <tr>
-                <th><h3>Smoker:</h3></th>
-                <td><h3>No</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I stay at home usually:</h3></th>
-                <td><h3>only at night</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I usually have meals:</h3></th>
-                <td><h3>in company</h3></td>
-            </tr>
+        <div class="adjust_page_height">
+            {{ habits_form.smoking_habits.label }}
+            <div class="slider_input">
+                <label>NO</label>
+                {{ habits_form.smoking_habits(min=0, max=1, step=1, value=user.habits[0], oninput="outputUpdate(value)") }}
+                <label>YES</label>
+            </div>
 
-            <tr>
-                <th><h3>I invite friends at home:</h3></th>
-                <td><h3>Often</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td><h3>with other people</h3></td>
-            </tr>
-        </table>
+            <br><br>
+
+            {{ habits_form.vegetarian.label }}
+            <div class="slider_input">
+                <label>NO</label>
+                {{ habits_form.vegetarian(min=0, max=1, step=1, value=user.habits[1], oninput="outputUpdate(value)") }}
+                <label>YES</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.eat_together.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.eat_together(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.do_sports.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.do_sports(min=0, max=9, step=1, value=user.habits[3], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.house_parties.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.house_parties(min=0, max=9, step=1, value=user.habits[4], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.invite_friends.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.invite_friends(min=0, max=9, step=1, value=user.habits[5], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.overnight_guests.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.overnight_guests(min=0, max=9, step=1, value=user.habits[6], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.stays_in_room.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.stays_in_room(min=0, max=9, step=1, value=user.habits[7], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+        </div>
 
     </div>
 </div>
