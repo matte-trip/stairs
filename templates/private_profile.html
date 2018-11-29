@@ -95,12 +95,13 @@
 
             background: transparent;
             display: grid;
-            grid-template-rows: 0.95fr 0.05fr;
             grid-template-columns: 0.25fr 1fr 0.1fr 1fr 0.25fr;
+            grid-template-rows: 2fr 1fr 0.05fr;
         }
 
         .bio_form {
             grid-row-start: 1;
+            grid-row-end: 3;
             grid-column-start: 2;
 
             border: 1px solid white;
@@ -126,8 +127,24 @@
             grid-row-start: 2;
         }
 
+        .house_card {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            margin-left: 5%;
+            height: 80px;
+        }
+
+        .house_picture {
+            width: 80px;
+            height: 80px;
+            left: 5%;
+        }
+
         .profile_form {
             grid-row-start: 1;
+            grid-row-end: 3;
             grid-column-start: 4;
 
             border: 1px solid white;
@@ -157,20 +174,20 @@
         }
 
 
+        .slider_input {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+            margin-left: 0;
+            height: 16px;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        #smoking_habits, #vegetarian, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #stays_in_room {
+            margin-left: 5%;
+            margin-top: 18px;
+        }
 
 
         /* Bootstrap*/
@@ -207,7 +224,7 @@
         }
 
         /* "#" identifies an element by variable name in python script: submit_button = SubmitField('Login')*/
-        #submit_button, #save_button, #change_button {
+        #submit_button, #save_button, #change_button, #save_habits {
             position: relative;
             margin-top: 10px;
 
@@ -226,8 +243,14 @@
             opacity: 1;
         }
 
-        #submit_button:hover, #save_button:hover, #change_button:hover {
+        #submit_button:hover, #save_button:hover, #change_button:hover, #save_habits:hover, #add_house_button:hover {
             background-color: sandybrown;
+        }
+
+        #add_house_button {
+            margin-left: 5%;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
 
     </style>
@@ -259,7 +282,7 @@
         <div class="photo_grid">
             <img id="profile_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
 
-            <a id=change_btn href="{{ url_for('upload') }}">
+            <a href="{{ url_for('upload') }}">
                 <button id="change_button">CHANGE</button>
             </a>
         </div>
@@ -268,6 +291,21 @@
         <label>User id: {{ current_user.user_id }}</label>
 
         {{ wtf.quick_form(bio_form) }}
+
+        <br><br>
+
+        <label>Your Listings:</label>
+
+        <div class="house_card">
+            <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+                <img class="house_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            </a>
+            <label>name of the house</label>
+        </div>
+
+        <a href="{{ url_for('upload') }}"><!--=======================================================================-->
+            <button id="add_house_button">ADD HOUSE</button>
+        </a>
 
     </div>
 
@@ -283,18 +321,91 @@
 
         {{ wtf.quick_form(personal_profile_form) }}
 
+        <br><br>
+
         {{ habits_form.smoking_habits.label }}
-        <div style="margin-top:0; display: flex;
-    justify-content: space-between; width: 90%; margin-left: 5%;"><p>YES</p>{{ habits_form.smoking_habits(min=0, max=1, step=1, oninput="outputUpdate(value)") }}
-        <p>NO</p></div>
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.smoking_habits(min=0, max=1, step=1, value=0, oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.vegetarian.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.vegetarian(min=0, max=1, step=1, oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.eat_together.label }}
+        <div class="slider_input">
+            <label>NEVER</label>
+            {{ habits_form.eat_together(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            <label>ALWAYS</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.do_sports.label }}
+        <div class="slider_input">
+            <label>NEVER</label>
+            {{ habits_form.do_sports(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            <label>ALWAYS</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.house_parties.label }}
+        <div class="slider_input">
+            <label>NEVER</label>
+            {{ habits_form.house_parties(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            <label>ALWAYS</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.invite_friends.label }}
+        <div class="slider_input">
+            <label>NEVER</label>
+            {{ habits_form.invite_friends(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            <label>ALWAYS</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.overnight_guests.label }}
+        <div class="slider_input">
+            <label>NEVER</label>
+            {{ habits_form.overnight_guests(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            <label>ALWAYS</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.stays_in_room.label }}
+        <div class="slider_input">
+            <label>NEVER</label>
+            {{ habits_form.stays_in_room(min=0, max=9, step=1, oninput="outputUpdate(value)") }}
+            <label>ALWAYS</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.save_habits }}
+
         <!--<output for="age" id="selected-age" style="color: #e6e6e6">{#  { habits_form.smoking_habits.data }}#}</output>-->
+        <script>
+            function outputUpdate(age) {
+                document.querySelector('#selected-age').value = age;
+            }
+        </script>
 
     </div>
 </div>
 </body>
 
-<script>
-function outputUpdate(age) {
-    document.querySelector('#selected-age').value = age;
-}
-</script>
+
