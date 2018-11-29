@@ -9,10 +9,10 @@
 
 
     <style>
-
-        * {
+       * {
             box-sizing: border-box;
         }
+
 
         body {
             margin: 0;
@@ -63,6 +63,7 @@
             height: 40px;
             width: 40px;
             border: 1px solid white;
+            box-sizing: border-box;
         }
 
         #home_button {
@@ -71,9 +72,7 @@
             width: 15%;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+
 
         .container {
             display: grid;
@@ -113,6 +112,7 @@
             display: flex;
             flex-direction: column;
             margin: 0 0 15px;
+            border: 3px solid #111111;
         }
 
         .listing:not(:first-child) {
@@ -120,7 +120,6 @@
         }
 
         .listing .listing--header {
-            background: #4b7bec;
             min-height: 150px;
             width: 100%;
             overflow: hidden;
@@ -136,7 +135,6 @@
             background: #f46b45; /* fallback for old browsers */
             background: -webkit-linear-gradient(to right, #eea849, #f46b45); /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
             padding: 10px;
         }
 
@@ -152,7 +150,7 @@
             display: block;
             border-bottom: 1px solid #4b7bec;
             content: " ";
-            max-width: 35%;
+            max-width: 100%;
             padding: 2.5px 0;
         }
 
@@ -293,8 +291,8 @@
         .house-requests {
             display: flex;
             width: 90%;
-            height: 100px;
-            border: 3px black;
+            height: 155px;
+            border: 3px solid black;
             background: #f85032;
             background: -webkit-linear-gradient(to left, #e73827, #f85032);
             background: linear-gradient(to left, #e73827, #f85032);
@@ -306,8 +304,8 @@
             display: flex;
             top: 5%;
             width: 90%;
-            height: 150px;
-            border: 5px #111111;
+            height: 154px;
+            border: 3px solid #111111;
             background: #f46b45;
             background: -webkit-linear-gradient(to right, #eea849, #f46b45);
             background: linear-gradient(to right, #eea849, #f46b45);
