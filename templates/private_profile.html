@@ -262,16 +262,16 @@
 </head>
 
 <script>
-function disableSlider() {
-    document.getElementById("smoking_habits").disabled = true;
-    document.getElementById("vegetarian").disabled = true;
-    document.getElementById("eat_together").disabled = true;
-    document.getElementById("do_sports").disabled = true;
-    document.getElementById("house_parties").disabled = true;
-    document.getElementById("invite_friends").disabled = true;
-    document.getElementById("overnight_guests").disabled = true;
-    document.getElementById("stays_in_room").disabled = true;
-}
+    function disableSlider() {
+        document.getElementById("smoking_habits").disabled = true;
+        document.getElementById("vegetarian").disabled = true;
+        document.getElementById("eat_together").disabled = true;
+        document.getElementById("do_sports").disabled = true;
+        document.getElementById("house_parties").disabled = true;
+        document.getElementById("invite_friends").disabled = true;
+        document.getElementById("overnight_guests").disabled = true;
+        document.getElementById("stays_in_room").disabled = true;
+    }
 </script>
 
 <body onload="disableSlider()">
@@ -415,14 +415,8 @@ function disableSlider() {
         <br><br>
 
         <a href="{{ url_for('habits') }}">
-                <button id="modify_button">MODIFY</button>
+            <button id="modify_button">MODIFY</button>
         </a>
-        <!--<output for="age" id="selected-age" style="color: #e6e6e6">{#  { habits_form.smoking_habits.data }}#}</output>-->
-        <script>
-            function outputUpdate(age) {
-                document.querySelector('#selected-age').value = age;
-            }
-        </script>
 
     </div>
 </div>
