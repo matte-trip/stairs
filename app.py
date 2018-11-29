@@ -152,6 +152,13 @@ class EditPublicDataForm(FlaskForm):
 class EditSlidersDataForm(FlaskForm):
     smoking_habits = DecimalRangeField('Do You Smoke?')
     vegetarian = DecimalRangeField('Are you a Vegetarian?')
+    eat_together = DecimalRangeField('How often do you eat with housemates?')
+    do_sports = DecimalRangeField('Do you practice sports?')
+    house_parties = DecimalRangeField('Do you organize house parties?')
+    invite_friends = DecimalRangeField('Do you invite friends?')
+    overnight_guests = DecimalRangeField('Do you have overnight guests?')
+    stays_in_room = DecimalRangeField('Do you stay in your room?')
+    save_habits = SubmitField('Save')
 
 
 # ======================================================================================================================
@@ -226,6 +233,8 @@ def login_registration():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
 
+    global initial_habits
+
     global errors_in_login_registration
     login_form = LoginForm()
     if login_form.validate_on_submit():
@@ -260,6 +269,7 @@ def login_registration():
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
             new_user.city = registration_form.city.data
             new_user.photo_id = 0
+            new_user.habits = initial_habits
             destination_path = new_user.user_id + str(new_user.photo_id) + ".png"
             shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
                         os.path.join(app.config['UPLOAD_FOLDER'], destination_path))
@@ -310,6 +320,15 @@ def personal_page():
 
     habits_form = EditSlidersDataForm()
     if habits_form.validate_on_submit():
+        current_user.habits[0] = habits_form.smoking_habits.data
+        current_user.habits[1] = habits_form.vegetarian.data
+        current_user.habits[2] = habits_form.eat_together.data
+        current_user.habits[3] = habits_form.do_sports.data
+        current_user.habits[4] = habits_form.house_parties.data
+        current_user.habits[5] = habits_form.invite_friends.data
+        current_user.habits[6] = habits_form.overnight_guests.data
+        current_user.habits[7] = habits_form.stays_in_room.data
+        db.session.commit()
         return redirect(url_for('personal_page'))
 
     if request.method == 'GET' or errors_in_private_page == 1:
