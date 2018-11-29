@@ -187,9 +187,29 @@
         #stays_in_room {
             margin-left: 5%;
             margin-top: 18px;
-            opacity: 1;
+            opacity: 0.85;
+
+            background-color: white;
         }
 
+        #smoking_habits, #vegetarian, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #stays_in_room {
+            -webkit-appearance: none;
+        }
+
+        #smoking_habits::-webkit-slider-thumb,
+        #vegetarian::-webkit-slider-thumb,
+        #eat_together::-webkit-slider-thumb,
+        #do_sports::-webkit-slider-thumb,
+        #house_parties::-webkit-slider-thumb,
+        #invite_friends::-webkit-slider-thumb,
+        #overnight_guests::-webkit-slider-thumb,
+        #stays_in_room::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: sandybrown;
+        }
 
         /* Bootstrap*/
         label {
