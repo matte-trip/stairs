@@ -16,9 +16,9 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'secret_key'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\Michael\PycharmProjects\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\Michael\PycharmProjects\stairs\static'
 
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config['available_cities'] = [("TURIN", "Turin")]
@@ -96,6 +96,7 @@ class Residence(db.Model):
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
     amenities = db.Column('amenities', db.String(8))
     description = db.Column('description', db.String(1000), nullable=False)
+    house_rules = db.Column('house rules', db.String(1000), nullable=False)
 
 
 # ======================================================================================================================
@@ -419,13 +420,19 @@ def internal_server_error(e):
     return render_template('500.html'), 500
 
 
-@app.route('/results')
-def results():
-    return render_template('results.html')
-
+@app.route('/listing')
+def listing():
+    user = User()
+    user.email = "gino"
+    user.first_name = "gino"
+    user.last_name = "gino"
+    user.password = "gino"
+    return render_template('listing.html', user=user)
 # ======================================================================================================================
 # GLOBAL VARIABLES
 # ======================================================================================================================
+
+
 errors_in_login_registration = 0
 # 1 is wrong email/password in login
 # 2 is user already registered in registration
