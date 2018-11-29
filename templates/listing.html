@@ -1,20 +1,22 @@
 <head>
+    <!--title-->
     <title>Listing</title>
 
-    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+    <!--icon-->
+    <link rel="shortcut_icon" type="image/x-icon" href='../static/homepage-icon-0.png'/>
 
-    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
     <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet"/>
 
-    <style>
 
-        * {
+    <style>
+       * {
             box-sizing: border-box;
         }
 
+
         body {
-            background: url('../static/listing-background.png') fixed center;
+            margin: 0;
+            background: url('../static/listing-background.jpg') fixed center;
             background-size: cover;
             display: grid;
             width: 100%;
@@ -23,36 +25,56 @@
             text-align: center;
 
         }
-
-        ul {
-            list-style-type: none;
-            width: 100%;
-            height: 45px;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to left, #f5af19, #f12711); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-            cursor: pointer;
-            opacity: 0.8;
-        }
-
-        li {
-            float: left;
-        }
-
-        li a {
-            display: block;
-            color: white;
+         button {
+            font-size: 12px;
             text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
         }
 
-        li a:hover {
-            background-color: #111;
+        button:hover {
+            background: sandybrown;
         }
 
-        .grid {
+
+        #login_button, #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 40px;
+            width: 40px;
+            border: 1px solid white;
+            box-sizing: border-box;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+        }
+
+
+
+        .container {
             display: grid;
             justify-content: space-between;
             width: 1280px;
@@ -90,6 +112,7 @@
             display: flex;
             flex-direction: column;
             margin: 0 0 15px;
+            border: 3px solid #111111;
         }
 
         .listing:not(:first-child) {
@@ -97,7 +120,6 @@
         }
 
         .listing .listing--header {
-            background: #4b7bec;
             min-height: 150px;
             width: 100%;
             overflow: hidden;
@@ -110,8 +132,9 @@
         }
 
         .listing .listing--content {
+            background: #f46b45; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #eea849, #f46b45); /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
             padding: 10px;
         }
 
@@ -127,7 +150,7 @@
             display: block;
             border-bottom: 1px solid #4b7bec;
             content: " ";
-            max-width: 35%;
+            max-width: 100%;
             padding: 2.5px 0;
         }
 
@@ -143,6 +166,8 @@
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
+            background: #f46b45;
+            background: -webkit-linear-gradient(to left, #eea849, #f46b45);
             background: linear-gradient(to left, #eea849, #f46b45);
             opacity: 0.8;
             padding: 10px;
@@ -266,8 +291,10 @@
         .house-requests {
             display: flex;
             width: 90%;
-            height: 100px;
-            border: 3px black;
+            height: 155px;
+            border: 3px solid black;
+            background: #f85032;
+            background: -webkit-linear-gradient(to left, #e73827, #f85032);
             background: linear-gradient(to left, #e73827, #f85032);
 
         }
@@ -277,11 +304,19 @@
             display: flex;
             top: 5%;
             width: 90%;
-            height: 150px;
-            border: 5px #111111;
+            height: 154px;
+            border: 3px solid #111111;
+            background: #f46b45;
+            background: -webkit-linear-gradient(to right, #eea849, #f46b45);
             background: linear-gradient(to right, #eea849, #f46b45);
             opacity: 0.9;
+            text-align: center;
 
+        }
+        .user-information{
+            display: block;
+            position: relative;
+            right: -100px;
         }
     </style>
 
@@ -352,12 +387,30 @@
 </head>
 
 <body onload="showSlides(1)">
-<ul>
-    <li><a>HOME</a></li>
-    <li><a>SEARCH</a></li>
-    <li><a>MANAGE PROFILE</a></li>
-    <li><a>LOGOUT</a></li>
-</ul>
+<!-- NAV BAR -------------------------------------------------------------------------->
+<div id="nav_bar">
+
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
+
+    {% if is_auth %}
+        <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+        </a>
+        <a href="{{ url_for('personal_page') }}">
+            <button id="account_button">ACCOUNT</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button id="logout_button">LOGOUT</button>
+        </a>
+    {% else %}
+        <a href="{{ url_for('login_registration') }}">
+            <button id="login_button">LOGIN</button>
+        </a>
+    {% endif %}
+
+</div>
 <div class="container">
     <div class="listing-hold">
         <!-- Listing 1 -->
@@ -426,10 +479,12 @@
             <p>Rule of the house and kind of person could be perfect for the house environment</p>
         </div>
         <div class="profile-box">
-            <img class="profile_picture"
+            <img class="profile-pic"
                  src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
                  alt="profile pic"/>
+            <div class="user-information">
             <h2 class="user-name">{{ user.first_name }} {{ user.last_name }}</h2>
+            </div>
         </div>
     </div>
 

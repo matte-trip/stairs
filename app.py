@@ -95,6 +95,7 @@ class Residence(db.Model):
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)  # SELECTOR OR NOT????????????????????????
     amenities = db.Column('amenities', db.String(8))  # NULLABLE OR NOT?????????????????????????????????????????????????
     description = db.Column('description', db.String(1000), nullable=False)
+    house_rules = db.Column('house rules', db.String(1000), nullable=False)
 
 
 # ======================================================================================================================
@@ -433,6 +434,15 @@ def internal_server_error(e):
 #         table = Results(results)
 #         table.border = True
 #         return render_template('results.html', table=table)
+
+# @app.route('/listing')
+# def listing():
+#     user = User()
+#     user.email = "gino"
+#     user.first_name = "gino"
+#     user.last_name = "gino"
+#     user.password = "gino"
+#     return render_template('listing.html', user=user)
 
 
 # ======================================================================================================================
