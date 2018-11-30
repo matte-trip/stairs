@@ -151,13 +151,15 @@ class EditPublicDataForm(FlaskForm):
 
 class EditSlidersDataForm(FlaskForm):
     smoking_habits = DecimalRangeField('Do You Smoke?')
-    vegetarian = DecimalRangeField('Are you a Vegetarian?')
-    eat_together = DecimalRangeField('How often do you eat with housemates?')
+    past_experience = DecimalRangeField('Do you have past experience of housesharing?')
+    eat_together = DecimalRangeField('What describes better your habits?')
     do_sports = DecimalRangeField('Do you practice sports?')
-    house_parties = DecimalRangeField('Do you organize house parties?')
-    invite_friends = DecimalRangeField('Do you invite friends?')
-    overnight_guests = DecimalRangeField('Do you have overnight guests?')
-    stays_in_room = DecimalRangeField('Do you stay in your room?')
+    time_at_home = DecimalRangeField('Where do you spend most of your time ?')
+    house_parties = DecimalRangeField('Do you like house parties?')
+    invite_friends = DecimalRangeField('Do you usually invite friends at home?')
+    overnight_guests = DecimalRangeField('Do you usually have overnight guests?')
+    stays_in_room = DecimalRangeField('What describes better your habits?')
+    ideal_week_end = DecimalRangeField('What is your ideal week end ?')
     save_habits = SubmitField('Save')
 
 
