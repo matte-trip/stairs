@@ -1,36 +1,41 @@
 <head>
-    <!--title-->
     <title>{{ user.first_name }} {{ user.last_name }}</title>
 
-    <!--imported fonts-->
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
 
-    <!--css stylesheet-->
     <style>
         body {
             margin: 0;
+            background: url('../static/public_profile-background.png') fixed center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
         }
-
-        /*TEXT*/
 
         h1 {
             font-family: 'Oswald', sans-serif;
             color: white;
-            font-size: 30px;
+            font-size: 36px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         h2 {
             font-family: 'Oswald', sans-serif;
             color: white;
-            font-size: 16px;
+            font-size: 20px;
             text-transform: uppercase;
+            font-weight: 400;
         }
 
         p {
             font-family: 'Nunito', sans-serif;
             color: white;
             font-size: 16px;
+            font-weight: 400;
         }
 
         button {
@@ -52,11 +57,18 @@
             background: sandybrown;
         }
 
-
-        #login_button, #logout_button {
+        #home_button {
             position: absolute;
-            right: 0;
+            left: 0;
             width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 38px;
+            width: 38px;
+            border: 1px solid white;
         }
 
         #account_button {
@@ -65,101 +77,140 @@
             width: 15%;
         }
 
-        #pro_pic {
+        #login_button, #logout_button {
             position: absolute;
-            right: 30%;
-            height: 40px;
-            width: 40px;
-            border: 1px solid white;
-        }
-
-        #home_button {
-            position: absolute;
-            left: 0;
+            right: 0;
             width: 15%;
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            background: url('../static/public_profile-background.png') fixed center;
-            background-size: cover;
-            display: grid;
+        .grid {
+            position: absolute;
             width: 100%;
-            height: 100%;
-            position: relative;
-            text-align: center;
-        }
-
-        .container {
-            display: grid;
-            grid-template: 1fr /1fr 1fr;
-            position: relative;
+            margin-left: -50%;
+            margin-top: 0;
+            left: 50%;
             top: 80px;
+
+            background: transparent;
+            display: grid;
+            grid-template-rows: 2fr 1fr 0.05fr;
+            grid-template-columns: 0.25fr 1fr 0.1fr 1fr 0.25fr;
         }
 
-        .basic-profile {
-            position: relative;
-            left: 150px;
-            width: 70%;
-            height: 100%;
-            border: 1px solid white;
-            background-color: rgba(0, 0, 0, .25);
+        .basic_profile {
             grid-row-start: 1;
-
-            grid-column-start: 1;
-            grid-column-end: 2;
-            text-align: center;
-
-        }
-
-        .as-a-renter-prof {
-            position: relative;
-            width: 70%;
-            height: 100%;
-            border: 1px solid white;
-
-            background-color: rgba(0, 0, 0, .25);
+            grid-row-end: 3;
             grid-column-start: 2;
-            grid-column-end: 3;
-            text-align: center;
-            color: white;
 
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
+
+            text-align: center;
         }
 
-        .profile-pic {
+        .basic_profile_container {
+            width: 90%;
+            margin-left: 5%;
+            align-content: center;
+        }
+
+        .profile_picture {
             width: 200px;
             height: 200px;
             margin-top: 5%;
-            background-color: rgba(0, 0, 0, .5);
         }
 
-        .text-container {
-            color: white;
-        }
+        .character_profile {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 4;
 
-        table, th, td {
             border: 1px solid white;
-            border-collapse: collapse;
+            background-color: rgba(0, 0, 0, .25);
+        }
+
+        .slider_input {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+            margin-left: 0;
+            height: 16px;
+        }
+
+        #smoking_habits, #vegetarian, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #stays_in_room {
+            margin-left: 5%;
+            margin-top: 18px;
+            opacity: 0.85;
+
+            background-color: white;
+        }
+
+        #smoking_habits, #vegetarian, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #stays_in_room {
+            -webkit-appearance: none;
+        }
+
+        #smoking_habits::-webkit-slider-thumb,
+        #vegetarian::-webkit-slider-thumb,
+        #eat_together::-webkit-slider-thumb,
+        #do_sports::-webkit-slider-thumb,
+        #house_parties::-webkit-slider-thumb,
+        #invite_friends::-webkit-slider-thumb,
+        #overnight_guests::-webkit-slider-thumb,
+        #stays_in_room::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: sandybrown;
+        }
+
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
             color: white;
 
+            text-transform: uppercase;
         }
 
-        table.center {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        th, td {
+        input, textarea {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
             padding: 5px;
-            text-align: left;
+            border: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.75;
+            transition: all 0.25s;
+        }
+
+        .adjust_page_height {
+
+            margin-bottom: 50px;
         }
     </style>
 </head>
-<body>
-<!-- NAV BAR -------------------------------------------------------------------------->
+
+<script>
+    function disableSlider() {
+        document.getElementById("smoking_habits").disabled = true;
+        document.getElementById("vegetarian").disabled = true;
+        document.getElementById("eat_together").disabled = true;
+        document.getElementById("do_sports").disabled = true;
+        document.getElementById("house_parties").disabled = true;
+        document.getElementById("invite_friends").disabled = true;
+        document.getElementById("overnight_guests").disabled = true;
+        document.getElementById("stays_in_room").disabled = true;
+    }
+</script>
+
+<body onload="disableSlider()">
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
@@ -168,7 +219,7 @@
 
     {% if is_auth %}
         <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
         </a>
         <a href="{{ url_for('personal_page') }}">
             <button id="account_button">ACCOUNT</button>
@@ -184,77 +235,102 @@
 
 </div>
 
+<div class="grid">
 
-<div class="container">
-    <div class="basic-profile">
+    <div class="basic_profile">
 
-        <img class="profile-pic" id="prof1" src="{{ url_for('send_image', filename=image_name) }}" width="240px"
-             height="280px"/>
+        <div class="basic_profile_container">
 
-        <div class="text-container" id="tc">
-            <h1 class="username">
-                {{ user.first_name }} {{ user.last_name }}
-            </h1>
-            <div class="work">
-                <h3>Engineering student at Politecnico di Torino</h3>
-            </div>
-            <div class="city">
-                <h3>City: Turin</h3>
-            </div>
-            <div class="age">
-                <h3>Age: 25</h3>
-            </div>
+            <img class="profile_picture" src="{{ url_for('send_image', filename=image_name) }}" alt="">
+
+            <h1>{{ user.first_name }} {{ user.last_name }}</h1>
+            <h2>Age: {{ user.age }}</h2>
+            <h2>Study Field: {{ user.study_field }}</h2>
+            <h2>University: {{ user.university }} </h2>
+            <h2>City: {{ user.city }}</h2>
+            <h2>Bio:</h2>
+            <p>{{ user.bio }}</p>
+            <h2>Interests:</h2>
+            <p>{{ user.interests }}</p>
+            <h2>Languages:</h2>
+            <p>{{ user.languages }}</p>
+
         </div>
     </div>
-    <div class="as-a-renter-prof">  <!-- all answers are examples -->
-        <h1>I am the perfect housemate because:</h1>
-        <table class="center">
-            <tr>
-                <th><h3>I lived with other people:</h3></th>
-                <td style="text-align:center"><h3>four times</h3></td>
-            </tr>
-            <tr>
-                <th><h3>Smoker:</h3></th>
-                <td style="text-align:center"><h3>No</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I stay at home usually:</h3></th>
-                <td style="text-align:center"><h3>only at night</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I usually have meals:</h3></th>
-                <td style="text-align:center"><h3>in company</h3></td>
-            </tr>
 
-            <tr>
-                <th><h3>I invite friends at home:</h3></th>
-                <td style="text-align:center"><h3>Often</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
-            </tr>
-            <tr>
-                <th><h3>I like to study:</h3></th>
-                <td style="text-align:center"><h3>with other people</h3></td>
-            </tr>
-        </table>
+    <div class="character_profile">
+
+        <div class="adjust_page_height">
+            {{ habits_form.smoking_habits.label }}
+            <div class="slider_input">
+                <label>NO</label>
+                {{ habits_form.smoking_habits(min=0, max=1, step=1, value=user.habits[0], oninput="outputUpdate(value)") }}
+                <label>YES</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.vegetarian.label }}
+            <div class="slider_input">
+                <label>NO</label>
+                {{ habits_form.vegetarian(min=0, max=1, step=1, value=user.habits[1], oninput="outputUpdate(value)") }}
+                <label>YES</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.eat_together.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.eat_together(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.do_sports.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.do_sports(min=0, max=9, step=1, value=user.habits[3], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.house_parties.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.house_parties(min=0, max=9, step=1, value=user.habits[4], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.invite_friends.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.invite_friends(min=0, max=9, step=1, value=user.habits[5], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.overnight_guests.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.overnight_guests(min=0, max=9, step=1, value=user.habits[6], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.stays_in_room.label }}
+            <div class="slider_input">
+                <label>NEVER</label>
+                {{ habits_form.stays_in_room(min=0, max=9, step=1, value=user.habits[7], oninput="outputUpdate(value)") }}
+                <label>ALWAYS</label>
+            </div>
+        </div>
 
     </div>
 </div>
