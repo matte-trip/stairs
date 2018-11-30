@@ -97,7 +97,7 @@ class Residence(db.Model):
     amenities = db.Column('amenities', db.String(8))  # NULLABLE OR NOT?????????????????????????????????????????????????
     description = db.Column('description', db.String(1000), nullable=False)
     house_rules = db.Column('house rules', db.String(1000), nullable=False)
-
+    # Photo
 
 # ======================================================================================================================
 # FORMS
@@ -448,25 +448,105 @@ def internal_server_error(e):
 #     user.password = "gino"
 #     return render_template('listing.html', user=user)
 
-
 @app.route('/results')
 def search_results():
+    # a. Keeps track of user position and shows his pro_pic
+    global last_url
+    last_url = "results/"
+
+    if current_user.is_authenticated:
+        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+    else:
+        pro_pic = ""
+    # a_end
     # this is a fake house ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     new_house = Residence()
     new_house.houses_id = uuid.uuid4().hex[::4].capitalize()
     new_house.city = "Turino"
     new_house.street = "Via Guido"
     new_house.civic = 232
-    return render_template('results.html' ,
-                           user=user,# ask mat if this is a
-                           image_name=user_image_name,
+    return render_template('results.html',
                            is_auth=current_user.is_authenticated,
-                           pro_pic=pro_pic,
-                           habits_form=habits_form)
+                           pro_pic=pro_pic)
+                          # user=user,# ask mat if this is a
+                          # image_name=user_image_name,
+                          # habits_form=habits_form)
     # this is a fake house ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     # -insert the correct data in the return
     # -insert this into the HTML verify the html code for reference
 
+
+@app.route('/h/<house_id>')
+def u(user_id):
+    # a. Keeps track of user position and shows his pro_pic
+    global last_url
+    last_url = "u/" + user_id
+
+    if current_user.is_authenticated:
+        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+    else:
+        pro_pic = ""
+    # a_end
+
+    user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
+    user_image_name = user.user_id + str(user.photo_id) + ".png"
+
+    habits_form = EditSlidersDataForm()
+
+    return render_template('listing.html',
+                           house=house,
+                           )
+
+
+@app.route('/h_edit/<house_id>')
+@login_required
+def u(house_id):
+    # a. Keeps track of user position and shows his pro_pic
+    global last_url
+    last_url = "h/" +house_id_id
+
+    if current_user.is_authenticated:
+        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+    else:
+        pro_pic = ""
+    # a_end
+
+    user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
+    user_image_name = user.user_id + str(user.photo_id) + ".png"
+
+    habits_form = EditSlidersDataForm()
+
+    return render_template('public_profile.html',
+                           user=user,
+                           image_name=user_image_name,
+                           is_auth=current_user.is_authenticated,
+                           pro_pic=pro_pic,
+                           habits_form=habits_form)
+
+
+@app.route('/upload_house_image/<house_id>', methods=['GET', 'POST'])  # lucas changed ths
+@login_required
+def upload_house_image(house_id):
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            print 'No file part'
+            return redirect(request.url)
+        house_picture = request.files['file']
+        # check if user has selected file
+        if house_picture.filename == '':
+            print 'No selected file'
+            return redirect(request.url)
+        if house_picture:
+
+            db.session.commit()
+            filename = "'\'" + house_id + "\(1).png"
+            # saving new image to /uploads
+            house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            # deleting old image associated to the user
+            return redirect(url_for('personal_page'))
+
+    return render_template('upload.html')
 # ======================================================================================================================
 # GLOBAL VARIABLES
 # ======================================================================================================================
