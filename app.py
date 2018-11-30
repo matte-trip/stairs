@@ -348,10 +348,11 @@ def upload():
 def habits():
     habits_form = EditSlidersDataForm()
     if request.method == 'POST':
-        habits_list = [str(habits_form.smoking_habits.data), str(habits_form.vegetarian.data),
+        habits_list = [str(habits_form.smoking_habits.data), str(habits_form.past_experience.data),
                        str(habits_form.eat_together.data), str(habits_form.do_sports.data),
                        str(habits_form.house_parties.data), str(habits_form.invite_friends.data),
-                       str(habits_form.overnight_guests.data), str(habits_form.stays_in_room.data)]
+                       str(habits_form.overnight_guests.data), str(habits_form.stays_in_room.data),
+                       str(habits_form.ideal_week_end.data), str(habits_form.time_at_home.data)]
         current_user.habits = "".join(habits_list)
         db.session.commit()
         return redirect(url_for('personal_page'))
