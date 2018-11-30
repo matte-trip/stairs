@@ -179,74 +179,90 @@
         {{ habits_form.smoking_habits.label }}
         <div class="slider_input">
             <label>NO</label>
-            {{ habits_form.smoking_habits(min=0, max=1, step=1, value=current_user.habits[0], oninput="outputUpdate(value)") }}
+            {{ habits_form.smoking_habits(min=0, max=1, step=1, value=user.habits[0], oninput="outputUpdate(value)") }}
             <label>YES</label>
         </div>
 
         <br><br>
 
-        {{ habits_form.vegetarian.label }}
+        {{ habits_form.past_experience.label }}
         <div class="slider_input">
             <label>NO</label>
-            {{ habits_form.vegetarian(min=0, max=1, step=1, value=current_user.habits[1], oninput="outputUpdate(value)") }}
+            {{ habits_form.past_experience(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
             <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.time_at_home.label }}
+        <div class="slider_input">
+            <label>AT HOME</label>
+            {{ habits_form.time_at_home(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
+            <label>OUTSIDE</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.ideal_week_end.label }}
+        <div class="slider_input">
+            <label>BED & TV SERIES</label>
+            {{ habits_form.ideal_week_end(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
+            <label> BEER & FRIENDS </label>
         </div>
 
         <br><br>
 
         {{ habits_form.eat_together.label }}
         <div class="slider_input">
-            <label>NEVER</label>
-            {{ habits_form.eat_together(min=0, max=9, step=1, value=current_user.habits[2], oninput="outputUpdate(value)") }}
-            <label>ALWAYS</label>
+            <label>FOOD&NETFLIX IN MY ROOM</label>
+            {{ habits_form.eat_together(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
+            <label>MEALS ARE BETTER WITH FRIENDS</label>
         </div>
 
         <br><br>
 
         {{ habits_form.do_sports.label }}
         <div class="slider_input">
-            <label>NEVER</label>
-            {{ habits_form.do_sports(min=0, max=9, step=1, value=current_user.habits[3], oninput="outputUpdate(value)") }}
-            <label>ALWAYS</label>
+            <label>NO</label>
+            {{ habits_form.do_sports(min=0, max=9, step=1, value=user.habits[3], oninput="outputUpdate(value)") }}
+            <label>YES</label>
         </div>
 
         <br><br>
 
         {{ habits_form.house_parties.label }}
         <div class="slider_input">
-            <label>NEVER</label>
-            {{ habits_form.house_parties(min=0, max=9, step=1, value=current_user.habits[4], oninput="outputUpdate(value)") }}
-            <label>ALWAYS</label>
+            <label>I LIKE</label>
+            {{ habits_form.house_parties(min=0, max=9, step=1, value=user.habits[4], oninput="outputUpdate(value)") }}
+            <label>SILENCE PLEASE</label>
         </div>
 
         <br><br>
 
         {{ habits_form.invite_friends.label }}
         <div class="slider_input">
-            <label>NEVER</label>
-            {{ habits_form.invite_friends(min=0, max=9, step=1, value=current_user.habits[5], oninput="outputUpdate(value)") }}
-            <label>ALWAYS</label>
+            <label>I DO </label>
+            {{ habits_form.invite_friends(min=0, max=9, step=1, value=user.habits[5], oninput="outputUpdate(value)") }}
+            <label>ONLY IF NECESSARY</label>
         </div>
 
         <br><br>
 
         {{ habits_form.overnight_guests.label }}
         <div class="slider_input">
-            <label>NEVER</label>
-            {{ habits_form.overnight_guests(min=0, max=9, step=1, value=current_user.habits[6], oninput="outputUpdate(value)") }}
-            <label>ALWAYS</label>
+            <label>I DO</label>
+            {{ habits_form.overnight_guests(min=0, max=9, step=1, value=user.habits[6], oninput="outputUpdate(value)") }}
+            <label>ONLY IF NECESSARY</label>
         </div>
 
         <br><br>
 
         {{ habits_form.stays_in_room.label }}
         <div class="slider_input">
-            <label>NEVER</label>
-            {{ habits_form.stays_in_room(min=0, max=9, step=1, value=current_user.habits[7], oninput="outputUpdate(value)") }}
-            <label>ALWAYS</label>
+            <label>I'M A NERD</label>
+            {{ habits_form.stays_in_room(min=0, max=9, step=1, value=user.habits[7], oninput="outputUpdate(value)") }}
+            <label>ROOM IS FOR SLEEP AND..</label>
         </div>
-
-        <br><br>
 
         {{ habits_form.save_habits() }}
     </form>
