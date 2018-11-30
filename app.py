@@ -84,6 +84,7 @@ class User(UserMixin, db.Model):
 
 
 class Residence(db.Model):
+
     __tablename__ = 'houses'
 
     # Id field
@@ -444,6 +445,24 @@ def internal_server_error(e):
 #     user.password = "gino"
 #     return render_template('listing.html', user=user)
 
+
+@app.route('/results')
+def search_results():
+    # this is a fake house ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    new_house = Residence()
+    new_house.houses_id = uuid.uuid4().hex[::4].capitalize()
+    new_house.city = "Turino"
+    new_house.street = "Via Guido"
+    new_house.civic = 232
+    return render_template('results.html' ,
+                           user=user,# ask mat if this is a
+                           image_name=user_image_name,
+                           is_auth=current_user.is_authenticated,
+                           pro_pic=pro_pic,
+                           habits_form=habits_form)
+    # this is a fake house ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    # -insert the correct data in the return
+    # -insert this into the HTML verify the html code for reference
 
 # ======================================================================================================================
 # GLOBAL VARIABLES
