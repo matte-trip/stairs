@@ -1,30 +1,61 @@
 <head>
-    <!--title-->
-    <title>Listing</title>
+    <title>{{ house.house_id }}</title>
 
-    <!--icon-->
-    <link rel="shortcut_icon" type="image/x-icon" href='../static/homepage-icon-0.png'/>
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
 
     <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet"/>
 
-
     <style>
-       * {
-            box-sizing: border-box;
-        }
-
 
         body {
             margin: 0;
-            background: url('../static/listing-background.jpg') fixed center;
+            background: url('../static/listing-background.png') fixed center;
             background-size: cover;
             display: grid;
             width: 100%;
             height: 100%;
             position: relative;
             text-align: center;
-
         }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 36px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        p {
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
          button {
             font-size: 12px;
             text-align: center;
@@ -44,16 +75,9 @@
             background: sandybrown;
         }
 
-
-        #login_button, #logout_button {
+        #home_button {
             position: absolute;
-            right: 0;
-            width: 15%;
-        }
-
-        #account_button {
-            position: absolute;
-            right: 15%;
+            left: 0;
             width: 15%;
         }
 
@@ -66,76 +90,69 @@
             box-sizing: border-box;
         }
 
-        #home_button {
+        #account_button {
             position: absolute;
-            left: 0;
+            right: 15%;
             width: 15%;
         }
 
-
+        #login_button, #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
 
         .container {
+            position: absolute;
+            width: 100%;
+            margin-left: -50%;
+            margin-top: 0;
+            left: 50%;
+            top: 80px;
+
+            background: transparent;
             display: grid;
-            justify-content: space-between;
-            width: 1280px;
-            max-width: 100%;
-            min-height: 200px;
-            padding: 10px;
-            margin: auto;
+            grid-template-rows: 2fr 2fr 2fr 0.05fr;
+            grid-template-columns: 0.25fr 1.25fr 0.1fr 0.75fr 0.25fr;
         }
 
-        .listing-hold {
-
-            width: 100%;
-            height: 50%;
-            flex-direction: column;
-            padding: 10px;
-            grid-column-start: 1;
-            grid-column-end: 2;
-            text-align: center;
-            display: grid;
-        }
-
-        .social-box {
-            width: 100%;
-            height: 50%;
-            flex-direction: column;
-            padding: 10px;
+        .listing-container {
+            grid-row-start: 1;
+            grid-row-end: 3;
             grid-column-start: 2;
-            grid-column-end: 3;
-            text-align: center;
-            display: grid;
 
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
+
+            flex-direction: column;
+            display: grid;
         }
 
         .listing {
             display: flex;
             flex-direction: column;
-            margin: 0 0 15px;
-            border: 3px solid #111111;
         }
 
-        .listing:not(:first-child) {
-            margin: 15px 0;
-        }
+
+
+
+
+
 
         .listing .listing--header {
             min-height: 150px;
             width: 100%;
             overflow: hidden;
-            max-height: 350px;
+            max-height: 500px;
         }
 
         .listing .listing--header img {
             max-width: 100%;
-            transition: transform .24s linear;
         }
 
-        .listing .listing--content {
-            background: #f46b45; /* fallback for old browsers */
-            background: -webkit-linear-gradient(to right, #eea849, #f46b45); /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to right, #eea849, #f46b45); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            padding: 10px;
+        .slideshow_image {
+            width: 100%;
+            height: 500px;
         }
 
         .listing .listing--title {
@@ -148,7 +165,7 @@
         .listing .listing--title:after {
             position: relative;
             display: block;
-            border-bottom: 1px solid #4b7bec;
+            border-bottom: 1px solid white;
             content: " ";
             max-width: 100%;
             padding: 2.5px 0;
@@ -159,15 +176,11 @@
             padding: 5px 0;
         }
 
-        .listing:hover .listing--header img {
-            transform: scale(1.01) translate3d(0, -10px, 0);
-        }
+
 
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
-            background: #f46b45;
-            background: -webkit-linear-gradient(to left, #eea849, #f46b45);
             background: linear-gradient(to left, #eea849, #f46b45);
             opacity: 0.8;
             padding: 10px;
@@ -175,16 +188,10 @@
 
         .listing--amens .amen {
             margin: 5px;
-            color: black;
-        }
-
-        button:hover {
-            background: red;
-        }
-
-        button {
-            position: relative;
-            right: -50%;
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
         }
 
         /* Slideshow container */
@@ -211,8 +218,7 @@
             color: white;
             font-weight: bold;
             font-size: 18px;
-            transition: 0.6s ease;
-            border-radius: 0 3px 3px 0;
+            transition: 0.25s ease;
         }
 
         /* Position the "next button" to the right */
@@ -226,83 +232,48 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
 
-        /* Caption text */
-        .text {
-            color: #f2f2f2;
-            font-size: 15px;
-            padding: 8px 12px;
-            position: absolute;
-            bottom: 20px;
-            width: 100%;
-            text-align: center;
+
+
+
+
+
+
+
+
+
+
+
+        .social-box {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 4;
+
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .25);
+
+            flex-direction: column;
+            display: grid;
+
         }
 
-        /* Number text (1/3 etc) */
-        .numbertext {
-            color: #f2f2f2;
-            font-size: 12px;
-            padding: 8px 12px;
-            position: absolute;
-            top: 0;
-        }
-
-        /* The dots/bullets/indicators */
-        .dot {
-            cursor: pointer;
-            height: 15px;
-            width: 15px;
-            margin: 0 2px;
-            background-color: #bbb;
-            border-radius: 50%;
-            display: inline-block;
-            transition: background-color 0.6s ease;
-        }
-
-        .active .dot:hover {
-            background-color: #717171;
-        }
-
-        /* Fading animation */
-        .fade {
-            -webkit-animation-name: fade;
-            -webkit-animation-duration: 1.5s;
-            animation-name: fade;
-            animation-duration: 1.5s;
-        }
-
-        @-webkit-keyframes fade {
-            from {
-                opacity: .4
-            }
-            to {
-                opacity: 1
-            }
-        }
-
-        @keyframes fade {
-            from {
-                opacity: .4
-            }
-            to {
-                opacity: 1
-            }
-        }
-
-        .house-requests {
+        .house-rules {
             display: flex;
-            width: 90%;
-            height: 155px;
-            border: 3px solid black;
-            background: #f85032;
-            background: -webkit-linear-gradient(to left, #e73827, #f85032);
-            background: linear-gradient(to left, #e73827, #f85032);
+            position: relative;
+            height: 160px;
 
+            left: 5%;
+            width: 90%;
+            top: 10px;
+
+
+            color: white;
         }
 
-        .profile-box {
+        .profile-card {
             position: relative;
             display: flex;
-            top: 5%;
+            top: 10px;
+            left: 5%;
             width: 90%;
             height: 154px;
             border: 3px solid #111111;
@@ -318,40 +289,18 @@
             position: relative;
             right: -100px;
         }
+
+
+
+
+
+
+
+
     </style>
 
-    <script>var filterForm = $('#filterForm');
-    var submit = $('#submitBtn');
-
-
-    var listings = $('.listing');
-    filterForm.on('submit', function (event) {
-        event.preventDefault();
-    });
-    submit.on('click', function (event) {
-        event.stopPropagation();
-        var searchZip = ($('#ZipCode').val().length > 0) ? $('#ZipCode').val() : null;
-        var searchBed = ($('#BedNum').val().length > 0) ? $('#BedNum').val() : null;
-        var searchBath = ($('#BathNum').val().length > 0) ? $('#BathNum').val() : null;
-        var minFt = ($('#MinSqFT').val().length == 0) ? 0 : $('#MinSqFT').val();
-        var maxFt = ($('#MaxSqFT').val().length == 0) ? 0 : $('#MaxSqFT').val();
-
-        if (searchZip !== null || searchBed !== null || searchBath !== null || minFt !== 0 || maxFt !== 0) {
-            listings.fadeOut();
-
-            listings.filter(function () {
-                return $(this).find('.list-zip').text() == searchZip || $(this).find('.bed').text() == searchBed || $(this).find('.bath').text() == searchBath || (parseInt($(this).find('.sqft').text()) >= parseInt(minFt) && parseInt($(this).find('.sqft').text()) <= parseInt(maxFt));
-            }).fadeIn();
-
-
-        } else {
-            listings.fadeIn();
-        }
-        console.log(searchZip)
-    });
-    </script>
     <script>
-        var slideIndex = 1;
+        let slideIndex = 1;
         showSlides(slideIndex);
 
         // Next/previous controls
@@ -365,9 +314,8 @@
         }
 
         function showSlides(n) {
-            var i;
-            var slides = document.getElementsByClassName("mySlides");
-            var dots = document.getElementsByClassName("dot");
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
             if (n > slides.length) {
                 slideIndex = 1
             }
@@ -377,17 +325,12 @@
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
             }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
             slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
         }
     </script>
 </head>
 
 <body onload="showSlides(1)">
-<!-- NAV BAR -------------------------------------------------------------------------->
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
@@ -411,31 +354,28 @@
     {% endif %}
 
 </div>
+
 <div class="container">
-    <div class="listing-hold">
-        <!-- Listing 1 -->
+
+    <div class="listing-container">
+
         <div class="listing">
+
             <div class="listing--header">
-                <!-- Slideshow container -->
+
                 <div class="slideshow-container">
 
                     <!-- Full-width images with number and caption text -->
                     <div class="mySlides fade">
-                        <div class="numbertext">1 / 3</div>
-                        <img src="../static/homepage-background-1.png" style="width:600px" height="400px">
-                        <div class="text">Caption Text</div>
+                        <img class="slideshow_image" src="../static/homepage-background-1.png" alt="">
                     </div>
 
                     <div class="mySlides fade">
-                        <div class="numbertext">2 / 3</div>
-                        <img src="../static/homepage-background-2.png" style="width:600px" height="400px">
-                        <div class="text">Caption Two</div>
+                        <img class="slideshow_image" src="../static/homepage-background-2.png" alt="">
                     </div>
 
                     <div class="mySlides fade">
-                        <div class="numbertext">3 / 3</div>
-                        <img src="../static/homepage-background-3.png" style="width:600px" height="400px">
-                        <div class="text">Caption Three</div>
+                        <img class="slideshow_image" src="../static/user-default.png" alt="">
                     </div>
 
                     <!-- Next and previous buttons -->
@@ -444,42 +384,39 @@
                 </div>
                 <br>
 
-                <!-- The dots/circles -->
-                <div style="text-align:center">
-                    <span class="dot" onclick="currentSlide(1)"></span>
-                    <span class="dot" onclick="currentSlide(2)"></span>
-                    <span class="dot" onclick="currentSlide(3)"></span>
-                </div>
+
             </div>
             <div class="listing--content">
-                <h3 class="listing--title">
-                    Approximate position of the house
-                </h3>
+                <h1 class="listing--title">
+                    Name of the house
+                </h1>
                 <div class="listing--sub">
-                    <span class="sqft">1224</span> sqft - Santa Ana - <span class="list-zip">92704</span>
+                    <p>Neighbourhood</p>
                 </div>
-                <div class="listing--desc">
-                    DESCRIPTION OF THE HOUSE
-                </div>
+                <p class="listing--desc">
+                    Description of the house
+                </p>
 
             </div>
             <div class="listing--amens">
-                <div class="amen"><span class="bed">5</span> <i class="mdi mdi-bed-empty"></i></div>
+                <span class="amen bed" style="font-size: 14px;">5</span><div class="amen"> <i class="mdi mdi-bed-empty"></i></div>
                 <div class="amen"><span class="bath">4</span> <i class="mdi mdi-toilet"></i></div>
                 <div class="amen"><i class="mdi mdi-paw"></i></div>
+                <span class="amen mdi mdi-access-point-network"></span>
                 <div class="amen"><i class="mdi mdi-thermometer"></i></div>
-                <a>
-                    <button>BOOK APPOINTMENT</button>
-                </a>
             </div>
         </div>
     </div>
+
     <div class="social-box">
-        <div class="house-requests">
-            <p>Rule of the house and kind of person could be perfect for the house environment</p>
+
+        <div class="house-rules">
+            <label>HOUSE RULES</label>
+            {{ house.house_id.rules }}
         </div>
-        <div class="profile-box">
-            <img class="profile-pic"
+
+        <div class="profile-card">
+            <img class="social-pics"
                  src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
                  alt="profile pic"/>
             <div class="user-information">

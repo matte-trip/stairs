@@ -16,9 +16,9 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Project - Information Systems\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\static'
 
 app.config['available_cities'] = [("TURIN", "Turin")]
 app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]
@@ -64,6 +64,7 @@ class User(UserMixin, db.Model):
 
     # Other fields
     photo_id = db.Column('photo_id', db.Integer)
+    phone_number = db.Column('phone_number', db.String(10))
 
     def get_id(self):
         return self.email
@@ -135,6 +136,7 @@ class EditPrivateDataForm(FlaskForm):
     first_name = StringField('First name', validators=[DataRequired()])
     last_name = StringField('Last name', validators=[DataRequired()])
     city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
+    phone_number = StringField('Phone Number')
     password = PasswordField('Password Verification', validators=[DataRequired()])
     submit_button = SubmitField('Submit')
 
@@ -153,7 +155,7 @@ class EditSlidersDataForm(FlaskForm):
     smoking_habits = DecimalRangeField('Do You Smoke?')
     vegetarian = DecimalRangeField('Are you a Vegetarian?')
     eat_together = DecimalRangeField('How often do you eat with housemates?')
-    do_sports = DecimalRangeField('Do you practice sports?')
+    do_sports = DecimalRangeField('Do you usually practice sports?')
     house_parties = DecimalRangeField('Do you organize house parties?')
     invite_friends = DecimalRangeField('Do you invite friends?')
     overnight_guests = DecimalRangeField('Do you have overnight guests?')
@@ -265,6 +267,7 @@ def personal_page():
             current_user.first_name = personal_profile_form.first_name.data
             current_user.last_name = personal_profile_form.last_name.data
             current_user.city = personal_profile_form.city.data
+            current_user.phone_number = personal_profile_form.phone_number.data
             db.session.commit()
             return redirect(url_for('personal_page'))
         else:
@@ -291,6 +294,7 @@ def personal_page():
         personal_profile_form.first_name.data = current_user.first_name
         personal_profile_form.last_name.data = current_user.last_name
         personal_profile_form.city = current_user.city
+        personal_profile_form.phone_number = current_user.phone_number
 
         bio_form.age.data = current_user.age
         bio_form.study_field.data = current_user.study_field
