@@ -152,17 +152,22 @@ class EditPublicDataForm(FlaskForm):
 
 
 class EditSlidersDataForm(FlaskForm):
+    # yes or no
     smoking_habits = DecimalRangeField('Do You Smoke?')
-    vegetarian = DecimalRangeField('Are you a Vegetarian?')
-    eat_together = DecimalRangeField('How often do you eat with housemates?')
+    past_experience = DecimalRangeField('Do you have past experience of housesharing?')
     do_sports = DecimalRangeField('Do you practice sports?')
-    house_parties = DecimalRangeField('Do you organize house parties?')
-    invite_friends = DecimalRangeField('Do you invite friends?')
-    overnight_guests = DecimalRangeField('Do you have overnight guests?')
-    stays_in_room = DecimalRangeField('Do you stay in your room?')
+    pet_friendly = DecimalRangeField('Are you pet friendly?')
+    # how much do you like ...
+    eat_together = DecimalRangeField('Consume meals with housemates')
+    ideal_week_end1 = DecimalRangeField('Stay at home and chill')
+    ideal_week_end2 = DecimalRangeField('Hangout with friends')
+    house_parties = DecimalRangeField('House parties')
+    # i'm used to
+    invite_friends = DecimalRangeField('Invite friends at home')
+    overnight_guests = DecimalRangeField('Have overnight guests')
+    play_music = DecimalRangeField('Play music without headphones')
+    time_at_home = DecimalRangeField('Spend most of my time at home')
     save_habits = SubmitField('Save')
-
-
 # ======================================================================================================================
 # VIEWS
 # ======================================================================================================================
@@ -238,7 +243,7 @@ def login_registration():
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
             new_user.photo_id = 0
-            new_user.habits = "00000000"
+            new_user.habits = "0000000000"
             default_image_destination_path = new_user.user_id + "0.png"
             shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
                         os.path.join(app.config['UPLOAD_FOLDER'], default_image_destination_path))
@@ -350,10 +355,12 @@ def upload():
 def habits():
     habits_form = EditSlidersDataForm()
     if request.method == 'POST':
-        habits_list = [str(habits_form.smoking_habits.data), str(habits_form.vegetarian.data),
+        habits_list = [str(habits_form.smoking_habits.data), str(habits_form.past_experience.data),
                        str(habits_form.eat_together.data), str(habits_form.do_sports.data),
                        str(habits_form.house_parties.data), str(habits_form.invite_friends.data),
-                       str(habits_form.overnight_guests.data), str(habits_form.stays_in_room.data)]
+                       str(habits_form.overnight_guests.data), str(habits_form.play_music.data),
+                       str(habits_form.ideal_week_end1.data), str(habits_form.pet_friendly.data),
+                       str(habits_form.ideal_week_end2.data), str(habits_form.time_at_home.data)]
         current_user.habits = "".join(habits_list)
         db.session.commit()
         return redirect(url_for('personal_page'))
