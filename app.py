@@ -117,7 +117,7 @@ class Residence(db.Model):
     house_sc = db.Column('houses_sc', db.String(8), nullable=False)
 
     type = db.Column('type', db.String(30), nullable=False)
-    name = db.Column('name', db.String(30), nullable=False)  # TITLE = ROOM TYPE + NEIGHBOURHOOD NAME ??????????????????
+    name = db.Column('name', db.String(30), nullable=False)
     city = db.Column('city', db.String(30), nullable=False)
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
@@ -211,13 +211,9 @@ class EditHouseForm(FlaskForm):
     neighbourhood = SelectField('Neighbourhood', choices=app.config['available_neighbourhoods'],
                                 validators=[DataRequired()])
     type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
-
-
-
-    amenities = db.Column('amenities', db.String(8))  # NULLABLE OR NOT?????????????????????????????????????????????????
-    description = db.Column('description', db.String(1000), nullable=False)
-    house_rules = db.Column('house rules', db.String(1000), nullable=False)
-    enter_button = SubmitField('Enter')
+    description = TextAreaField('Description', validators=[DataRequired()])
+    house_rules = TextAreaField('Description', validators=[DataRequired()])
+    create_button = SubmitField('Create')
 
 
 # ======================================================================================================================
@@ -496,9 +492,9 @@ def search_results():
     # -insert this into the HTML verify the html code for reference
 
 
-@app.route('/new_house')
+@app.route('/house_creation')
 @login_required
-def new_house():# add a new house
+def house_creation():
     pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
 
     house_form = EditHouseForm()
@@ -508,35 +504,19 @@ def new_house():# add a new house
         new_house.house_id = uuid.uuid4().hex[::4].capitalize()
         new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
 
-
         new_house.type = house_form.type.data
+        new_house.name = new_house.type + " Room in " + house_form.neighbourhood.data
         new_house.city = house_form.city.data
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
         new_house.neighbourhood = house_form.neighbourhood.data
+        new_house.amenities = "00000000"  # ===================================================================
+        new_house.description = house_form.description.data
+        new_house.house_rules = house_form.house_rules.data
 
-        new_house.name = new_house.type + " Room in " + new_house.neighbourhood
-
-
-        new_user.email = registration_form.email.data
-        new_user.first_name = registration_form.first_name.data
-        new_user.last_name = registration_form.last_name.data
-        new_user.city = registration_form.city.data
-        new_user.password = registration_form.password.data
-        new_user.user_id = uuid.uuid4().hex[::4].capitalize()
-        new_user.photo_id = 0
-        new_user.habits = "0000000000"
-        default_image_destination_path = new_user.user_id + "0.png"
-        shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
-                    os.path.join(app.config['UPLOAD_FOLDER'], default_image_destination_path))
-        db.session.add(new_user)
+        db.session.add(new_house)
         db.session.commit()
-        login_user(new_user)
-        return redirect("http://127.0.0.1:5000/" + last_url)
-
-    house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
-
-    redirect(url_for('personal_page'))
+        return redirect('personal_page')
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
