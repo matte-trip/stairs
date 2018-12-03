@@ -92,7 +92,7 @@ class User(UserMixin, db.Model):
     habits = db.Column('habits', db.String(12))
 
     # Other fields
-    house_id = db.Column('houses_id', db.String(8))
+    house_id = db.Column('house_id', db.String(8))
     photo_id = db.Column('photo_id', db.Integer)
     phone_number = db.Column('phone_number', db.String(10))
 
@@ -118,8 +118,8 @@ class Residence(db.Model):
     __tablename__ = 'houses'
 
     # Id field
-    house_id = db.Column('houses_id', db.String(8), primary_key=True, unique=True, nullable=False)
-    house_sc = db.Column('houses_sc', db.String(8), nullable=False)
+    house_id = db.Column('house_id', db.String(8), primary_key=True, unique=True, nullable=False)
+    house_sc = db.Column('house_sc', db.String(8), nullable=False)
 
     type = db.Column('type', db.String(30), nullable=False)
     name = db.Column('name', db.String(30), nullable=False)
