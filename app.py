@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DecimalRangeField
-from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField
+from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, RadioField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
@@ -121,10 +121,11 @@ class Residence(db.Model):
     city = db.Column('city', db.String(30), nullable=False)
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
-    neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)  # SELECTOR ??????????????????????????????
+    neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
     amenities = db.Column('amenities', db.String(8))  # NULLABLE OR NOT?????????????????????????????????????????????????
     description = db.Column('description', db.String(1000), nullable=False)
     house_rules = db.Column('house rules', db.String(1000), nullable=False)
+    price = db.Column('price', db.Integer)
 
 
 # ======================================================================================================================
@@ -209,14 +210,10 @@ class EditHouseForm(FlaskForm):
     civic = IntegerField('Street', validators=[DataRequired()])
     neighbourhood = SelectField('Neighbourhood', choices=app.config['available_neighbourhoods'],
                                 validators=[DataRequired()])
-    type = SelectField('Neighbourhood', choices=app.config['available_types'], validators=[DataRequired()])
+    type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
 
-    house_sc = StringField('Secret House ID')
 
-    house_id = db.Column('houses_id', db.String(8), primary_key=True, unique=True, nullable=False)
-    house_sc = db.Column('houses_sc', db.String(8), nullable=False)
 
-    name = db.Column('name', db.String(30), nullable=False)  # TITLE =
     amenities = db.Column('amenities', db.String(8))  # NULLABLE OR NOT?????????????????????????????????????????????????
     description = db.Column('description', db.String(1000), nullable=False)
     house_rules = db.Column('house rules', db.String(1000), nullable=False)
@@ -511,7 +508,15 @@ def new_house():
         new_house.house_id = uuid.uuid4().hex[::4].capitalize()
         new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
 
-        new_house.name =  # ROOM TYPE + NEIGHBOURHOOD NAME ??????????????????
+
+        new_house.type = house_form.type.data
+        new_house.city = house_form.city.data
+        new_house.street = house_form.street.data
+        new_house.civic = house_form.civic.data
+        new_house.neighbourhood = house_form.neighbourhood.data
+
+        new_house.name = new_house.type + " Room in " + new_house.neighbourhood
+
 
         new_user.email = registration_form.email.data
         new_user.first_name = registration_form.first_name.data
@@ -640,7 +645,6 @@ last_url = ''
 # used to keep track of the last page the user was visiting (public pages)
 # in order to redirect him there after login/logout
 
-initial___amenities = "00000000"
 amenities______beds = "10000000"
 amenities_____baths = "01000000"
 amenities______lift = "00100000"
