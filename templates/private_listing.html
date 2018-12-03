@@ -1,0 +1,431 @@
+<head>
+    <title>{{ house.house_id }}</title>
+
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
+    <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet"/>
+
+    <style>
+
+        body {
+            margin: 0;
+            background: url('../static/private_listing-background.png') fixed center;
+            background-size: cover;
+            display: grid;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 36px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 20px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        p {
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
+         button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        button:hover {
+            background: sandybrown;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 40px;
+            width: 40px;
+            border: 1px solid white;
+            box-sizing: border-box;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #login_button, #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
+
+        .container {
+            position: absolute;
+            width: 100%;
+            margin-left: -50%;
+            margin-top: 0;
+            left: 50%;
+            top: 80px;
+
+            background: transparent;
+            display: grid;
+            grid-template-rows: 2fr 2fr 2fr 0.05fr;
+            grid-template-columns: 0.25fr 1.25fr 0.1fr 0.75fr 0.25fr;
+        }
+
+        .listing-container {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 2;
+
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
+
+            flex-direction: column;
+            display: grid;
+        }
+
+        .listing {
+            display: flex;
+            flex-direction: column;
+        }
+
+
+
+
+
+
+
+        .listing .listing--header {
+            min-height: 150px;
+            width: 100%;
+            overflow: hidden;
+            max-height: 500px;
+        }
+
+        .listing .listing--header img {
+            max-width: 100%;
+        }
+
+        .slideshow_image {
+            width: 100%;
+            height: 500px;
+        }
+
+        .listing .listing--title {
+            font-size: .9em;
+            padding: 5px 0 2.5px;
+            margin: 0;
+            position: relative;
+        }
+
+        .listing .listing--title:after {
+            position: relative;
+            display: block;
+            border-bottom: 1px solid white;
+            content: " ";
+            max-width: 100%;
+            padding: 2.5px 0;
+        }
+
+        .listing .listing--sub {
+            font-size: .8em;
+            padding: 5px 0;
+        }
+
+
+
+        .listing--amens {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(to left, #eea849, #f46b45);
+            opacity: 0.8;
+            padding: 10px;
+        }
+
+        .listing--amens .amen {
+            margin: 5px;
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        /* Slideshow container */
+        .slideshow-container {
+            max-width: 1000px;
+            position: relative;
+            margin: auto;
+        }
+
+        /* Hide the images by default */
+        .mySlides {
+            display: none;
+        }
+
+        /* Next & previous buttons */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: 95%;
+            width: auto;
+            margin-top: -22px;
+            padding: 16px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.25s ease;
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+
+        /* On hover, add a black background color with a little bit see-through */
+        .prev:hover, .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        .social-box {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 4;
+
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .25);
+
+            flex-direction: column;
+            display: grid;
+
+        }
+
+        .house-rules {
+            display: flex;
+            position: relative;
+            height: 160px;
+
+            left: 5%;
+            width: 90%;
+            top: 10px;
+
+
+            color: white;
+        }
+
+        .profile-card {
+            position: relative;
+            display: flex;
+            top: 10px;
+            left: 5%;
+            width: 90%;
+            height: 154px;
+            border: 3px solid #111111;
+            background: #f46b45;
+            background: -webkit-linear-gradient(to right, #eea849, #f46b45);
+            background: linear-gradient(to right, #eea849, #f46b45);
+            opacity: 0.9;
+            text-align: center;
+
+        }
+        .user-information{
+            display: block;
+            position: relative;
+            right: -100px;
+        }
+
+
+
+
+
+
+
+
+    </style>
+
+    <script>
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        // Thumbnail image controls
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("mySlides");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slides[slideIndex - 1].style.display = "block";
+        }
+    </script>
+</head>
+
+<body onload="showSlides(1)">
+<div id="nav_bar">
+
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
+
+    {% if is_auth %}
+        <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+        </a>
+        <a href="{{ url_for('personal_page') }}">
+            <button id="account_button">ACCOUNT</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button id="logout_button">LOGOUT</button>
+        </a>
+    {% else %}
+        <a href="{{ url_for('login_registration') }}">
+            <button id="login_button">LOGIN</button>
+        </a>
+    {% endif %}
+
+</div>
+
+<div class="container">
+
+    <div class="listing-container">
+
+        <div class="listing">
+
+            <div class="listing--header">
+
+                <div class="slideshow-container">
+
+                    <!-- Full-width images with number and caption text -->
+                    <div class="mySlides fade">
+                        <img class="slideshow_image" src="../static/homepage-background-1.png" alt="">
+                    </div>
+
+                    <div class="mySlides fade">
+                        <img class="slideshow_image" src="../static/homepage-background-2.png" alt="">
+                    </div>
+
+                    <div class="mySlides fade">
+                        <img class="slideshow_image" src="../static/user-default.png" alt="">
+                    </div>
+
+                    <!-- Next and previous buttons -->
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
+                <br>
+
+
+            </div>
+            <div class="listing--content">
+                <h1 class="listing--title">
+                    Name of the house
+                </h1>
+                <div class="listing--sub">
+                    <p>Neighbourhood</p>
+                </div>
+                <p class="listing--desc">
+                    Description of the house
+                </p>
+
+            </div>
+            <div class="listing--amens">
+                <span class="amen bed" style="font-size: 14px;">5</span><div class="amen"> <i class="mdi mdi-bed-empty"></i></div>
+                <div class="amen"><span class="bath">4</span> <i class="mdi mdi-toilet"></i></div>
+                <div class="amen"><i class="mdi mdi-paw"></i></div>
+                <span class="amen mdi mdi-access-point-network"></span>
+                <div class="amen"><i class="mdi mdi-thermometer"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="social-box">
+
+        <div class="house-rules">
+            <label>HOUSE RULES</label>
+            {{ house.house_id.rules }}
+        </div>
+
+        <div class="profile-card">
+            <img class="social-pics"
+                 src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
+                 alt="profile pic"/>
+            <div class="user-information">
+            <h2 class="user-name">{{ user.first_name }} {{ user.last_name }}</h2>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
