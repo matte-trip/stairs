@@ -150,19 +150,22 @@ class EditPublicDataForm(FlaskForm):
 
 
 class EditSlidersDataForm(FlaskForm):
+    # yes or no ?
     smoking_habits = DecimalRangeField('Do You Smoke?')
     past_experience = DecimalRangeField('Do you have past experience of housesharing?')
-    eat_together = DecimalRangeField('What describes better your habits?')
     do_sports = DecimalRangeField('Do you practice sports?')
-    time_at_home = DecimalRangeField('Where do you spend most of your time ?')
-    house_parties = DecimalRangeField('Do you like house parties?')
-    invite_friends = DecimalRangeField('Do you usually invite friends at home?')
-    overnight_guests = DecimalRangeField('Do you usually have overnight guests?')
-    stays_in_room = DecimalRangeField('What describes better your habits?')
-    ideal_week_end = DecimalRangeField('What is your ideal week end ?')
+    pet_friendly = DecimalRangeField('Are you pet friendly?')
+    # how much do you like ... ?
+    eat_together = DecimalRangeField('Consume meals with housemates')
+    ideal_week_end1 = DecimalRangeField('Stay at home and chill')
+    ideal_week_end2 = DecimalRangeField('Hangout with friends')
+    house_parties = DecimalRangeField('House parties')
+    # i'm used to
+    invite_friends = DecimalRangeField('Invite friends at home')
+    overnight_guests = DecimalRangeField('Have overnight guests')
+    play_music = DecimalRangeField('Play music without headphones')
+    time_at_home = DecimalRangeField('Spend most of my time at home')
     save_habits = SubmitField('Save')
-
-
 # ======================================================================================================================
 # VIEWS
 # ======================================================================================================================
@@ -351,8 +354,9 @@ def habits():
         habits_list = [str(habits_form.smoking_habits.data), str(habits_form.past_experience.data),
                        str(habits_form.eat_together.data), str(habits_form.do_sports.data),
                        str(habits_form.house_parties.data), str(habits_form.invite_friends.data),
-                       str(habits_form.overnight_guests.data), str(habits_form.stays_in_room.data),
-                       str(habits_form.ideal_week_end.data), str(habits_form.time_at_home.data)]
+                       str(habits_form.overnight_guests.data), str(habits_form.play_music.data),
+                       str(habits_form.ideal_week_end1.data), str(habits_form.pet_friendly.data),
+                       str(habits_form.ideal_week_end2.data), str(habits_form.time_at_home.data)]
         current_user.habits = "".join(habits_list)
         db.session.commit()
         return redirect(url_for('personal_page'))
