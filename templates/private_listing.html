@@ -365,26 +365,9 @@
 
             <div class="listing--header">
 
-                <div class="slideshow-container">
-
-                    <!-- Full-width images with number and caption text -->
-                    <div class="mySlides fade">
-                        <img class="slideshow_image" src="../static/homepage-background-1.png" alt="">
-                    </div>
-
-                    <div class="mySlides fade">
-                        <img class="slideshow_image" src="../static/homepage-background-2.png" alt="">
-                    </div>
-
-                    <div class="mySlides fade">
-                        <img class="slideshow_image" src="../static/user-default.png" alt="">
-                    </div>
-
-                    <!-- Next and previous buttons -->
-                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                </div>
-                <br>
+                <a href="{{ url_for('upload_house_image', house_id=new_house.house_id) }}">
+                <button id="change_button">ADD IMAGES</button>
+            </a>
 
 
             </div>
@@ -412,19 +395,15 @@
 
     <div class="social-box">
 
-        <div class="house-rules">
-            <label>HOUSE RULES</label>
-            {{ house.house_id.rules }}
-        </div>
+        {% for images in images %}
+            <img id="profile_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            {% endfor %}
 
-        <div class="profile-card">
-            <img class="social-pics"
-                 src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
-                 alt="profile pic"/>
-            <div class="user-information">
-            <h2 class="user-name">{{ user.first_name }} {{ user.last_name }}</h2>
-            </div>
-        </div>
+
+            <a href="{{ url_for('upload_house_image') }}">
+                <button id="change_button">ADD</button>
+            </a>
+
     </div>
 
 

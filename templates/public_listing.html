@@ -399,6 +399,11 @@
 
             </div>
             <div class="listing--amens">
+
+                {% if house.amenities[0] %}
+                    <span class="mdi mdi-forklift"></span>
+                {% endif %}
+
                 <span class="amen bed" style="font-size: 14px;">5</span><div class="amen"> <i class="mdi mdi-bed-empty"></i></div>
                 <div class="amen"><span class="bath">4</span> <i class="mdi mdi-toilet"></i></div>
                 <div class="amen"><i class="mdi mdi-paw"></i></div>

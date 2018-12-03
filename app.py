@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DecimalRangeField
-from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, RadioField
+from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, BooleanField, \
+    RadioField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
@@ -46,6 +47,9 @@ app.config['available_neighbourhoods'] = [("AURORA", "AURORA"),
                                           ("VANCHIGLIA", "VANCHIGLIA")]
 app.config['available_types'] = [("SINGLE", "SINGLE"),
                                  ("DOUBLE", "DOUBLE")]
+app.config['housemate_sex'] = [("BOTH", "BOTH"),
+                               ("MALE ONLY", "MALE ONLY"),
+                               ("FEMALE ONLY", "FEMALE ONLY")]
 app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]  # NOT USED???????????????????????????????????????????????
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -122,9 +126,10 @@ class Residence(db.Model):
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(8))  # NULLABLE OR NOT?????????????????????????????????????????????????
+    amenities = db.Column('amenities', db.String(6))  # NULLABLE OR NOT?????????????????????????????????????????????????
     description = db.Column('description', db.String(1000), nullable=False)
-    house_rules = db.Column('house rules', db.String(1000), nullable=False)
+    rules = db.Column('rules', db.String(1000), nullable=False)
+    bills = db.Column('bills', db.String(1000), nullable=False)
     price = db.Column('price', db.Integer)
 
 
@@ -205,15 +210,28 @@ class ExistingHouseForm(FlaskForm):
 
 
 class EditHouseForm(FlaskForm):
+    type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
     city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
-    street = StringField('Street', validators=[DataRequired()])
-    civic = IntegerField('Street', validators=[DataRequired()])
     neighbourhood = SelectField('Neighbourhood', choices=app.config['available_neighbourhoods'],
                                 validators=[DataRequired()])
-    type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
+    street = StringField('Street', validators=[DataRequired()])
+    civic = IntegerField('Civic', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    house_rules = TextAreaField('Description', validators=[DataRequired()])
-    create_button = SubmitField('Create')
+    rules = TextAreaField('Rules', validators=[DataRequired()])
+    price = IntegerField('Price', validators=[DataRequired()])
+    bills = TextAreaField('Bills')
+    save_information = SubmitField('Save Information')
+
+
+class EditAmenitiesHouseForm(FlaskForm):
+    preferred_sex = RadioField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
+    lift = BooleanField('Lift')
+    pet_friendly = BooleanField('Pet Friendly')
+    independent_heating = BooleanField('Independent Heating')
+    air_conditioned = BooleanField('Air Conditioned')
+    furniture = BooleanField('Furniture')
+    wifi = BooleanField('Wi-Fi')
+    save_amenities = SubmitField('Save Amenities')
 
 
 # ======================================================================================================================
@@ -498,6 +516,7 @@ def house_creation():
     pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
 
     house_form = EditHouseForm()
+    amenities_form = EditAmenitiesHouseForm()
 
     if house_form.validate_on_submit():
         new_house = Residence()
@@ -512,15 +531,39 @@ def house_creation():
         new_house.neighbourhood = house_form.neighbourhood.data
         new_house.amenities = "00000000"  # ===================================================================
         new_house.description = house_form.description.data
-        new_house.house_rules = house_form.house_rules.data
+        new_house.house_rules = house_form.rules.data
+        new_house.price = house_form.price.data
+        new_house.bills = house_form.bills.data
 
         db.session.add(new_house)
         db.session.commit()
-        return redirect('personal_page')
+        return redirect('house_creation')
 
-    return render_template('private_listing.html',
+    if house_form.validate_on_submit():
+        new_house = Residence()
+        new_house.house_id = uuid.uuid4().hex[::4].capitalize()
+        new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
+
+        new_house.type = house_form.type.data
+        new_house.name = new_house.type + " Room in " + house_form.neighbourhood.data
+        new_house.city = house_form.city.data
+        new_house.street = house_form.street.data
+        new_house.civic = house_form.civic.data
+        new_house.neighbourhood = house_form.neighbourhood.data
+        new_house.amenities = "00000000"  # ===================================================================
+        new_house.description = house_form.description.data
+        new_house.house_rules = house_form.rules.data
+        new_house.price = house_form.price.data
+        new_house.bills = house_form.bills.data
+
+        db.session.add(new_house)
+        db.session.commit()
+        return redirect('house_creation')
+
+    return render_template('house_creation.html',
                            pro_pic=pro_pic,
-                           house_form=house_form)
+                           house_form=house_form,
+                           amenities_form=amenities_form)
 
 
 @app.route('/h_edit/<house_id>')
@@ -537,6 +580,7 @@ def h_edit(house_id):
     # a_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
+    # ADD LIST TO THE HOUSE IMAGES
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
@@ -624,15 +668,6 @@ show_wrong_password_box = 0
 last_url = ''
 # used to keep track of the last page the user was visiting (public pages)
 # in order to redirect him there after login/logout
-
-amenities______beds = "10000000"
-amenities_____baths = "01000000"
-amenities______lift = "00100000"
-amenities_____floor = "00010000"
-amenities____washer = "00001000"
-amenities__bath_tub = "00000100"
-amenities____shower = "00000010"
-amenities_workplace = "00000001"
 
 # ======================================================================================================================
 # STARTUP
