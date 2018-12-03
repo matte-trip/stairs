@@ -127,7 +127,7 @@ class Residence(db.Model):
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(6))  # NULLABLE OR NOT?????????????????????????????????????????????????
+    amenities = db.Column('amenities', db.String(7))
     description = db.Column('description', db.String(1000), nullable=False)
     rules = db.Column('rules', db.String(1000), nullable=False)
     bills = db.Column('bills', db.String(1000), nullable=False)
@@ -376,13 +376,15 @@ def personal_page():
         bio_form.languages.data = current_user.languages
 
     image_name = current_user.user_id + str(current_user.photo_id) + ".png"
+    house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first_or_404()
 
     return render_template('private_profile.html',
                            personal_profile_form=personal_profile_form,
                            bio_form=bio_form,
                            image_name=image_name,
                            error=show_wrong_password_box,
-                           habits_form=habits_form)
+                           habits_form=habits_form,
+                           house=house)
 
 
 @app.route('/uploads/<filename>')
@@ -529,9 +531,9 @@ def house_creation():
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
         new_house.neighbourhood = house_form.neighbourhood.data
-        new_house.amenities = "0"  # ===================================================================
+        new_house.amenities = "0000000"  # ===================================================================
         new_house.description = house_form.description.data
-        new_house.house_rules = house_form.rules.data
+        new_house.rules = house_form.rules.data
         new_house.price = house_form.price.data
         new_house.bills = house_form.bills.data
 
@@ -607,13 +609,14 @@ def h(house_id):
     # a_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
-    housemates = User.query.filter_by(house_user_id=house_id.capitalize())
+    # housemates = User.query.filter_by(house_id=house_id.capitalize())
 
     return render_template('public_listing.html',
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
-                           house=house,
-                           housemates=housemates)
+                           house=house
+                           #, housemates=housemates
+                           )
 
 
 @app.route('/existing')

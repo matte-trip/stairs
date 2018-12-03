@@ -417,7 +417,7 @@
 
         <div class="house-rules">
             <label>HOUSE RULES</label>
-            {{ house.house_id.rules }}
+            <p>{{ house.rules }}</p>
         </div>
 
         <div class="profile-card">
@@ -425,7 +425,6 @@
                  src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
                  alt="profile pic"/>
             <div class="user-information">
-            <h2 class="user-name">{{ user.first_name }} {{ user.last_name }}</h2>
             </div>
         </div>
     </div>
