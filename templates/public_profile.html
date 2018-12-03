@@ -30,11 +30,13 @@
             text-transform: uppercase;
             font-weight: 400;
         }
+
         h3 {
             font-family: 'Oswald', sans-serif;
             color: white;
 
         }
+
         p {
             font-family: 'Nunito', sans-serif;
             color: white;
@@ -142,8 +144,8 @@
             height: 16px;
         }
 
-        #smoking_habits,#time_at_home,#past_experience, #ideal_week_end, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
-        #stays_in_room {
+        #smoking_habits, #time_at_home, #pet_friendly, #past_experience, #ideal_week_end1, #ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #play_music {
             margin-left: 5%;
             margin-top: 18px;
             opacity: 0.85;
@@ -151,21 +153,23 @@
             background-color: white;
         }
 
-        #smoking_habits, #time_at_home,#past_experience, #ideal_week_end ,#eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
-        #stays_in_room {
+        #smoking_habits, #time_at_home, #pet_friendly, #past_experience, #ideal_week_end1, #ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #play_music {
             -webkit-appearance: none;
         }
 
         #smoking_habits::-webkit-slider-thumb,
         #time_at_home::-webkit-slider-thumb,
         #past_experience::-webkit-slider-thumb,
-        #ideal_week_end::-webkit-slider-thumb,
+        #ideal_week_end1::-webkit-slider-thumb,
+        #ideal_week_end2::-webkit-slider-thumb,
         #eat_together::-webkit-slider-thumb,
         #do_sports::-webkit-slider-thumb,
         #house_parties::-webkit-slider-thumb,
         #invite_friends::-webkit-slider-thumb,
+        #pet_friendly::-webkit-slider-thumb,
         #overnight_guests::-webkit-slider-thumb,
-        #stays_in_room::-webkit-slider-thumb {
+        #play_music::-webkit-slider-thumb {
             -webkit-appearance: none;
             width: 20px;
             height: 20px;
@@ -197,7 +201,6 @@
         }
 
         .adjust_page_height {
-
             margin-bottom: 50px;
         }
     </style>
@@ -206,15 +209,18 @@
 <script>
     function disableSlider() {
         document.getElementById("smoking_habits").disabled = true;
-        document.getElementById("time_at_home").disabled = true;
         document.getElementById("past_experience").disabled = true;
-        document.getElementById("ideal_week_end").disabled = true;
-        document.getElementById("eat_together").disabled = true;
         document.getElementById("do_sports").disabled = true;
+        document.getElementById("pet_friendly").disabled = true;
+        document.getElementById("eat_together").disabled = true;
+        document.getElementById("ideal_week_end1").disabled = true;
+        document.getElementById("ideal_week_end2").disabled = true;
         document.getElementById("house_parties").disabled = true;
         document.getElementById("invite_friends").disabled = true;
         document.getElementById("overnight_guests").disabled = true;
-        document.getElementById("stays_in_room").disabled = true;
+        document.getElementById("play_music").disabled = true;
+        document.getElementById("time_at_home").disabled = true;
+
     }
 </script>
 
@@ -269,6 +275,8 @@
     <div class="character_profile">
 
         <div class="adjust_page_height">
+            <label  style="text-align: center">MY HABITS</label>
+
             {{ habits_form.smoking_habits.label }}
             <div class="slider_input">
                 <label>NO</label>
@@ -281,35 +289,8 @@
             {{ habits_form.past_experience.label }}
             <div class="slider_input">
                 <label>NO</label>
-                {{ habits_form.past_experience(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
+                {{ habits_form.past_experience(min=0, max=1, step=1, value=user.habits[1], oninput="outputUpdate(value)") }}
                 <label>YES</label>
-            </div>
-
-            <br><br>
-
-             {{ habits_form.time_at_home.label }}
-            <div class="slider_input">
-                <label>AT HOME</label>
-                {{ habits_form.time_at_home(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
-                <label>OUTSIDE</label>
-            </div>
-
-            <br><br>
-
-             {{ habits_form.ideal_week_end.label }}
-            <div class="slider_input">
-                <label>BED & TV SERIES</label>
-                {{ habits_form.ideal_week_end(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
-                <label> BEER & FRIENDS </label>
-            </div>
-
-            <br><br>
-
-             {{ habits_form.eat_together.label }}
-            <div class="slider_input">
-                <label>FOOD&NETFLIX IN MY ROOM</label>
-                {{ habits_form.eat_together(min=0, max=9, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
-                <label>MEALS ARE BETTER WITH FRIENDS</label>
             </div>
 
             <br><br>
@@ -317,44 +298,93 @@
             {{ habits_form.do_sports.label }}
             <div class="slider_input">
                 <label>NO</label>
-                {{ habits_form.do_sports(min=0, max=9, step=1, value=user.habits[3], oninput="outputUpdate(value)") }}
+                {{ habits_form.do_sports(min=0, max=1, step=1, value=user.habits[2], oninput="outputUpdate(value)") }}
                 <label>YES</label>
             </div>
 
             <br><br>
 
-            {{ habits_form.house_parties.label }}
+            {{ habits_form.pet_friendly.label }}
             <div class="slider_input">
-                <label>I LIKE</label>
-                {{ habits_form.house_parties(min=0, max=9, step=1, value=user.habits[4], oninput="outputUpdate(value)") }}
-                <label>SILENCE PLEASE</label>
+                <label>NO</label>
+                {{ habits_form.pet_friendly(min=0, max=1, step=1, value=user.habits[3], oninput="outputUpdate(value)") }}
+                <label>YES</label>
             </div>
 
             <br><br>
 
+            <label style="text-align: center">I like</label>
+
+            {{ habits_form.house_parties.label }}
+            <div class="slider_input">
+                <label>0</label>
+                {{ habits_form.house_parties(min=0, max=9, step=1, value=user.habits[4], oninput="outputUpdate(value)") }}
+                <label>10</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.eat_together.label }}
+            <div class="slider_input">
+                <label>0</label>
+                {{ habits_form.eat_together(min=0, max=9, step=1, value=user.habits[5], oninput="outputUpdate(value)") }}
+                <label>10</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.ideal_week_end1.label }}
+            <div class="slider_input">
+                <label>0</label>
+                {{ habits_form.ideal_week_end1(min=0, max=9, step=1, value=user.habits[6], oninput="outputUpdate(value)") }}
+                <label>10</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.ideal_week_end2.label }}
+            <div class="slider_input">
+                <label>0</label>
+                {{ habits_form.ideal_week_end2(min=0, max=9, step=1, value=user.habits[7], oninput="outputUpdate(value)") }}
+                <label>10</label>
+            </div>
+
+            <br><br>
+
+            <label style="text-align: center"> I am used to</label>
+
             {{ habits_form.invite_friends.label }}
             <div class="slider_input">
-                <label>I DO </label>
-                {{ habits_form.invite_friends(min=0, max=9, step=1, value=user.habits[5], oninput="outputUpdate(value)") }}
-                <label>ONLY IF NECESSARY</label>
+                <label>NO</label>
+                {{ habits_form.invite_friends(min=0, max=1, step=1, value=user.habits[8], oninput="outputUpdate(value)") }}
+                <label>YES</label>
             </div>
 
             <br><br>
 
             {{ habits_form.overnight_guests.label }}
             <div class="slider_input">
-                <label>I DO</label>
-                {{ habits_form.overnight_guests(min=0, max=9, step=1, value=user.habits[6], oninput="outputUpdate(value)") }}
-                <label>ONLY IF NECESSARY</label>
+                <label>NO</label>
+                {{ habits_form.overnight_guests(min=0, max=1, step=1, value=user.habits[9], oninput="outputUpdate(value)") }}
+                <label>YES</label>
             </div>
 
             <br><br>
 
-            {{ habits_form.stays_in_room.label }}
+            {{ habits_form.play_music.label }}
             <div class="slider_input">
-                <label>I'M A NERD</label>
-                {{ habits_form.stays_in_room(min=0, max=9, step=1, value=user.habits[7], oninput="outputUpdate(value)") }}
-                <label>ROOM IS FOR SLEEP AND..</label>
+                <label>NO</label>
+                {{ habits_form.play_music(min=0, max=1, step=1, value=user.habits[10], oninput="outputUpdate(value)") }}
+                <label>YES</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.time_at_home.label }}
+            <div class="slider_input">
+                <label>NO</label>
+                {{ habits_form.time_at_home(min=0, max=1, step=1, value=user.habits[11], oninput="outputUpdate(value)") }}
+                <label>YES</label>
             </div>
         </div>
 
