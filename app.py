@@ -498,7 +498,7 @@ def search_results():
 
 @app.route('/new_house')
 @login_required
-def new_house():
+def new_house():# add a new house
     pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
 
     house_form = EditHouseForm()
@@ -584,7 +584,7 @@ def upload_house_image(house_id):
             # deleting old image associated to the user
             return redirect(url_for('personal_page'))
 
-    return render_template('upload.html')
+    return render_template('upload_house_image.html')
 
 
 @app.route('/h/<house_id>')
