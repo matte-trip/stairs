@@ -477,12 +477,12 @@ def search_results():
 
 
 @app.route('/h/<house_id>')
-def u(user_id):
+def h(house_id):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
-    last_url = "u/" + user_id
+    last_url = "u/" + house_id
 
-    if current_user.is_authenticated:
+    if current_house.is_authenticated:
         pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
