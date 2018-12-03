@@ -17,9 +17,9 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\static'
 
 app.config['available_cities'] = [("TURIN", "Turin")]
 app.config['available_neighbourhoods'] = [("AURORA", "AURORA"),
@@ -92,6 +92,7 @@ class User(UserMixin, db.Model):
     habits = db.Column('habits', db.String(12))
 
     # Other fields
+    house_id = db.Column('houses_id', db.String(8))
     photo_id = db.Column('photo_id', db.Integer)
     phone_number = db.Column('phone_number', db.String(10))
 
@@ -510,13 +511,12 @@ def search_results():
     # -insert this into the HTML verify the html code for reference
 
 
-@app.route('/house_creation')
+@app.route('/house_creation', methods=['GET', 'POST'])
 @login_required
 def house_creation():
     pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
 
     house_form = EditHouseForm()
-    amenities_form = EditAmenitiesHouseForm()
 
     if house_form.validate_on_submit():
         new_house = Residence()
@@ -529,32 +529,13 @@ def house_creation():
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
         new_house.neighbourhood = house_form.neighbourhood.data
-        new_house.amenities = "00000000"  # ===================================================================
+        new_house.amenities = "0"  # ===================================================================
         new_house.description = house_form.description.data
         new_house.house_rules = house_form.rules.data
         new_house.price = house_form.price.data
         new_house.bills = house_form.bills.data
 
-        db.session.add(new_house)
-        db.session.commit()
-        return redirect('house_creation')
-
-    if house_form.validate_on_submit():
-        new_house = Residence()
-        new_house.house_id = uuid.uuid4().hex[::4].capitalize()
-        new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
-
-        new_house.type = house_form.type.data
-        new_house.name = new_house.type + " Room in " + house_form.neighbourhood.data
-        new_house.city = house_form.city.data
-        new_house.street = house_form.street.data
-        new_house.civic = house_form.civic.data
-        new_house.neighbourhood = house_form.neighbourhood.data
-        new_house.amenities = "00000000"  # ===================================================================
-        new_house.description = house_form.description.data
-        new_house.house_rules = house_form.rules.data
-        new_house.price = house_form.price.data
-        new_house.bills = house_form.bills.data
+        current_user.house_id = new_house.house_id
 
         db.session.add(new_house)
         db.session.commit()
@@ -562,8 +543,7 @@ def house_creation():
 
     return render_template('house_creation.html',
                            pro_pic=pro_pic,
-                           house_form=house_form,
-                           amenities_form=amenities_form)
+                           house_form=house_form)
 
 
 @app.route('/h_edit/<house_id>')
@@ -582,9 +562,12 @@ def h_edit(house_id):
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
     # ADD LIST TO THE HOUSE IMAGES
 
+    amenities_form = EditAmenitiesHouseForm()
+
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
-                           house=house)
+                           house=house,
+                           amenities_form=amenities_form)
 
 
 @app.route('/upload_house_image/<house_id>', methods=['GET', 'POST'])  # lucas changed ths

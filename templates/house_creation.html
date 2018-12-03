@@ -58,7 +58,7 @@
             text-transform: uppercase;
         }
 
-         button {
+        button {
             font-size: 12px;
             text-align: center;
             text-transform: uppercase;
@@ -136,11 +136,6 @@
         }
 
 
-
-
-
-
-
         .listing .listing--header {
             min-height: 150px;
             width: 100%;
@@ -177,7 +172,6 @@
             font-size: .8em;
             padding: 5px 0;
         }
-
 
 
         .listing--amens {
@@ -235,16 +229,6 @@
         }
 
 
-
-
-
-
-
-
-
-
-
-
         .social-box {
             grid-row-start: 1;
             grid-row-end: 3;
@@ -286,7 +270,8 @@
             text-align: center;
 
         }
-        .user-information{
+
+        .user-information {
             display: block;
             position: relative;
             right: -100px;
@@ -303,21 +288,16 @@
         <button id="home_button">HOMEPAGE</button>
     </a>
 
-    {% if is_auth %}
-        <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
-        </a>
-        <a href="{{ url_for('personal_page') }}">
-            <button id="account_button">ACCOUNT</button>
-        </a>
-        <a href="{{ url_for('logout') }}">
-            <button id="logout_button">LOGOUT</button>
-        </a>
-    {% else %}
-        <a href="{{ url_for('login_registration') }}">
-            <button id="login_button">LOGIN</button>
-        </a>
-    {% endif %}
+
+    <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+    </a>
+    <a href="{{ url_for('personal_page') }}">
+        <button id="account_button">ACCOUNT</button>
+    </a>
+    <a href="{{ url_for('logout') }}">
+        <button id="logout_button">LOGOUT</button>
+    </a>
 
 </div>
 
@@ -333,9 +313,6 @@
     </div>
 
     <div class="social-box">
-
-        <label>Preferred Housemate Sex</label>
-        {{ wtf.quick_form(amenities_form) }}
 
 
     </div>
