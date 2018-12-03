@@ -376,7 +376,11 @@ def personal_page():
         bio_form.languages.data = current_user.languages
 
     image_name = current_user.user_id + str(current_user.photo_id) + ".png"
-    house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first_or_404()
+
+    if current_user.house_id:
+        house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first_or_404()
+    else:
+        house = ""
 
     return render_template('private_profile.html',
                            personal_profile_form=personal_profile_form,
