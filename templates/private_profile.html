@@ -183,7 +183,7 @@
             height: 16px;
         }
 
-        #smoking_habits,#time_at_home,#pet_friendly, #past_experience,#ideal_week_end1,#ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #smoking_habits, #time_at_home, #pet_friendly, #past_experience, #ideal_week_end1, #ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
         #play_music {
             margin-left: 5%;
             margin-top: 18px;
@@ -192,7 +192,7 @@
             background-color: white;
         }
 
-        #smoking_habits,#time_at_home,#pet_friendly, #past_experience,#ideal_week_end1,#ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #smoking_habits, #time_at_home, #pet_friendly, #past_experience, #ideal_week_end1, #ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
         #play_music {
             -webkit-appearance: none;
         }
@@ -289,16 +289,16 @@
     function disableSlider() {
         document.getElementById("smoking_habits").disabled = true;
         document.getElementById("past_experience").disabled = true;
-        document.getElementById("pet_friendly").disabled = true;
         document.getElementById("do_sports").disabled = true;
+        document.getElementById("pet_friendly").disabled = true;
         document.getElementById("eat_together").disabled = true;
-        document.getElementById("time_at_home").disabled = true;
         document.getElementById("ideal_week_end1").disabled = true;
         document.getElementById("ideal_week_end2").disabled = true;
         document.getElementById("house_parties").disabled = true;
         document.getElementById("invite_friends").disabled = true;
         document.getElementById("overnight_guests").disabled = true;
         document.getElementById("play_music").disabled = true;
+        document.getElementById("time_at_home").disabled = true;
     }
 </script>
 
@@ -344,16 +344,27 @@
 
         <label>Your House:</label>
 
-        <div class="house_card">
-            <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-                <img class="house_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
-            </a>
-            <label>name of the house</label>
-        </div>
+        {% if current_user.house_id %}
 
-        <a href="{{ url_for('upload') }}"><!--=======================================================================-->
-            <button id="add_house_button">ADD HOUSE if there's none else show</button>
-        </a>
+            <div class="house_card">
+                <a href="{{ url_for('h', user_id=current_user.house_id) }}">
+                    <img class="house_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+                </a>
+                <label>{{ current_user.house_id }}</label>
+                <label>{{ house.name }}</label>
+            </div>
+
+        {% else %}
+
+            <a style="display: block" href="{{ url_for('existing') }}"><!--==============================================-->
+                <button id="add_house_button">ADD EXISTING HOUSE BY SECRET CODE</button>
+            </a>
+            <a href="{{ url_for('new_house') }}">
+                <!--=======================================================================-->
+                <button id="add_house_button">ADD NEW HOUSE</button>
+            </a>
+
+        {% endif %}
 
     </div>
 
@@ -374,15 +385,13 @@
 
         <br><br>
 
-        <label>Your Habits:</label>
+        <label style="display: inline">Your Habits:</label>
 
         <a href="{{ url_for('habits') }}">
             <button id="modify_button">MODIFY</button>
         </a>
 
-        <br><br>
-
-        <label>Yes or No?</label>
+        <label style="text-align: center">Yes or No?</label>
         {{ habits_form.smoking_habits.label }}
         <div class="slider_input">
             <label>NO</label>
@@ -418,21 +427,12 @@
         </div>
 
         <br><br>
-        <label>How much do you like ... ?</label>
-
-        {{ habits_form.house_parties.label }}
-        <div class="slider_input">
-            <label>0</label>
-            {{ habits_form.house_parties(min=0, max=9, step=1, value=current_user.habits[4], oninput="outputUpdate(value)") }}
-            <label>10</label>
-        </div>
-
-        <br><br>
+        <label style="text-align: center">How much do you like ... ?</label>
 
         {{ habits_form.eat_together.label }}
         <div class="slider_input">
             <label>0</label>
-            {{ habits_form.eat_together(min=0, max=9, step=1, value=current_user.habits[5], oninput="outputUpdate(value)") }}
+            {{ habits_form.eat_together(min=0, max=9, step=1, value=current_user.habits[4], oninput="outputUpdate(value)") }}
             <label>10</label>
         </div>
 
@@ -441,7 +441,7 @@
         {{ habits_form.ideal_week_end1.label }}
         <div class="slider_input">
             <label>0</label>
-            {{ habits_form.ideal_week_end1(min=0, max=9, step=1, value=current_user.habits[6], oninput="outputUpdate(value)") }}
+            {{ habits_form.ideal_week_end1(min=0, max=9, step=1, value=current_user.habits[5], oninput="outputUpdate(value)") }}
             <label>10</label>
         </div>
 
@@ -450,12 +450,21 @@
         {{ habits_form.ideal_week_end2.label }}
         <div class="slider_input">
             <label>0</label>
-            {{ habits_form.ideal_week_end2(min=0, max=9, step=1, value=current_user.habits[7], oninput="outputUpdate(value)") }}
+            {{ habits_form.ideal_week_end2(min=0, max=9, step=1, value=current_user.habits[6], oninput="outputUpdate(value)") }}
             <label>10</label>
         </div>
 
         <br><br>
-        <label> I am used to:</label>
+
+        {{ habits_form.house_parties.label }}
+        <div class="slider_input">
+            <label>0</label>
+            {{ habits_form.house_parties(min=0, max=9, step=1, value=current_user.habits[7], oninput="outputUpdate(value)") }}
+            <label>10</label>
+        </div>
+
+        <br><br>
+        <label style="text-align: center"> I am used to:</label>
         {{ habits_form.invite_friends.label }}
         <div class="slider_input">
             <label>NO</label>

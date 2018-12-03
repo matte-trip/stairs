@@ -1,10 +1,12 @@
 <head>
-    <!--title-->
     <title>Results</title>
 
-    <!--imported fonts and icons-->
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
     <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Raleway:100,200,600,700" rel="stylesheet">
 
     <style>
 
@@ -82,15 +84,11 @@
         }
 
 
-
-
-
-
     </style><!--the style fo the menu bar-->
     <style>
 
         body {
-                        font-family: 'Raleway', sans-serif;
+            font-family: 'Oswald', sans-serif;
         }
 
         * {
@@ -98,12 +96,11 @@
         }
 
 
-
         .container {
             width: 100%;
             max-width: 1180px;
-            margin: 0px auto;
-            padding: 0em 0em;
+            margin: 0 auto;
+            padding: 0;
         }
 
         .download-cards {
@@ -118,17 +115,15 @@
             width: calc(100% - 2em);
             position: relative;
             overflow: hidden;
-            margin-bottom: 2em;
             border: 1px solid white;
-           background-color: rgba(0, 0, 0, .5);
+            background-color: rgba(0, 0, 0, .5);
             margin: 0 1em 2em 1em;
         }
 
         .download-card__icon-box {
             display: flex;
             align-items: center;
-            background: #f1f1f1;
-            padding: 0; /*padding do frame da foto*/
+            background: white;
             text-align: center;
         }
 
@@ -153,7 +148,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                border-right: 1px solid #e6e6e6;
+                border-right: 1px solid white;
 
             }
         }
@@ -210,18 +205,11 @@
         }
 
 
-
-        @media (min-width: 700px) {
-            .dc-view-switcher {
-                display: block;
-            }
-        }
-
         .dc-view-switcher > button {
-            font-family: 'fontAwesome', sans-serif;
+            font-family: 'Oswald', sans-serif;
             background-color: transparent;
             background-repeat: no-repeat;
-            background-position: 0px 0px;
+            background-position: 0 0;
             border: none;
             cursor: pointer;
             font-size: 1.5em;
@@ -255,11 +243,12 @@
             color: sandybrown;
         }
 
-        #nav_bar{
+        #nav_bar {
             display: block;
 
         }
-        #aCaixa{
+
+        #aCaixa {
             margin-top: 10%;
             width: 100%;
         }
@@ -328,144 +317,78 @@
 <!--============================================================-->
 
 
-
 <div class="container">
     <div data-view="list-view" class="download-cards">
         <!--============================================================-->
         <div id="aCaixa">
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/1.jpg"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">HOUSE 1</h2>
-                    <h2 class="download-card__content-box__title">This is house one</h2>
-                    <p class="download-card__content-box__description">Description 1</p>
+            <!--============================================================-->
+            <article class="download-card">
+                <div class="download-card__icon-box"><img src="../static/1.jpg"/></div>
+                <div class="download-card__content-box">
+                    <div class="content">
+                        <h2 class="download-card__content-box__catagory">HOUSE 1</h2>
+                        <h2 class="download-card__content-box__title">This is house one</h2>
+                        <p class="download-card__content-box__description">Description 1</p>
 
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+                        <div class="listing--amens">
+                            <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                            <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
 
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                            <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                        </div>
+
+                        <a class="button"> <i class="fa fa-cloud-download"></i>See IT</a>
                     </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i>See IT</a>
                 </div>
-            </div>
-        </article>
-        <!--============================================================-->
+            </article>
+            <!--============================================================-->
 
 
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/2.jpg"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">HOUSE 2</h2>
-                    <h2 class="download-card__content-box__title">This is house two</h2>
-                    <p class="download-card__content-box__description">Description 1</p>
+            <!--============================================================-->
+            <article class="download-card">
+                <div class="download-card__icon-box"><img src="../static/2.jpg" alt=""></div>
+                <div class="download-card__content-box">
+                    <div class="content">
+                        <h2 class="download-card__content-box__catagory">HOUSE 2</h2>
+                        <h2 class="download-card__content-box__title">This is house two</h2>
+                        <p class="download-card__content-box__description">Description 1</p>
 
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+                        <div class="listing--amens">
+                            <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                            <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
 
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                            <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                        </div>
+
+                        <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
                     </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
                 </div>
-            </div>
-        </article>
-        <!--============================================================-->
+            </article>
+            <!--============================================================-->
 
 
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/3.jpg"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">HOUSE 3</h2>
-                    <h2 class="download-card__content-box__title">Height Safety Products</h2>
-                    <p class="download-card__content-box__description">High & low-res photos for print and web
-                        media. </p>
+            <!--============================================================-->
+            <article class="download-card">
+                <div class="download-card__icon-box"><img src="../static/3.jpg"/></div>
+                <div class="download-card__content-box">
+                    <div class="content">
+                        <h2 class="download-card__content-box__catagory">HOUSE 3</h2>
+                        <h2 class="download-card__content-box__title">Height Safety Products</h2>
+                        <p class="download-card__content-box__description">High & low-res photos for print and web
+                            media. </p>
 
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+                        <div class="listing--amens">
+                            <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
+                            <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
 
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                            <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                        </div>
+
+                        <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
                     </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
                 </div>
-            </div>
-        </article>
-        <!--============================================================-->
-
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-1.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Document</h2>
-                    <h2 class="download-card__content-box__title">Course Booking Form</h2>
-                    <p class="download-card__content-box__description">Word document </p>
-
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
-                    </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-        <!--============================================================-->
-
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-2.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Photos</h2>
-                    <h2 class="download-card__content-box__title">Height Safety Products</h2>
-                    <p class="download-card__content-box__description">High & low-res photos for print and web
-                        media. </p>
-
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
-                    </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-        <!--============================================================-->
-
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-3.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Photos</h2>
-                    <h2 class="download-card__content-box__title">Height Safety Products</h2>
-                    <p class="download-card__content-box__description">High & low-res photos for print and web
-                        media. </p>
-
-
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
+            </article>
+            <!--============================================================-->
 
         </div>
     </div>
