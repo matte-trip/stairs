@@ -347,7 +347,7 @@
         {% if current_user.house_id %}
 
             <div class="house_card">
-                <a href="{{ url_for('h', user_id=current_user.house_id) }}">
+                <a href="{{ url_for('h', house_id=current_user.house_id) }}">
                     <img class="house_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
                 </a>
                 <label>{{ current_user.house_id }}</label>

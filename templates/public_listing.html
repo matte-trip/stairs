@@ -1,5 +1,5 @@
 <head>
-    <title>{{ house.house_id }}</title>
+    <title>{{ house.name }}</title>
 
     <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
 
@@ -14,7 +14,7 @@
             margin: 0;
             background: url('../static/public_listing-background.png') fixed center;
             background-size: cover;
-            display: grid;
+
             width: 100%;
             height: 100%;
             position: relative;
@@ -48,7 +48,7 @@
             font-family: "Oswald", sans-serif;
             display: block;
             margin-left: 5%;
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 16px;
             font-weight: 400;
             color: white;
@@ -103,6 +103,7 @@
         }
 
         .container {
+            display: grid;
             position: absolute;
             width: 100%;
             margin-left: -50%;
@@ -256,19 +257,119 @@
 
         }
 
-        .house-rules {
+        .social-box-grid{
+            dysplay: grid;
+            height:100%;
+            width: 100%;
+            grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 3fr ;
+
+        }
+
+        .house-rules { /*this will give position and data regarding this block of the grid */
+            grid-row-start: 1;
+            grid-row-end: 2;
+            grid-column-start: 1;
+            grid-column-end: 2;
             display: flex;
             position: relative;
-            height: 160px;
-
             left: 5%;
-            width: 90%;
-            top: 10px;
-
-
+            width: 82%;
             color: white;
         }
 
+        .house-bills {/*every info will have their block*/
+            grid-row-start: 2;
+            grid-row-end: 3;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            display: flex;
+            position: relative;
+            left: 5%;
+            width: 82%;
+            color: white;
+        }
+
+        .house-price {/*every info will have their block*/
+            grid-row-start: 3;
+            grid-row-end: 4;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            display: flex;
+            position: relative;
+            left: 5%;
+            width: 82%;
+            color: white;
+        }
+
+        .house-type {/*every info will have their block*/
+            grid-row-start: 4;
+            grid-row-end: 5;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            display: flex;
+            position: relative;
+            left: 5%;
+            width: 82%;
+            color: white;
+        }
+
+        .house-type {/*every info will have their block*/
+            grid-row-start: 4;
+            grid-row-end: 5;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            display: flex;
+            position: relative;
+            left: 5%;
+            width: 82%;
+            color: white;
+        }
+
+        .house-city {/*every info will have their block*/
+            grid-row-start: 5;
+            grid-row-end: 6;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            display: flex;
+            position: relative;
+            left: 5%;
+            width: 82%;
+            color: white;
+        }
+        .house-add {/*every info will have their block*/
+            grid-row-start: 6;
+            grid-row-end: 7;
+            grid-column-start: 1;
+            grid-column-end: 2;
+            display: flex;
+            position: relative;
+            left: 5%;
+            width: 82%;
+            color: white;
+        }
+
+        .info_L{
+
+            grid-column-start: 1;
+            grid-column-end: 2;
+            /*border: 1px solid white;*/
+            display: flex;
+            position: relative;
+
+            left: 5%;
+            width: 15%;
+        }
+        .info_I{
+            grid-column-start: 2;
+            grid-column-end: 3;
+            /*border: 1px solid white;*/
+            display: flex;
+            position: relative;
+
+            left: 5%;
+            width: 85%;
+        }
         .profile-card {
             position: relative;
             display: flex;
@@ -388,13 +489,13 @@
             </div>
             <div class="listing--content">
                 <h1 class="listing--title">
-                    Name of the house
+                    {{ house.name }}
                 </h1>
                 <div class="listing--sub">
-                    <p>Neighbourhood</p>
+                    <p>{{ house.neighbourhood }}</p>
                 </div>
                 <p class="listing--desc">
-                    Description of the house
+                    {{ house.description }}
                 </p>
 
             </div>
@@ -414,18 +515,70 @@
     </div>
 
     <div class="social-box">
+        <div class = social-box-grid>
+            <!-- created by lucas to grid everything*-->
+            <div class="house-rules">
+                <div class="info_L">
+                    <label>RULES:</label>
+                </div>
+                <div class="info_I">
+                    <p>{{ house.rules }}</p>
+                </div>
+            </div>
 
-        <div class="house-rules">
-            <label>HOUSE RULES</label>
-            {{ house.house_id.rules }}
-        </div>
+            <div class="house-bills">
+                <div class="info_L">
+                    <label>BILLS:</label>
+                </div>
+                <div class="info_I">
+                    <p>{{ house.bills }}</p>
+                </div>
+            </div>
 
-        <div class="profile-card">
-            <img class="social-pics"
-                 src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
-                 alt="profile pic"/>
-            <div class="user-information">
-            <h2 class="user-name">{{ user.first_name }} {{ user.last_name }}</h2>
+            <div class="house-price">
+                <div class="info_L">
+                    <label>PRICE:</label>
+                </div>
+                <div class="info_I">
+                    <p>{{ house.price }}</p>
+                </div>
+            </div>
+
+            <div class="house-type">
+                <div class="info_L">
+                    <label>TYPE:</label>
+                </div>
+                <div class="info_I">
+                    <p>{{ house.type }}</p>
+                </div>
+            </div>
+
+            <div class="house-city">
+                <div class="info_L">
+                    <label>CITY:</label>
+                </div>
+                <div class="info_I">
+                    <p>{{ house.city }}</p>
+                </div>
+            </div>
+
+            <div class="house-add">
+                <div class="info_L">
+                    <label>ADD:</label>
+                </div>
+                <div class="info_I">
+                    <p>{{ house.street }} {{ house.civic }}</p>
+                </div>
+            </div>
+
+
+
+            <div class="profile-card">
+                <img class="social-pics"
+                     src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
+                     alt="profile pic"/>
+                <div class="user-information">
+                </div>
             </div>
         </div>
     </div>

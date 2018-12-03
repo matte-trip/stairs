@@ -17,9 +17,14 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
+
+app.config[
+    'UPLOAD_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
+app.config[
+    'STATIC_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
 app.config['available_cities'] = [("TURIN", "Turin")]
 app.config['available_neighbourhoods'] = [("AURORA", "AURORA"),
@@ -127,7 +132,7 @@ class Residence(db.Model):
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(6))  # NULLABLE OR NOT?????????????????????????????????????????????????
+    amenities = db.Column('amenities', db.String(7))
     description = db.Column('description', db.String(1000), nullable=False)
     rules = db.Column('rules', db.String(1000), nullable=False)
     bills = db.Column('bills', db.String(1000), nullable=False)
@@ -377,12 +382,18 @@ def personal_page():
 
     image_name = current_user.user_id + str(current_user.photo_id) + ".png"
 
+    if current_user.house_id:
+        house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first_or_404()
+    else:
+        house = ""
+
     return render_template('private_profile.html',
                            personal_profile_form=personal_profile_form,
                            bio_form=bio_form,
                            image_name=image_name,
                            error=show_wrong_password_box,
-                           habits_form=habits_form)
+                           habits_form=habits_form,
+                           house=house)
 
 
 @app.route('/uploads/<filename>')
@@ -529,9 +540,9 @@ def house_creation():
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
         new_house.neighbourhood = house_form.neighbourhood.data
-        new_house.amenities = "0"  # ===================================================================
+        new_house.amenities = "0000000"  # ===================================================================
         new_house.description = house_form.description.data
-        new_house.house_rules = house_form.rules.data
+        new_house.rules = house_form.rules.data
         new_house.price = house_form.price.data
         new_house.bills = house_form.bills.data
 
@@ -607,13 +618,14 @@ def h(house_id):
     # a_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
-    housemates = User.query.filter_by(house_user_id=house_id.capitalize())
+    # housemates = User.query.filter_by(house_id=house_id.capitalize())
 
     return render_template('public_listing.html',
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
-                           house=house,
-                           housemates=housemates)
+                           house=house
+                           #, housemates=housemates
+                           )
 
 
 @app.route('/existing')
