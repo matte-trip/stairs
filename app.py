@@ -17,9 +17,9 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
 app.config['available_cities'] = [("TURIN", "Turin")]
 app.config['available_neighbourhoods'] = [("AURORA", "AURORA"),
@@ -608,7 +608,7 @@ def upload_house_image(house_id):
             # deleting old image associated to the user
             return redirect(url_for('personal_page'))
 
-    return render_template('upload.html')
+    return render_template('upload_house_image.html')
 
 
 @app.route('/h/<house_id>')
