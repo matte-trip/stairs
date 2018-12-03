@@ -348,19 +348,22 @@
 
             <div class="house_card">
                 <a href="{{ url_for('h', house_id=current_user.house_id) }}">
-                    <img class="house_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+                    <img class="house_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt=""><!--===-->
                 </a>
-                <label>{{ current_user.house_id }}</label>
+                <label>House Secret Code: {{ house.house_sc }}</label>
                 <label>{{ house.name }}</label>
+
+                <a href="{{ url_for('h_edit', house_id=current_user.house_id) }}">
+                    <button id="add_house_button">EDIT YOUR HOUSE</button>
+                </a>
             </div>
 
         {% else %}
 
-            <a style="display: block" href="{{ url_for('existing') }}"><!--==============================================-->
+            <a style="display: block" href="{{ url_for('existing') }}">
                 <button id="add_house_button">ADD EXISTING HOUSE BY SECRET CODE</button>
             </a>
             <a href="{{ url_for('house_creation') }}">
-                <!--=======================================================================-->
                 <button id="add_house_button">ADD NEW HOUSE</button>
             </a>
 

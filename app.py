@@ -50,7 +50,7 @@ app.config['available_types'] = [("SINGLE", "SINGLE"),
 app.config['housemate_sex'] = [("BOTH", "BOTH"),
                                ("MALE ONLY", "MALE ONLY"),
                                ("FEMALE ONLY", "FEMALE ONLY")]
-app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]  # NOT USED???????????????????????????????????????????????
+app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
@@ -120,6 +120,7 @@ class Residence(db.Model):
     # Id field
     house_id = db.Column('house_id', db.String(8), primary_key=True, unique=True, nullable=False)
     house_sc = db.Column('house_sc', db.String(8), nullable=False)
+    photo_id = db.Column('photo_id', db.Integer)
 
     type = db.Column('type', db.String(30), nullable=False)
     name = db.Column('name', db.String(30), nullable=False)
@@ -256,7 +257,7 @@ def home():
     last_url = ''
 
     if current_user.is_authenticated:
-        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"  # ADD STR IN FRON OF USER_ID
     else:
         pro_pic = ""
     # a_end
@@ -375,7 +376,7 @@ def personal_page():
         bio_form.interests.data = current_user.interests
         bio_form.languages.data = current_user.languages
 
-    image_name = current_user.user_id + str(current_user.photo_id) + ".png"
+    image_name = str(current_user.user_id) + str(current_user.photo_id) + ".png"
 
     if current_user.house_id:
         house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first_or_404()
@@ -503,24 +504,20 @@ def search_results():
     else:
         pro_pic = ""
     # a_end
-    # this is a fake house ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    new_house = Residence()
-    new_house.houses_id = uuid.uuid4().hex[::4].capitalize()
-    new_house.city = "Turin"
-    new_house.street = "Via Guido"
-    new_house.civic = 232
+
+    # TO BE IMPLEMENTED:
+    # -HOUSE LIST
+    # -FILTERED RESEARCH
+
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic)
-    # this is a fake house ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    # -insert the correct data in the return
-    # -insert this into the HTML verify the html code for reference
 
 
 @app.route('/house_creation', methods=['GET', 'POST'])
 @login_required
 def house_creation():
-    pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
 
     house_form = EditHouseForm()
 
@@ -528,6 +525,7 @@ def house_creation():
         new_house = Residence()
         new_house.house_id = uuid.uuid4().hex[::4].capitalize()
         new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
+        new_house.photo_id = 0
 
         new_house.type = house_form.type.data
         new_house.name = new_house.type + " Room in " + house_form.neighbourhood.data
@@ -545,7 +543,7 @@ def house_creation():
 
         db.session.add(new_house)
         db.session.commit()
-        return redirect('house_creation')
+        return redirect(url_for('personal_page'))
 
     return render_template('house_creation.html',
                            pro_pic=pro_pic,
@@ -560,23 +558,40 @@ def h_edit(house_id):
     last_url = "h/" + house_id
 
     if current_user.is_authenticated:
-        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
     # a_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
-    # ADD LIST TO THE HOUSE IMAGES
 
-    amenities_form = EditAmenitiesHouseForm()
+    if house.house_id == current_user.house_id:
+
+        # ADD LIST TO THE HOUSE IMAGES
+
+        amenities_form = EditAmenitiesHouseForm()
+        house_form = EditHouseForm()
+    else:
+        amenities_form = ""
+        house_form = ""
+        redirect(url_for('personal_page'))
+
+    if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):
+        folder_name = os.path.join(app.config['UPLOAD_FOLDER'], house_id)
+
+        image_list = os.listdir(folder_name)
+    else:
+        image_list = ""
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
                            house=house,
-                           amenities_form=amenities_form)
+                           amenities_form=amenities_form,
+                           house_form=house_form,
+                           image_list=image_list)
 
 
-@app.route('/upload_house_image/<house_id>', methods=['GET', 'POST'])  # lucas changed ths
+@app.route('/upload_house_image/<house_id>', methods=['GET', 'POST'])
 @login_required
 def upload_house_image(house_id):
     if request.method == 'POST':
@@ -589,13 +604,33 @@ def upload_house_image(house_id):
         if house_picture.filename == '':
             print 'No selected file'
             return redirect(request.url)
+        house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
         if house_picture:
+
+            house.photo_id += 1
             db.session.commit()
-            filename = "'\'" + house_id + "\(1).png"
-            # saving new image to /uploads
+
+            # filename = str(house.photo_id) + ".png"
+            # if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):
+            #     os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], house_id))
+            # folder_name = os.path.join(app.config['UPLOAD_FOLDER'], house_id)
+
+            # house_picture.save(os.path.join(folder_name, filename))
+
+            filename = str(house.house_id) + str(house.photo_id) + ".png"
             house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            # deleting old image associated to the user
-            return redirect(url_for('personal_page'))
+
+
+            return redirect(url_for('h_edit', house_id=house_id))
+
+        # if profile_picture:
+        #     filename = current_user.user_id + str(current_user.photo_id) + ".png"
+        #     # saving new image to /uploads
+        #     profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #     # deleting old image associated to the user
+        #     filename = current_user.user_id + str(current_user.photo_id - 1) + ".png"
+        #     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        #     return redirect(url_for('personal_page'))
 
     return render_template('upload_house_image.html')
 

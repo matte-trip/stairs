@@ -58,7 +58,7 @@
             text-transform: uppercase;
         }
 
-         button {
+        button {
             font-size: 12px;
             text-align: center;
             text-transform: uppercase;
@@ -136,11 +136,6 @@
         }
 
 
-
-
-
-
-
         .listing .listing--header {
             min-height: 150px;
             width: 100%;
@@ -177,7 +172,6 @@
             font-size: .8em;
             padding: 5px 0;
         }
-
 
 
         .listing--amens {
@@ -235,16 +229,6 @@
         }
 
 
-
-
-
-
-
-
-
-
-
-
         .social-box {
             grid-row-start: 1;
             grid-row-end: 3;
@@ -286,17 +270,12 @@
             text-align: center;
 
         }
-        .user-information{
+
+        .user-information {
             display: block;
             position: relative;
             right: -100px;
         }
-
-
-
-
-
-
 
 
     </style>
@@ -365,16 +344,10 @@
 
             <div class="listing--header">
 
-                <a href="{{ url_for('upload_house_image', house_id=new_house.house_id) }}">
-                <button id="change_button">ADD IMAGES</button>
-            </a>
-
 
             </div>
             <div class="listing--content">
-                <h1 class="listing--title">
-                    Name of the house
-                </h1>
+                {{ house_form.price(value=house.price) }}
                 <div class="listing--sub">
                     <p>Neighbourhood</p>
                 </div>
@@ -384,7 +357,8 @@
 
             </div>
             <div class="listing--amens">
-                <span class="amen bed" style="font-size: 14px;">5</span><div class="amen"> <i class="mdi mdi-bed-empty"></i></div>
+                <span class="amen bed" style="font-size: 14px;">5</span>
+                <div class="amen"><i class="mdi mdi-bed-empty"></i></div>
                 <div class="amen"><span class="bath">4</span> <i class="mdi mdi-toilet"></i></div>
                 <div class="amen"><i class="mdi mdi-paw"></i></div>
                 <span class="amen mdi mdi-access-point-network"></span>
@@ -395,14 +369,16 @@
 
     <div class="social-box">
 
-        {% for images in images %}
-            <img id="profile_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
-            {% endfor %}
+        {% for i in range(0,house.photo_id) %}
+
+            <img style="height: 100px; width: 200px;" id="profile_picture" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
+
+        {% endfor %}
 
 
-            <a href="{{ url_for('upload_house_image') }}">
-                <button id="change_button">ADD</button>
-            </a>
+        <a href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
+            <button id="change_button">ADD</button>
+        </a>
 
     </div>
 
