@@ -43,8 +43,10 @@
             font-family: 'Nunito', sans-serif;
             color: white;
             font-size: 16px;
-            font-weight: 400;
+            width: 90%;
         }
+
+
 
         label {
             font-family: "Oswald", sans-serif;
@@ -136,30 +138,27 @@
         }
 
 
-        .listing .listing--header {
+        .listing  {
             min-height: 150px;
             width: 100%;
             overflow: hidden;
-            max-height: 500px;
+
         }
 
         .listing .listing--header img {
             max-width: 100%;
         }
 
-        .slideshow_image {
-            width: 100%;
-            height: 500px;
-        }
 
-        .listing .listing--title {
+
+        .listing  {
             font-size: .9em;
             padding: 5px 0 2.5px;
             margin: 0;
             position: relative;
         }
 
-        .listing .listing--title:after {
+        .listing {
             position: relative;
             display: block;
             border-bottom: 1px solid white;
@@ -168,21 +167,14 @@
             padding: 2.5px 0;
         }
 
-        .listing .listing--sub {
+        .listing {
             font-size: .8em;
             padding: 5px 0;
         }
 
 
-        .listing--amens {
-            display: flex;
-            flex-wrap: wrap;
-            background: linear-gradient(to left, #eea849, #f46b45);
-            opacity: 0.8;
-            padding: 10px;
-        }
 
-        .listing--amens .amen {
+        .listing--amens {
             margin: 5px;
             font-family: 'Nunito', sans-serif;
             color: white;
@@ -190,91 +182,79 @@
             font-weight: 400;
         }
 
-        /* Slideshow container */
-        .slideshow-container {
-            max-width: 1000px;
-            position: relative;
-            margin: auto;
-        }
-
-        /* Hide the images by default */
-        .mySlides {
-            display: none;
-        }
-
-        /* Next & previous buttons */
-        .prev, .next {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            right: 95%;
-            width: auto;
-            margin-top: -22px;
-            padding: 16px;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            transition: 0.25s ease;
-        }
-
-        /* Position the "next button" to the right */
-        .next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
-        }
-
-        /* On hover, add a black background color with a little bit see-through */
-        .prev:hover, .next:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
 
 
         .social-box {
             grid-row-start: 1;
             grid-row-end: 3;
             grid-column-start: 4;
-
             border: 1px solid white;
             background-color: rgba(0, 0, 0, .25);
-
             flex-direction: column;
             display: grid;
-
-        }
-
-        .house-rules {
-            display: flex;
-            position: relative;
-            height: 160px;
-
-            left: 5%;
-            width: 90%;
-            top: 10px;
-
-
-            color: white;
-        }
-
-        .profile-card {
-            position: relative;
-            display: flex;
-            top: 10px;
-            left: 5%;
-            width: 90%;
-            height: 154px;
-            border: 3px solid #111111;
-            background: #f46b45;
-            background: -webkit-linear-gradient(to right, #eea849, #f46b45);
-            background: linear-gradient(to right, #eea849, #f46b45);
-            opacity: 0.9;
             text-align: center;
+            height: 600px;
 
         }
 
-        .user-information {
+
+
+
+
+        #save_information {
             display: block;
-            position: relative;
-            right: -100px;
+            height: 40px;
+            margin-left: 30%;
+            padding: 5px;
+            border: 1px solid white;
+            border-radius: 0;
+            background: transparent;
+             position: relative;
+            margin-top: 10px;
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            width: 130px;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+
+        }
+        #save_information:hover {
+             background-color: sandybrown;
+        }
+
+        #street , #civic , #price , #type , #city , #neighbourhood {
+            display: block;
+            width: 45%;
+            margin-left: 30%;
+            padding: 5px;
+            border: 0;
+            border-radius: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.4;
+            transition: all 0.1s;
+        }
+        #description , #rules , #bills{
+            display: block;
+            width: 45%;
+            height: 100px;
+            margin-left: 30%;
+            padding: 5px;
+            border: 0;
+            border-radius: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.4;
+            transition: all 0.1s;
+
+        }
+        #street:hover , #civic:hover , #price:hover , #type:hover , #city:hover , #neighbourhood:hover, #description:hover , #rules:hover , #bills:hover {
+            opacity: .9;
         }
 
     </style>
@@ -313,7 +293,16 @@
     </div>
 
     <div class="social-box">
-
+        <h1 style="color: red;">INSTRUCTIONS</h1>
+        <p>Bills : write all fixed bills and specify which of those are included in price</p>
+        <p>Description: describe the whole house underlying strengths and weaknesses
+        i.e. number and kind of rooms , furniture and household appliances ,
+        floor number , closeness to place of interest and bus stops,
+        contract terms and whatever information could be relevant to the new housemate.</p>
+        <p>House Rules : explain what are the common rules accepted in your house like:
+        smoking allowing , cleaning rules, per allowed or not , house parties accepted or not etc. etc. ,
+        practically every term or condition the new housemate must be accept in order to
+        maintain the already existing equilibrium in your house environment.</p>
 
     </div>
 
