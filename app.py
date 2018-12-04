@@ -548,7 +548,7 @@ def house_creation():
         new_house = Residence()
         new_house.house_id = uuid.uuid4().hex[::4].capitalize()
         new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
-        new_house.photo_id = 0
+        new_house.photo_id = -1
 
         new_house.type = house_form.type.data
         new_house.name = new_house.type + " Room in " + house_form.neighbourhood.data
@@ -623,6 +623,27 @@ def h_edit(house_id):
     amenities_form.air_conditioned.data = house.amenities[4]
     amenities_form.furniture.data = house.amenities[5]
     amenities_form.wifi.data = house.amenities[6]
+
+    if request.method == 'POST':
+        if house_form.validate_on_submit():
+            house.type = house_form.type.data
+            house.city = house_form.city.data
+            house.neighbourhood = house_form.neighbourhood.data
+            house.street = house_form.street.data
+            house.civic = house_form.civic.data
+            house.description = house_form.description.data
+            house.rules = house_form.rules.data
+            house.price = house_form.price.data
+            house.bills = house_form.bills.data
+
+        elif amenities_form.validate_on_submit():
+            house.amenities[0] = amenities_form.preferred_sex.data
+            house.amenities[1] = amenities_form.lift.data
+            house.amenities[2] = amenities_form.pet_friendly.data
+            house.amenities[3] = amenities_form.independent_heating.data
+            house.amenities[4] = amenities_form.air_conditioned.data
+            house.amenities[5] = amenities_form.furniture.data
+            house.amenities[6] = amenities_form.wifi.data
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
