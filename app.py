@@ -390,6 +390,8 @@ def personal_page():
         house = ""
         house_pic = ""
 
+    # ADD EXISTING HOUSE BY SECRET CODE FUNCTION STILL TO BE IMPLEMENTED????????????????????????????????????????????????
+
     return render_template('private_profile.html',
                            personal_profile_form=personal_profile_form,
                            bio_form=bio_form,
@@ -606,44 +608,44 @@ def h_edit(house_id):
     else:
         image_list = ""
 
-    house_form.type.data = house.type
-    house_form.city.data = house.city
-    house_form.neighbourhood.data = house.neighbourhood
-    house_form.street.data = house.street
-    house_form.civic.data = house.civic
-    house_form.description.data = house.description
-    house_form.rules.data = house.rules
-    house_form.price.data = house.price
-    house_form.bills.data = house.bills
+    if house_form.validate_on_submit():
+        house.type = house_form.type.data
+        house.city = house_form.city.data
+        house.neighbourhood = house_form.neighbourhood.data
+        house.street = house_form.street.data
+        house.civic = house_form.civic.data
+        house.description = house_form.description.data
+        house.rules = house_form.rules.data
+        house.price = house_form.price.data
+        house.bills = house_form.bills.data
 
-    amenities_form.preferred_sex.data = house.amenities[0]
-    amenities_form.lift.data = house.amenities[1]
-    amenities_form.pet_friendly.data = house.amenities[2]
-    amenities_form.independent_heating.data = house.amenities[3]
-    amenities_form.air_conditioned.data = house.amenities[4]
-    amenities_form.furniture.data = house.amenities[5]
-    amenities_form.wifi.data = house.amenities[6]
+    elif amenities_form.validate_on_submit():
+        house.amenities[0] = amenities_form.preferred_sex.data
+        house.amenities[1] = amenities_form.lift.data
+        house.amenities[2] = amenities_form.pet_friendly.data
+        house.amenities[3] = amenities_form.independent_heating.data
+        house.amenities[4] = amenities_form.air_conditioned.data
+        house.amenities[5] = amenities_form.furniture.data
+        house.amenities[6] = amenities_form.wifi.data
 
-    if request.method == 'POST':
-        if house_form.validate_on_submit():
-            house.type = house_form.type.data
-            house.city = house_form.city.data
-            house.neighbourhood = house_form.neighbourhood.data
-            house.street = house_form.street.data
-            house.civic = house_form.civic.data
-            house.description = house_form.description.data
-            house.rules = house_form.rules.data
-            house.price = house_form.price.data
-            house.bills = house_form.bills.data
+    if request.method == 'GET':
+        house_form.type.data = house.type
+        house_form.city.data = house.city
+        house_form.neighbourhood.data = house.neighbourhood
+        house_form.street.data = house.street
+        house_form.civic.data = house.civic
+        house_form.description.data = house.description
+        house_form.rules.data = house.rules
+        house_form.price.data = house.price
+        house_form.bills.data = house.bills
 
-        elif amenities_form.validate_on_submit():
-            house.amenities[0] = amenities_form.preferred_sex.data
-            house.amenities[1] = amenities_form.lift.data
-            house.amenities[2] = amenities_form.pet_friendly.data
-            house.amenities[3] = amenities_form.independent_heating.data
-            house.amenities[4] = amenities_form.air_conditioned.data
-            house.amenities[5] = amenities_form.furniture.data
-            house.amenities[6] = amenities_form.wifi.data
+        amenities_form.preferred_sex.data = house.amenities[0]
+        amenities_form.lift.data = house.amenities[1]
+        amenities_form.pet_friendly.data = house.amenities[2]
+        amenities_form.independent_heating.data = house.amenities[3]
+        amenities_form.air_conditioned.data = house.amenities[4]
+        amenities_form.furniture.data = house.amenities[5]
+        amenities_form.wifi.data = house.amenities[6]
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
@@ -729,6 +731,8 @@ def existing():
 
     if house:
         redirect(url_for('personal_page'))
+
+    # ADD EXISTING HOUSE BY SECRET CODE FUNCTION STILL TO BE IMPLEMENTED????????????????????????????????????????????????
 
     return render_template('existing.html',
                            pro_pic=pro_pic,
