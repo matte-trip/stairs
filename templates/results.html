@@ -127,7 +127,7 @@
             text-align: center;
         }
 
-        @media (min-width: 700px) {
+        @media (min-width: 100px) {
             .download-card__icon-box {
                 justify-content: center;
             }
@@ -140,7 +140,7 @@
             margin: 0;
         }
 
-        @media (min-width: 700px) {
+        @media (min-width: 100px) {
             .download-cards[data-view='list-view'] .download-card__icon-box {
                 width: 40%; /*found it mother fucker !!!!!!!*/
                 position: absolute;
@@ -159,7 +159,7 @@
             height: 300px; /* this adjusts the height of the white block */
         }
 
-        @media (min-width: 700px) {
+        @media (min-width: 100px) {
             .download-cards[data-view="list-view"] .download-card__content-box {
                 margin-left: calc(40% + 2em);
             }
@@ -204,34 +204,6 @@
             font-size: 13px;
         }
 
-
-        .dc-view-switcher > button {
-            font-family: 'Oswald', sans-serif;
-            background-color: transparent;
-            background-repeat: no-repeat;
-            background-position: 0 0;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5em;
-            vertical-align: middle;
-            color: white;
-            opacity: 0.3;
-            outline: none;
-            transition: opacity .4s ease;
-        }
-
-        .dc-view-switcher > button[data-trigger="list-view"]::before {
-            content: "\f00b";
-        }
-
-        .dc-view-switcher > button[data-trigger="grid-view"]::before {
-            content: "\f009";
-        }
-
-        .dc-view-switcher > button[data-trigger].active {
-            opacity: 1;
-        }
-
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
@@ -243,54 +215,15 @@
             color: sandybrown;
         }
 
-        #nav_bar {
-            display: block;
-
-        }
-
-        #aCaixa {
-            margin-top: 10%;
+        #the_box {
+            margin-top: 80px;
             width: 100%;
         }
 
     </style><!--the style for the rest of the site-->
-
-    <script>
-
-        var downloadGrid = (function () {
-
-            "use strict";
-
-            var $cardContainer = $('.download-cards');
-            var $downloadCard = $('.download-card__content-box');
-            var $viewTrigger = $('button').attr('data', 'trigger');
-
-            function swapTriggerActiveClass(e) {
-                $viewTrigger.removeClass('active');
-                $(e.target).addClass('active');
-            }
-
-            function swapView(e) {
-                var $currentView = $(e.target).attr('data-trigger');
-                $cardContainer.attr('data-view', $currentView);
-            }
-
-            $(document).ready(function () {
-                // Event Listener
-                $viewTrigger.click(function (e) {
-                    swapTriggerActiveClass(e);
-                    swapView(e);
-                });
-            });
-
-        })();
-
-    </script>
 </head>
 
 <body>
-
-<!--============================================================-->
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
@@ -314,16 +247,14 @@
     {% endif %}
 
 </div>
-<!--============================================================-->
-
 
 <div class="container">
     <div data-view="list-view" class="download-cards">
-        <!--============================================================-->
-        <div id="aCaixa">
-            <!--============================================================-->
+
+        <div id="the_box">
+
             <article class="download-card">
-                <div class="download-card__icon-box"><img src="../static/1.jpg"/></div>
+                <div class="download-card__icon-box"><img src="../static/1.jpg" alt=""></div>
                 <div class="download-card__content-box">
                     <div class="content">
                         <h2 class="download-card__content-box__catagory">HOUSE 1</h2>
@@ -341,33 +272,6 @@
                     </div>
                 </div>
             </article>
-            <!--============================================================-->
-
-
-            <!--============================================================-->
-            <article class="download-card">
-                <div class="download-card__icon-box"><img src="../static/2.jpg" alt=""></div>
-                <div class="download-card__content-box">
-                    <div class="content">
-                        <h2 class="download-card__content-box__catagory">HOUSE 2</h2>
-                        <h2 class="download-card__content-box__title">This is house two</h2>
-                        <p class="download-card__content-box__description">Description 1</p>
-
-                        <div class="listing--amens">
-                            <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                            <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                            <div class="amen"><i class="mdi mdi-snowflake"></i></div>
-                        </div>
-
-                        <a class="button"> <i class="fa fa-cloud-download"></i>PRICE</a>
-                    </div>h
-                </div>
-            </article>
-            <!--============================================================-->
-
-
-
 
         </div>
     </div>

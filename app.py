@@ -385,8 +385,10 @@ def personal_page():
 
     if current_user.house_id:
         house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first_or_404()
+        house_pic = str(house.house_id) + str(house.photo_id) + ".png"
     else:
         house = ""
+        house_pic = ""
 
     return render_template('private_profile.html',
                            personal_profile_form=personal_profile_form,
@@ -394,7 +396,8 @@ def personal_page():
                            image_name=image_name,
                            error=show_wrong_password_box,
                            habits_form=habits_form,
-                           house=house)
+                           house=house,
+                           house_pic=house_pic)
 
 
 @app.route('/uploads/<filename>')
@@ -461,13 +464,13 @@ def u(user_id):
     last_url = "u/" + user_id
 
     if current_user.is_authenticated:
-        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
     # a_end
 
     user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
-    user_image_name = user.user_id + str(user.photo_id) + ".png"
+    user_image_name = str(user.user_id) + str(user.photo_id) + ".png"
 
     habits_form = EditSlidersDataForm()
 
@@ -510,13 +513,15 @@ def search_results():
         pro_pic = ""
     # a_end
 
+    all_houses = Residence.query.all()
+
     # TO BE IMPLEMENTED:
-    # -HOUSE LIST
     # -FILTERED RESEARCH
 
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
-                           pro_pic=pro_pic)
+                           pro_pic=pro_pic,
+                           all_houses=all_houses)
 
 
 @app.route('/house_creation', methods=['GET', 'POST'])
@@ -641,12 +646,20 @@ def h(house_id):
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
     housemates = User.query.filter_by(house_id=house_id.capitalize()).all()
 
-    print housemates
+    user_images_list = []
+    for housemate in housemates:
+        user_images_list.append(str(housemate.user_id) + str(housemate.photo_id) + ".png")
+
+    housemates_and_photos = zip(housemates, user_images_list)
+
+    print user_images_list
     return render_template('public_listing.html',
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
                            house=house,
-                           housemates=housemates
+                           housemates=housemates,
+                           user_images_list=user_images_list,
+                           housemates_and_photos=housemates_and_photos
                            )
 
 

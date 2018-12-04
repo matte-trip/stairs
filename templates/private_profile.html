@@ -348,7 +348,7 @@
 
             <div class="house_card">
                 <a href="{{ url_for('h', house_id=current_user.house_id) }}">
-                    <img class="house_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt=""><!--===-->
+                    <img class="house_picture" src=" {{ url_for('send_image', filename=house_pic) }}" alt=""><!--===-->
                 </a>
                 <label>House Secret Code: {{ house.house_sc }}</label>
                 <label>{{ house.name }}</label>

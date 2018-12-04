@@ -112,7 +112,6 @@
             top: 80px;
 
             background: transparent;
-            display: grid;
             grid-template-rows: 2fr 2fr 2fr 0.05fr;
             grid-template-columns: 0.25fr 1.25fr 0.1fr 0.75fr 0.25fr;
         }
@@ -376,15 +375,18 @@
             top: 10px;
             left: 5%;
             width: 90%;
-            height: 154px;
-            border: 3px solid #111111;
-            background: #f46b45;
-            background: -webkit-linear-gradient(to right, #eea849, #f46b45);
-            background: linear-gradient(to right, #eea849, #f46b45);
+            height: 150px;
+            border: 1px solid white;
+            background: sandybrown;
             opacity: 0.9;
             text-align: center;
-
         }
+
+        .social-pics {
+            width: 150px;
+            height: 150px;
+        }
+
         .user-information{
             display: block;
             position: relative;
@@ -440,7 +442,7 @@
 
     {% if is_auth %}
         <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
         </a>
         <a href="{{ url_for('personal_page') }}">
             <button id="account_button">ACCOUNT</button>
@@ -572,14 +574,24 @@
             </div>
 
 
-
+            {% for housemate, photo in housemates_and_photos %}
             <div class="profile-card">
-                <img class="social-pics"
-                     src="{{ url_for('send_image', filename=image_name) }}" width="150px" height="150px"
-                     alt="profile pic"/>
+                <a href="{{ url_for('u', user_id=housemate.user_id) }}">
+            <img class="social-pics" src="{{ url_for('send_image', filename=photo) }}" alt=""/>
+        </a>
+
                 <div class="user-information">
+                    <label>{{ housemate.first_name }} {{ housemate.last_name }}</label>
+                    {% if housemate.university %}
+                    <label>{{ housemate.university }}</label>
+                    {% endif %}
+
+                    {% if housemate.interests %}
+                    <label>{{ housemate.interests }}</label>
+                    {% endif %}
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 
