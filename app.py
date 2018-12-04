@@ -17,9 +17,9 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs'
+    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs'
+    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
 app.config[
     'UPLOAD_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
@@ -573,7 +573,7 @@ def house_creation():
                            house_form=house_form)
 
 
-@app.route('/h_edit/<house_id>')
+@app.route('/h_edit/<house_id>', methods=['GET', 'POST'])
 @login_required
 def h_edit(house_id):
     # a. Keeps track of user position and shows his pro_pic
@@ -606,6 +606,24 @@ def h_edit(house_id):
     else:
         image_list = ""
 
+    house_form.type.data = house.type
+    house_form.city.data = house.city
+    house_form.neighbourhood.data = house.neighbourhood
+    house_form.street.data = house.street
+    house_form.civic.data = house.civic
+    house_form.description.data = house.description
+    house_form.rules.data = house.rules
+    house_form.price.data = house.price
+    house_form.bills.data = house.bills
+
+    amenities_form.preferred_sex.data = house.amenities[0]
+    amenities_form.lift.data = house.amenities[1]
+    amenities_form.pet_friendly.data = house.amenities[2]
+    amenities_form.independent_heating.data = house.amenities[3]
+    amenities_form.air_conditioned.data = house.amenities[4]
+    amenities_form.furniture.data = house.amenities[5]
+    amenities_form.wifi.data = house.amenities[6]
+
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
@@ -637,6 +655,7 @@ def upload_house_image(house_id):
             # if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):
             #     os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], house_id))
 
+            # comment
             filename = str(house.house_id) + str(house.photo_id) + ".png"
             house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
