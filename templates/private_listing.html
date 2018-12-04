@@ -422,6 +422,9 @@
 
     <div class="social-box">
 
+        {{ wtf.quick_form(amenities_form) }}
+
+
         {% for i in range(0,house.photo_id) %}
 
             <img style="height: 100px; width: 200px;" id="profile_picture" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
@@ -432,8 +435,6 @@
         <a href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
             <button id="change_button">ADD</button>
         </a>
-
-        {{ wtf.quick_form(amenities_form) }}
 
     </div>
 
