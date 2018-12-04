@@ -17,9 +17,9 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs'
 
 app.config[
     'UPLOAD_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
@@ -615,27 +615,13 @@ def upload_house_image(house_id):
             house.photo_id += 1
             db.session.commit()
 
-            # filename = str(house.photo_id) + ".png"
             # if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):
             #     os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], house_id))
-            # folder_name = os.path.join(app.config['UPLOAD_FOLDER'], house_id)
-
-            # house_picture.save(os.path.join(folder_name, filename))
 
             filename = str(house.house_id) + str(house.photo_id) + ".png"
             house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-
             return redirect(url_for('h_edit', house_id=house_id))
-
-        # if profile_picture:
-        #     filename = current_user.user_id + str(current_user.photo_id) + ".png"
-        #     # saving new image to /uploads
-        #     profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #     # deleting old image associated to the user
-        #     filename = current_user.user_id + str(current_user.photo_id - 1) + ".png"
-        #     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #     return redirect(url_for('personal_page'))
 
     return render_template('upload_house_image.html')
 
@@ -647,19 +633,20 @@ def h(house_id):
     last_url = "h/" + house_id
 
     if current_user.is_authenticated:
-        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
     # a_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
-    # housemates = User.query.filter_by(house_id=house_id.capitalize())
+    housemates = User.query.filter_by(house_id=house_id.capitalize()).all()
 
+    print housemates
     return render_template('public_listing.html',
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
-                           house=house
-                           #, housemates=housemates
+                           house=house,
+                           housemates=housemates
                            )
 
 
