@@ -548,7 +548,7 @@ def house_creation():
         new_house = Residence()
         new_house.house_id = uuid.uuid4().hex[::4].capitalize()
         new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
-        new_house.photo_id = 0
+        new_house.photo_id = -1
 
         new_house.type = house_form.type.data
         new_house.name = new_house.type + " Room in " + house_form.neighbourhood.data
