@@ -278,6 +278,70 @@
         }
 
 
+
+
+
+
+
+
+
+        #save_information {
+            display: block;
+            height: 40px;
+            margin-left: 30%;
+            padding: 5px;
+            border: 1px solid white;
+            border-radius: 0;
+            background: transparent;
+             position: relative;
+            margin-top: 10px;
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            width: 130px;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+
+        }
+        #save_information:hover {
+             background-color: sandybrown;
+        }
+
+        #street , #civic , #price , #type , #city , #neighbourhood {
+            display: block;
+            width: 45%;
+            margin-left: 30%;
+            padding: 5px;
+            border: 0;
+            border-radius: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.4;
+            transition: all 0.1s;
+        }
+        #description , #rules , #bills{
+            display: block;
+            width: 45%;
+            height: 100px;
+            margin-left: 30%;
+            padding: 5px;
+            border: 0;
+            border-radius: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.4;
+            transition: all 0.1s;
+
+        }
+        #street:hover , #civic:hover , #price:hover , #type:hover , #city:hover , #neighbourhood:hover, #description:hover , #rules:hover , #bills:hover {
+            opacity: .9;
+        }
+
+
     </style>
 
     <script>
@@ -347,23 +411,12 @@
 
             </div>
             <div class="listing--content">
-                {{ house_form.price(value=house.price) }}
-                <div class="listing--sub">
-                    <p>Neighbourhood</p>
-                </div>
-                <p class="listing--desc">
-                    Description of the house
-                </p>
+
+
+                {{ wtf.quick_form(house_form) }}
 
             </div>
-            <div class="listing--amens">
-                <span class="amen bed" style="font-size: 14px;">5</span>
-                <div class="amen"><i class="mdi mdi-bed-empty"></i></div>
-                <div class="amen"><span class="bath">4</span> <i class="mdi mdi-toilet"></i></div>
-                <div class="amen"><i class="mdi mdi-paw"></i></div>
-                <span class="amen mdi mdi-access-point-network"></span>
-                <div class="amen"><i class="mdi mdi-thermometer"></i></div>
-            </div>
+
         </div>
     </div>
 
@@ -379,6 +432,8 @@
         <a href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
             <button id="change_button">ADD</button>
         </a>
+
+        {{ wtf.quick_form(amenities_form) }}
 
     </div>
 

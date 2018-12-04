@@ -608,6 +608,7 @@ def h_edit(house_id):
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
+                           is_auth=current_user.is_authenticated,
                            house=house,
                            amenities_form=amenities_form,
                            house_form=house_form,
