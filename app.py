@@ -655,6 +655,7 @@ def upload_house_image(house_id):
             # if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):
             #     os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], house_id))
 
+            # comment
             filename = str(house.house_id) + str(house.photo_id) + ".png"
             house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
