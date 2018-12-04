@@ -110,6 +110,8 @@
         }
 
         .download-card {
+            min-height: 250px;
+
             display: flex;
             flex-direction: column;
             width: calc(100% - 2em);
@@ -123,8 +125,9 @@
         .download-card__icon-box {
             display: flex;
             align-items: center;
-            background: white;
+            background-color: rgba(0, 0, 0, .25);
             text-align: center;
+            color: white;
         }
 
         @media (min-width: 100px) {
@@ -188,7 +191,6 @@
             padding: 0;
             margin: 0 0 1em;
             clear: both;
-            color: white;
             font-size: 16px;
         }
 
@@ -253,25 +255,37 @@
 
         <div id="the_box">
 
+
+            {% for house, photo in houses_and_photos %}
             <article class="download-card">
-                <div class="download-card__icon-box"><img src="../static/1.jpg" alt=""></div>
+
+                {% if photo %}
+                <div class="download-card__icon-box"><img src=" {{ url_for('send_image', filename=house_pic) }}" alt="This house doesn't have photos yet"></div>
+                {% else %}
+                <div class="download-card__icon-box">This house doesn't have photos yet</div>
+                {% endif %}
+
                 <div class="download-card__content-box">
                     <div class="content">
-                        <h2 class="download-card__content-box__catagory">HOUSE 1</h2>
-                        <h2 class="download-card__content-box__title">This is house one</h2>
-                        <p class="download-card__content-box__description">Description 1</p>
+                        <h2 class="download-card__content-box__catagory">{{ house.neighbourhood }}</h2>
+                        <h2 class="download-card__content-box__title">{{ house.name }}</h2>
+                        <p class="download-card__content-box__description">{{ house.description }}</p>
 
+                        {% if house.amenities != "0000000" %}
                         <div class="listing--amens">
                             <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
                             <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
 
                             <div class="amen"><i class="mdi mdi-snowflake"></i></div>
                         </div>
+                        {% endif %}
 
-                        <a class="button"> <i class="fa fa-cloud-download"></i>PRICE</a>
+                        <a class="button"> <i class="fa fa-cloud-download"></i>{{ house.price }}</a>
                     </div>
                 </div>
+
             </article>
+            {% endfor %}
 
         </div>
     </div>

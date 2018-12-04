@@ -505,10 +505,10 @@ def internal_server_error(e):
 def search_results():
     # a. Keeps track of user position and shows his pro_pic
     global last_url
-    last_url = "results/"
+    last_url = "results"
 
     if current_user.is_authenticated:
-        pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
     # a_end
@@ -518,10 +518,23 @@ def search_results():
     # TO BE IMPLEMENTED:
     # -FILTERED RESEARCH
 
+    house_cards_images = []
+    for house_images in all_houses:
+        if house_images.photo_id == 0:
+            house_cards_images.append(str(house_images.house_id) + str(house_images.photo_id) + ".png")
+        else:
+            house_cards_images.append("")
+
+    print house_cards_images
+
+    houses_and_photos = zip(all_houses, house_cards_images)
+
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
-                           all_houses=all_houses)
+                           all_houses=all_houses,
+                           house_cards_images=house_cards_images,
+                           houses_and_photos=houses_and_photos)
 
 
 @app.route('/house_creation', methods=['GET', 'POST'])
