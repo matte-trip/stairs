@@ -573,7 +573,7 @@ def house_creation():
                            house_form=house_form)
 
 
-@app.route('/h_edit/<house_id>')
+@app.route('/h_edit/<house_id>', methods=['GET', 'POST'])
 @login_required
 def h_edit(house_id):
     # a. Keeps track of user position and shows his pro_pic
@@ -623,6 +623,27 @@ def h_edit(house_id):
     amenities_form.air_conditioned.data = house.amenities[4]
     amenities_form.furniture.data = house.amenities[5]
     amenities_form.wifi.data = house.amenities[6]
+
+    if request.method == 'POST':
+        if house_form.validate_on_submit():
+            house.type = house_form.type.data
+            house.city = house_form.city.data
+            house.neighbourhood = house_form.neighbourhood.data
+            house.street = house_form.street.data
+            house.civic = house_form.civic.data
+            house.description = house_form.description.data
+            house.rules = house_form.rules.data
+            house.price = house_form.price.data
+            house.bills = house_form.bills.data
+
+        elif amenities_form.validate_on_submit():
+            house.amenities[0] = amenities_form.preferred_sex.data
+            house.amenities[1] = amenities_form.lift.data
+            house.amenities[2] = amenities_form.pet_friendly.data
+            house.amenities[3] = amenities_form.independent_heating.data
+            house.amenities[4] = amenities_form.air_conditioned.data
+            house.amenities[5] = amenities_form.furniture.data
+            house.amenities[6] = amenities_form.wifi.data
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
