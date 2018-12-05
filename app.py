@@ -609,6 +609,7 @@ def h_edit(house_id):
         image_list = ""
 
     if house_form.validate_on_submit():
+        print "house_form validato"
         house.type = house_form.type.data
         house.city = house_form.city.data
         house.neighbourhood = house_form.neighbourhood.data
@@ -618,15 +619,29 @@ def h_edit(house_id):
         house.rules = house_form.rules.data
         house.price = house_form.price.data
         house.bills = house_form.bills.data
+        db.session.commit()
 
     elif amenities_form.validate_on_submit():
-        house.amenities[0] = amenities_form.preferred_sex.data
-        house.amenities[1] = amenities_form.lift.data
-        house.amenities[2] = amenities_form.pet_friendly.data
-        house.amenities[3] = amenities_form.independent_heating.data
-        house.amenities[4] = amenities_form.air_conditioned.data
-        house.amenities[5] = amenities_form.furniture.data
-        house.amenities[6] = amenities_form.wifi.data
+        print "amenities_form validato"
+        amenities_list = []
+        if amenities_form.preferred_sex.data == "MALE ONLY":
+            amenities_list.append(str(1))
+        elif amenities_form.preferred_sex.data == "FEMALE ONLY":
+            amenities_list.append(str(2))
+        else:
+            amenities_list.append(str(0))
+
+        amenities_list.append(str(int(amenities_form.lift.data)))
+        amenities_list.append(str(int(amenities_form.pet_friendly.data)))
+        amenities_list.append(str(int(amenities_form.independent_heating.data)))
+        amenities_list.append(str(int(amenities_form.air_conditioned.data)))
+        amenities_list.append(str(int(amenities_form.furniture.data)))
+        amenities_list.append(str(int(amenities_form.wifi.data)))
+        house.amenities = "".join(amenities_list)
+
+        db.session.commit()
+    else:
+        print "nessuno dei due"
 
     if request.method == 'GET':
         house_form.type.data = house.type
@@ -639,13 +654,42 @@ def h_edit(house_id):
         house_form.price.data = house.price
         house_form.bills.data = house.bills
 
-        amenities_form.preferred_sex.data = house.amenities[0]
-        amenities_form.lift.data = house.amenities[1]
-        amenities_form.pet_friendly.data = house.amenities[2]
-        amenities_form.independent_heating.data = house.amenities[3]
-        amenities_form.air_conditioned.data = house.amenities[4]
-        amenities_form.furniture.data = house.amenities[5]
-        amenities_form.wifi.data = house.amenities[6]
+        if house.amenities[0] == str(0):
+            amenities_form.preferred_sex.data = "BOTH"
+        elif house.amenities[0] == str(1):
+            amenities_form.preferred_sex.data = "MALE ONLY"
+        elif house.amenities[0] == str(2):
+            amenities_form.preferred_sex.data = "FEMALE ONLY"
+
+        if house.amenities[1] == str(0):
+            amenities_form.lift.data = False
+        else:
+            amenities_form.lift.data = True
+
+        if house.amenities[2] == str(0):
+            amenities_form.pet_friendly.data = False
+        else:
+            amenities_form.pet_friendly.data = True
+
+        if house.amenities[3] == str(0):
+            amenities_form.independent_heating.data = False
+        else:
+            amenities_form.independent_heating.data = True
+
+        if house.amenities[4] == str(0):
+            amenities_form.air_conditioned.data = False
+        else:
+            amenities_form.air_conditioned.data = True
+
+        if house.amenities[5] == str(0):
+            amenities_form.furniture.data = False
+        else:
+            amenities_form.furniture.data = True
+
+        if house.amenities[6] == str(0):
+            amenities_form.wifi.data = False
+        else:
+            amenities_form.wifi.data = True
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
