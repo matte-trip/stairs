@@ -26,36 +26,37 @@ app.config[
 app.config[
     'STATIC_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
-app.config['available_cities'] = [("TURIN", "Turin")]
-app.config['available_neighbourhoods'] = [("AURORA", "AURORA"),
-                                          ("BARCA", "BARCA"),
-                                          ("BARRIERA DI MILANO", "BARRIERA DI MILANO"),
-                                          ("BORGATA VITTORIA", "BORGATA VITTORIA"),
-                                          ("BORGO PO", "BORGO PO"),
-                                          ("CAMPIDOGLIO", "CAMPIDOGLIO"),
-                                          ("CENISIA", "CENISIA"),
-                                          ("CENTRO", "CENTRO"),
-                                          ("CROCETTA", "CROCETTA"),
-                                          ("FALCHERA", "FALCHERA"),
-                                          ("LANZO", "LANZO"),
-                                          ("LINGOTTO", "LINGOTTO"),
-                                          ("LUCENTO", "LUCENTO"),
-                                          ("MADONNA DEL PILONE", "MADONNA DEL PILONE"),
-                                          ("MIRAFIORI NORD", "MIRAFIORI NORD"),
-                                          ("MIRAFIORI SUD", "MIRAFIORI SUD"),
-                                          ("NIZZA", "NIZZA"),
-                                          ("PARELLA", "PARELLA"),
-                                          ("POZZO STRADA", "POZZO STRADA"),
-                                          ("SAN PAOLO", "SAN PAOLO"),
-                                          ("SAN SALVARIO", "SAN SALVARIO"),
-                                          ("SANTA RITA", "SANTA RITA"),
-                                          ("VANCHIGLIA", "VANCHIGLIA")]
-app.config['available_types'] = [("SINGLE", "SINGLE"),
-                                 ("DOUBLE", "DOUBLE")]
-app.config['housemate_sex'] = [("BOTH", "BOTH"),
-                               ("MALE ONLY", "MALE ONLY"),
-                               ("FEMALE ONLY", "FEMALE ONLY")]
-app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]
+app.config['available_cities'] = [("TURIN", "0")]
+app.config['available_neighbourhoods'] = [("AURORA", "1"),
+                                          ("BARCA", "2"),
+                                          ("BARRIERA DI MILANO", "3"),
+                                          ("BORGATA VITTORIA", "4"),
+                                          ("BORGO PO", "5"),
+                                          ("CAMPIDOGLIO", "6"),
+                                          ("CENISIA", "7"),
+                                          ("CENTRO", "8"),
+                                          ("CROCETTA", "9"),
+                                          ("FALCHERA", "a"),
+                                          ("LANZO", "b"),
+                                          ("LINGOTTO", "c"),
+                                          ("LUCENTO", "d"),
+                                          ("MADONNA DEL PILONE", "e"),
+                                          ("MIRAFIORI NORD", "f"),
+                                          ("MIRAFIORI SUD", "g"),
+                                          ("NIZZA", "h"),
+                                          ("PARELLA", "i"),
+                                          ("POZZO STRADA", "j"),
+                                          ("SAN PAOLO", "k"),
+                                          ("SAN SALVARIO", "l"),
+                                          ("SANTA RITA", "m"),
+                                          ("VANCHIGLIA", "n")]
+app.config['available_types'] = [("SINGLE", "1"),
+                                 ("DOUBLE", "2")]
+app.config['housemate_sex'] = [("BOTH", "1"),
+                               ("MALE ONLY", "2"),
+                               ("FEMALE ONLY", "3")]
+app.config['boolean_choice'] = [("NO", "0"),
+                                ("YES", "1")]
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
@@ -265,7 +266,10 @@ def home():
         pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"  # ADD STR IN FRON OF USER_ID
     else:
         pro_pic = ""
-    # a_end
+    # a_e
+
+    print app.config['available_types'][0][0]
+    # first one identifies entry in the list, second one identifies the element in that entry
 
     global errors_in_login_registration
     errors_in_login_registration = 0
@@ -751,6 +755,12 @@ def h(house_id):
 
     housemates_and_photos = zip(housemates, user_images_list)
 
+    if int (house.amenities[0]) == 0:
+        preferred_sex = "BOTH"
+    elif int (house.amenities[0]) == 1:
+        preferred_sex = "MALE ONLY"
+    else:
+        preferred_sex = "FEMALE ONLY"
     print user_images_list
     return render_template('public_listing.html',
                            pro_pic=pro_pic,
@@ -759,6 +769,8 @@ def h(house_id):
                            housemates=housemates,
                            user_images_list=user_images_list,
                            housemates_and_photos=housemates_and_photos,
+                           preferred_sex=preferred_sex,
+
                            lift=int(house.amenities[1]),
                            pet_friendly=int(house.amenities[2]),
                            independent_heating=int(house.amenities[3]),
