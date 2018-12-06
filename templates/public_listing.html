@@ -21,6 +21,11 @@
             text-align: center;
         }
 
+        img {
+            object-fit: cover;
+        }
+
+
         h1 {
             font-family: 'Oswald', sans-serif;
             color: white;
@@ -503,15 +508,31 @@
             </div>
             <div class="listing--amens">
 
-                {% if house.amenities[0] %}
-                    <span class="mdi mdi-forklift"></span>
+                {% if lift %}
+                    <span title="Lift" class="mdi mdi-elevator"></span>
                 {% endif %}
 
-                <span class="amen bed" style="font-size: 14px;">5</span><div class="amen"> <i class="mdi mdi-bed-empty"></i></div>
-                <div class="amen"><span class="bath">4</span> <i class="mdi mdi-toilet"></i></div>
-                <div class="amen"><i class="mdi mdi-paw"></i></div>
-                <span class="amen mdi mdi-access-point-network"></span>
-                <div class="amen"><i class="mdi mdi-thermometer"></i></div>
+                {% if pet_friendly %}
+                    <span class="mdi mdi-paw"></span>
+                {% endif %}
+
+                {% if independent_heating %}
+                   <span class="mdi mdi-thermometer"></span>
+                {% endif %}
+
+                {% if air_conditioned %}
+                    <span class="mdi mdi-snowflake"></span>
+                {% endif %}
+
+                {% if furniture %}
+                    <span class="mdi mdi-pillar"></span>
+                {% endif %}
+
+                {% if wifi %}
+                    <span class="mdi mdi-signal-variant"></span>
+                {% endif %}
+
+
             </div>
         </div>
     </div>

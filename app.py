@@ -26,36 +26,41 @@ app.config[
 app.config[
     'STATIC_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
-app.config['available_cities'] = [("TURIN", "Turin")]
-app.config['available_neighbourhoods'] = [("AURORA", "AURORA"),
-                                          ("BARCA", "BARCA"),
-                                          ("BARRIERA DI MILANO", "BARRIERA DI MILANO"),
-                                          ("BORGATA VITTORIA", "BORGATA VITTORIA"),
-                                          ("BORGO PO", "BORGO PO"),
-                                          ("CAMPIDOGLIO", "CAMPIDOGLIO"),
-                                          ("CENISIA", "CENISIA"),
-                                          ("CENTRO", "CENTRO"),
-                                          ("CROCETTA", "CROCETTA"),
-                                          ("FALCHERA", "FALCHERA"),
-                                          ("LANZO", "LANZO"),
-                                          ("LINGOTTO", "LINGOTTO"),
-                                          ("LUCENTO", "LUCENTO"),
-                                          ("MADONNA DEL PILONE", "MADONNA DEL PILONE"),
-                                          ("MIRAFIORI NORD", "MIRAFIORI NORD"),
-                                          ("MIRAFIORI SUD", "MIRAFIORI SUD"),
-                                          ("NIZZA", "NIZZA"),
-                                          ("PARELLA", "PARELLA"),
-                                          ("POZZO STRADA", "POZZO STRADA"),
-                                          ("SAN PAOLO", "SAN PAOLO"),
-                                          ("SAN SALVARIO", "SAN SALVARIO"),
-                                          ("SANTA RITA", "SANTA RITA"),
-                                          ("VANCHIGLIA", "VANCHIGLIA")]
-app.config['available_types'] = [("SINGLE", "SINGLE"),
-                                 ("DOUBLE", "DOUBLE")]
-app.config['housemate_sex'] = [("BOTH", "BOTH"),
-                               ("MALE ONLY", "MALE ONLY"),
-                               ("FEMALE ONLY", "FEMALE ONLY")]
-app.config['boolean_choice'] = [("NO", "No"), ("YES", "Yes")]
+app.config['available_cities'] = [("TURIN", "0")]
+
+app.config['available_neighbourhoods'] = [("AURORA", "1"),
+                                          ("BARCA", "2"),
+                                          ("BARRIERA DI MILANO", "3"),
+                                          ("BORGATA VITTORIA", "4"),
+                                          ("BORGO PO", "5"),
+                                          ("CAMPIDOGLIO", "6"),
+                                          ("CENISIA", "7"),
+                                          ("CENTRO", "8"),
+                                          ("CROCETTA", "9"),
+                                          ("FALCHERA", "a"),
+                                          ("LANZO", "b"),
+                                          ("LINGOTTO", "c"),
+                                          ("LUCENTO", "d"),
+                                          ("MADONNA DEL PILONE", "e"),
+                                          ("MIRAFIORI NORD", "f"),
+                                          ("MIRAFIORI SUD", "g"),
+                                          ("NIZZA", "h"),
+                                          ("PARELLA", "i"),
+                                          ("POZZO STRADA", "j"),
+                                          ("SAN PAOLO", "k"),
+                                          ("SAN SALVARIO", "l"),
+                                          ("SANTA RITA", "m"),
+                                          ("VANCHIGLIA", "n")]
+
+app.config['available_types'] = [("SINGLE", "1"),
+                                 ("DOUBLE", "2")]
+
+app.config['housemate_sex'] = [("BOTH", "1"),
+                               ("MALE ONLY", "2"),
+                               ("FEMALE ONLY", "3")]
+
+app.config['boolean_choice'] = [("NO", "0"),
+                                ("YES", "1")]
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
@@ -780,6 +785,12 @@ def h(house_id):
 
     housemates_and_photos = zip(housemates, user_images_list)
 
+    if int (house.amenities[0]) == 0:
+        preferred_sex = "BOTH"
+    elif int (house.amenities[0]) == 1:
+        preferred_sex = "MALE ONLY"
+    else:
+        preferred_sex = "FEMALE ONLY"
     print user_images_list
     return render_template('public_listing.html',
                            pro_pic=pro_pic,
@@ -787,31 +798,49 @@ def h(house_id):
                            house=house,
                            housemates=housemates,
                            user_images_list=user_images_list,
-                           housemates_and_photos=housemates_and_photos
+                           housemates_and_photos=housemates_and_photos,
+                           preferred_sex=preferred_sex,
+
+                           lift=int(house.amenities[1]),
+                           pet_friendly=int(house.amenities[2]),
+                           independent_heating=int(house.amenities[3]),
+                           air_conditioned=int(house.amenities[4]),
+                           furniture=int(house.amenities[5]),
+                           wifi=int(house.amenities[6]),
                            )
 
 
-@app.route('/existing')
+@app.route('/existing',methods=['GET', 'POST'])
 @login_required
 def existing():
     # c1. User's pro_pic for login_required pages
     pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     # c1_end
 
-    existing_house = ExistingHouseForm()
-    # here the user must enter the house secret code in order to join the house
-    house_sc = existing_house.house_sc.data
-    house = Residence.query.filter_by(house_id=house_sc.capitalize()).first_or_404()
+    existing_house_form = ExistingHouseForm()
 
-    if house:
-        return redirect(url_for('personal_page'))
+    if request.method == 'POST':
+        print "post"
+        if existing_house_form.validate_on_submit():
+            print "validate"
+            # here the user must enter the house secret code in order to join the house
+            house_sc = existing_house_form.house_sc.data
+            house = Residence.query.filter_by(house_sc=house_sc.capitalize()).first()
+
+            if house is not None:
+                current_user.house_id = house.house_id
+                db.session.commit()
+                return redirect(url_for('personal_page'))
+            else:
+                print "lets give this guy an error"
+
 
     # ADD EXISTING HOUSE BY SECRET CODE FUNCTION STILL TO BE IMPLEMENTED????????????????????????????????????????????????
 
     return render_template('existing.html',
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
-                           existing_house=existing_house)
+                           existing_house=existing_house_form)
 
 
 @app.route('/logout')
