@@ -316,7 +316,7 @@ def login_registration():
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
             new_user.photo_id = 0
-            new_user.habits = "0000000000"
+            new_user.habits = "000000000000"
             default_image_destination_path = new_user.user_id + "0.png"
             shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
                         os.path.join(app.config['UPLOAD_FOLDER'], default_image_destination_path))
@@ -371,8 +371,8 @@ def personal_page():
         personal_profile_form.email.data = current_user.email
         personal_profile_form.first_name.data = current_user.first_name
         personal_profile_form.last_name.data = current_user.last_name
-        personal_profile_form.city = current_user.city
-        personal_profile_form.phone_number = current_user.phone_number
+        personal_profile_form.city.data = current_user.city
+        personal_profile_form.phone_number.data = current_user.phone_number
 
         bio_form.age.data = current_user.age
         bio_form.study_field.data = current_user.study_field
@@ -601,7 +601,7 @@ def h_edit(house_id):
         house_form = ""
         redirect(url_for('personal_page'))
 
-    if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):
+    if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):  #  NOT WORKING?????????????????????????????
         folder_name = os.path.join(app.config['UPLOAD_FOLDER'], house_id)
 
         image_list = os.listdir(folder_name)
@@ -609,7 +609,6 @@ def h_edit(house_id):
         image_list = ""
 
     if house_form.validate_on_submit():
-        print "house_form validato"
         house.type = house_form.type.data
         house.city = house_form.city.data
         house.neighbourhood = house_form.neighbourhood.data

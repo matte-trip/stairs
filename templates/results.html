@@ -260,7 +260,7 @@
             <article class="download-card">
 
                 {% if photo %}
-                <div class="download-card__icon-box"><img src=" {{ url_for('send_image', filename=house_pic) }}" alt="This house doesn't have photos yet"></div>
+                <div class="download-card__icon-box"><img src="{{ url_for('send_image', filename=house_pic) }}" alt="This house doesn't have photos yet"></div>
                 {% else %}
                 <div class="download-card__icon-box">This house doesn't have photos yet</div>
                 {% endif %}
@@ -268,7 +268,7 @@
                 <div class="download-card__content-box">
                     <div class="content">
                         <h2 class="download-card__content-box__catagory">{{ house.neighbourhood }}</h2>
-                        <h2 class="download-card__content-box__title">{{ house.name }}</h2>
+                        <a href="{{ url_for('h', house_id=house.house_id) }}"><h2 class="download-card__content-box__title">{{ house.name }}</h2></a>
                         <p class="download-card__content-box__description">{{ house.description }}</p>
 
                         {% if house.amenities != "0000000" %}
