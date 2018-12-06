@@ -198,7 +198,7 @@ class EditSlidersDataForm(FlaskForm):
     past_experience = DecimalRangeField('Do you have past experiences of house sharing?')
     do_sports = DecimalRangeField('Do you practice sports?')
     pet_friendly = DecimalRangeField('Are you pet friendly?')
-    # how much do you like ...
+    # how much do you like...
     eat_together = DecimalRangeField('Eating with housemates')
     ideal_week_end1 = DecimalRangeField('Staying at home and chill')
     ideal_week_end2 = DecimalRangeField('Hanging out with friends')
@@ -227,10 +227,7 @@ class EditHouseForm(FlaskForm):
     rules = TextAreaField('Rules', validators=[DataRequired()])
     price = IntegerField('Price', validators=[DataRequired()])
     bills = TextAreaField('Bills')
-    save_information = SubmitField('Save Information')
 
-
-class EditAmenitiesHouseForm(FlaskForm):
     preferred_sex = RadioField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
     lift = BooleanField('Lift')
     pet_friendly = BooleanField('Pet Friendly')
@@ -238,7 +235,8 @@ class EditAmenitiesHouseForm(FlaskForm):
     air_conditioned = BooleanField('Air Conditioned')
     furniture = BooleanField('Furniture')
     wifi = BooleanField('Wi-Fi')
-    save_amenities = SubmitField('Save Amenities')
+
+    save_information = SubmitField('Save Information')
 
 
 # ======================================================================================================================
@@ -257,15 +255,17 @@ def setup_db():
 
 @app.route('/')
 def home():
-    # a. Keeps track of user position and shows his pro_pic
+    # a. Keeps track of user address
     global last_url
     last_url = ''
+    # a_end
 
+    # c2. User's pro_pic for public pages
     if current_user.is_authenticated:
-        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"  # ADD STR IN FRON OF USER_ID
+        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
-    # a_end
+    # c2_end
 
     global errors_in_login_registration
     errors_in_login_registration = 0
@@ -277,7 +277,7 @@ def home():
 
 @app.route('/login_registration', methods=['GET', 'POST'])
 def login_registration():
-    # b. Sends away the user if he tries to come to login/register once already logged in
+    # b. Sends away the user if he tries to go to login_registration when already logged in
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     # b_end
@@ -317,7 +317,7 @@ def login_registration():
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
             new_user.photo_id = 0
             new_user.habits = "000000000000"
-            default_image_destination_path = new_user.user_id + "0.png"
+            default_image_destination_path = str(new_user.user_id) + "0.png"
             shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
                         os.path.join(app.config['UPLOAD_FOLDER'], default_image_destination_path))
             db.session.add(new_user)
@@ -326,6 +326,7 @@ def login_registration():
             return redirect("http://127.0.0.1:5000/" + last_url)
 
     return render_template('login_registration.html',
+
                            login_form=login_form,
                            registration_form=registration_form,
                            error=errors_in_login_registration)
@@ -334,6 +335,10 @@ def login_registration():
 @app.route('/user', methods=['GET', 'POST'])
 @login_required
 def personal_page():
+    # c1. User's pro_pic for login_required pages
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
+
     global errors_in_private_page
     global show_wrong_password_box
 
@@ -381,23 +386,25 @@ def personal_page():
         bio_form.interests.data = current_user.interests
         bio_form.languages.data = current_user.languages
 
-    image_name = str(current_user.user_id) + str(current_user.photo_id) + ".png"
-
-    if current_user.house_id:
-        house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first_or_404()
-        house_pic = str(house.house_id) + str(house.photo_id) + ".png"
+    if current_user.house_id:  # ========================================================================================
+        house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first()
+        if house.photo_id >= 0:
+            house_pic = str(house.house_id) + str(house.photo_id) + ".png"
+        else:
+            house_pic = ""
     else:
         house = ""
-        house_pic = ""
-
-    # ADD EXISTING HOUSE BY SECRET CODE FUNCTION STILL TO BE IMPLEMENTED????????????????????????????????????????????????
+        house_pic = ""  # ===============================================================================================
 
     return render_template('private_profile.html',
+                           is_auth=current_user.is_authenticated,
+                           pro_pic=pro_pic,
+
                            personal_profile_form=personal_profile_form,
-                           bio_form=bio_form,
-                           image_name=image_name,
                            error=show_wrong_password_box,
+                           bio_form=bio_form,
                            habits_form=habits_form,
+
                            house=house,
                            house_pic=house_pic)
 
@@ -420,14 +427,15 @@ def upload():
         if profile_picture.filename == '':
             print 'No selected file'
             return redirect(request.url)
+
         if profile_picture:
             current_user.photo_id += 1
             db.session.commit()
-            filename = current_user.user_id + str(current_user.photo_id) + ".png"
+            filename = str(current_user.user_id) + str(current_user.photo_id) + ".png"
             # saving new image to /uploads
             profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # deleting old image associated to the user
-            filename = current_user.user_id + str(current_user.photo_id - 1) + ".png"
+            filename = str(current_user.user_id) + str(current_user.photo_id - 1) + ".png"
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('personal_page'))
 
@@ -437,6 +445,10 @@ def upload():
 @app.route('/habits', methods=['GET', 'POST'])
 @login_required
 def habits():
+    # c1. User's pro_pic for login_required pages
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
+
     habits_form = EditSlidersDataForm()
     if request.method == 'POST':
         habits_list = [str(habits_form.smoking_habits.data),
@@ -453,9 +465,12 @@ def habits():
                        str(habits_form.time_at_home.data)]
         current_user.habits = "".join(habits_list)
         db.session.commit()
+
         return redirect(url_for('personal_page'))
 
     return render_template('habits.html',
+                           pro_pic=pro_pic,
+
                            habits_form=habits_form)
 
 
@@ -464,12 +479,14 @@ def u(user_id):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
     last_url = "u/" + user_id
+    # a_end
 
+    # c2. User's pro_pic for public pages
     if current_user.is_authenticated:
         pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
-    # a_end
+    # c2_end
 
     user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
     user_image_name = str(user.user_id) + str(user.photo_id) + ".png"
@@ -477,48 +494,45 @@ def u(user_id):
     habits_form = EditSlidersDataForm()
 
     return render_template('public_profile.html',
-                           user=user,
-                           image_name=user_image_name,
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
+
+                           user=user,
+                           image_name=user_image_name,
                            habits_form=habits_form)
 
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("http://127.0.0.1:5000/" + last_url)
-
-
-@app.errorhandler(404)
-def page_not_found(e):
-    print e
-    return render_template('404.html'), 404
-
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    print e
-    return render_template('500.html'), 500
-
-
-@app.route('/results')
-def search_results():
+@app.route('/results/<filters>')
+def search_results(filters):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
     last_url = "results"
+    # a_end
 
+    # c2. User's pro_pic for public pages
     if current_user.is_authenticated:
         pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
-    # a_end
+    # c2_end
 
-    all_houses = Residence.query.all()
+    # [0] type > 0 all, 1 single, 2 double
+    # [1] city > 0 turin
+    # [2] neighbourhood > 0 all, 1 aurora, .. a lanzo, .. m vanchiglia
+    # [3] preferred_sex > 0 all, 1 both, 2 male only, 3 female only
+    # [4] lift > 0 all, 1 no, 2 yes  # ==================================================================================
+    # [5] pet_friendly  # could be better is I do 0 no, 1 yes, 2 all?
+    # [6] independent_heating
+    # [7] air_conditioned
+    # [8] furniture
+    # [9] wifi
 
-    # TO BE IMPLEMENTED:
-    # -FILTERED RESEARCH
+    if filters == "0000000000":
+        all_houses = Residence.query.all()
+
+    # else if there is something to filter I can either
+    # - filter the list already taken
+    # - redo a filtered search
 
     house_cards_images = []
     for house_images in all_houses:
@@ -534,6 +548,7 @@ def search_results():
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
+
                            all_houses=all_houses,
                            house_cards_images=house_cards_images,
                            houses_and_photos=houses_and_photos)
@@ -542,7 +557,9 @@ def search_results():
 @app.route('/house_creation', methods=['GET', 'POST'])
 @login_required
 def house_creation():
+    # c1. User's pro_pic for login_required pages
     pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
 
     house_form = EditHouseForm()
 
@@ -564,6 +581,22 @@ def house_creation():
         new_house.price = house_form.price.data
         new_house.bills = house_form.bills.data
 
+        amenities_list = []
+        if house_form.preferred_sex.data == "MALE ONLY":
+            amenities_list.append(str(1))
+        elif house_form.preferred_sex.data == "FEMALE ONLY":
+            amenities_list.append(str(2))
+        else:
+            amenities_list.append(str(0))
+
+        amenities_list.append(str(int(house_form.lift.data)))
+        amenities_list.append(str(int(house_form.pet_friendly.data)))
+        amenities_list.append(str(int(house_form.independent_heating.data)))
+        amenities_list.append(str(int(house_form.air_conditioned.data)))
+        amenities_list.append(str(int(house_form.furniture.data)))
+        amenities_list.append(str(int(house_form.wifi.data)))
+        new_house.amenities = "".join(amenities_list)
+
         current_user.house_id = new_house.house_id
 
         db.session.add(new_house)
@@ -578,15 +611,9 @@ def house_creation():
 @app.route('/h_edit/<house_id>', methods=['GET', 'POST'])
 @login_required
 def h_edit(house_id):
-    # a. Keeps track of user position and shows his pro_pic
-    global last_url
-    last_url = "h/" + house_id
-
-    if current_user.is_authenticated:
-        pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
-    else:
-        pro_pic = ""
-    # a_end
+    # c1. User's pro_pic for login_required pages
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
 
@@ -594,14 +621,13 @@ def h_edit(house_id):
 
         # ADD LIST TO THE HOUSE IMAGES
 
-        amenities_form = EditAmenitiesHouseForm()
         house_form = EditHouseForm()
     else:
         amenities_form = ""
         house_form = ""
         redirect(url_for('personal_page'))
 
-    if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):  #  NOT WORKING?????????????????????????????
+    if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):  # NOT WORKING?????????????????????????????
         folder_name = os.path.join(app.config['UPLOAD_FOLDER'], house_id)
 
         image_list = os.listdir(folder_name)
@@ -621,7 +647,7 @@ def h_edit(house_id):
         db.session.commit()
 
     elif amenities_form.validate_on_submit():
-        print "amenities_form validato"
+        print "amenities_form validated"
         amenities_list = []
         if amenities_form.preferred_sex.data == "MALE ONLY":
             amenities_list.append(str(1))
@@ -639,8 +665,6 @@ def h_edit(house_id):
         house.amenities = "".join(amenities_list)
 
         db.session.commit()
-    else:
-        print "nessuno dei due"
 
     if request.method == 'GET':
         house_form.type.data = house.type
@@ -702,6 +726,10 @@ def h_edit(house_id):
 @app.route('/upload_house_image/<house_id>', methods=['GET', 'POST'])
 @login_required
 def upload_house_image(house_id):
+    # c1. User's pro_pic for login_required pages
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
+
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -714,7 +742,6 @@ def upload_house_image(house_id):
             return redirect(request.url)
         house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
         if house_picture:
-
             house.photo_id += 1
             db.session.commit()
 
@@ -734,13 +761,15 @@ def upload_house_image(house_id):
 def h(house_id):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
-    last_url = "h/" + house_id
+    last_url = "u/" + house_id
+    # a_end
 
+    # c2. User's pro_pic for public pages
     if current_user.is_authenticated:
         pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     else:
         pro_pic = ""
-    # a_end
+    # c2_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
     housemates = User.query.filter_by(house_id=house_id.capitalize()).all()
@@ -765,7 +794,9 @@ def h(house_id):
 @app.route('/existing')
 @login_required
 def existing():
-    pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
+    # c1. User's pro_pic for login_required pages
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
 
     existing_house = ExistingHouseForm()
     # here the user must enter the house secret code in order to join the house
@@ -773,7 +804,7 @@ def existing():
     house = Residence.query.filter_by(house_id=house_sc.capitalize()).first_or_404()
 
     if house:
-        redirect(url_for('personal_page'))
+        return redirect(url_for('personal_page'))
 
     # ADD EXISTING HOUSE BY SECRET CODE FUNCTION STILL TO BE IMPLEMENTED????????????????????????????????????????????????
 
@@ -781,6 +812,27 @@ def existing():
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
                            existing_house=existing_house)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    if e:
+        print "Error 404"
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    if e:
+        print "Error 500"
+    return render_template('500.html'), 500
 
 
 # ======================================================================================================================

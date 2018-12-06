@@ -310,7 +310,7 @@
     </a>
 
     <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-        <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
     </a>
     <a href="{{ url_for('personal_page') }}">
         <button id="account_button">ACCOUNT</button>
@@ -328,7 +328,7 @@
         <label>Your Public Profile:</label>
 
         <div class="photo_grid">
-            <img id="profile_picture" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            <img id="profile_picture" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
 
             <a href="{{ url_for('upload') }}">
                 <button id="change_button">CHANGE</button>
@@ -388,13 +388,12 @@
 
         <br><br>
 
-        <label style="display: inline">Your Habits:</label>
+        <label style="display: inline;">My habits</label>
 
         <a href="{{ url_for('habits') }}">
             <button id="modify_button">MODIFY</button>
         </a>
 
-        <label style="text-align: center">Yes or No?</label>
         {{ habits_form.smoking_habits.label }}
         <div class="slider_input">
             <label>NO</label>
@@ -430,7 +429,7 @@
         </div>
 
         <br><br>
-        <label style="text-align: center">How much do you like ... ?</label>
+        <label style="text-align: center">I like</label>
 
         {{ habits_form.eat_together.label }}
         <div class="slider_input">
@@ -467,7 +466,8 @@
         </div>
 
         <br><br>
-        <label style="text-align: center"> I am used to:</label>
+        <label style="text-align: center">I am used to</label>
+
         {{ habits_form.invite_friends.label }}
         <div class="slider_input">
             <label>NO</label>

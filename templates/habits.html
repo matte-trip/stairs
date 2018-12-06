@@ -174,7 +174,7 @@
     </a>
 
     <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-        <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
     </a>
     <a href="{{ url_for('personal_page') }}">
         <button id="account_button">ACCOUNT</button>
@@ -188,7 +188,9 @@
 <div class="container">
 
     <form method="post">
-        <label>Yes or No?</label>
+
+        <label  style="text-align: center">Your habits</label>
+
         {{ habits_form.smoking_habits.label }}
         <div class="slider_input">
             <label>NO</label>
@@ -224,8 +226,8 @@
         </div>
 
         <br><br>
-        <label>How much do you like ... ?</label>
-        <br><br>
+
+        <label style="text-align: center">Do you like</label>
 
         {{ habits_form.house_parties.label }}
         <div class="slider_input">
@@ -262,8 +264,9 @@
         </div>
 
         <br><br>
-        <label> I am used to:</label>
-        <br><br>
+
+        <label style="text-align: center">Are you used to</label>
+
         {{ habits_form.invite_friends.label }}
         <div class="slider_input">
             <label>NO</label>
