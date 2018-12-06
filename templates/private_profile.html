@@ -351,14 +351,28 @@
         {% if current_user.house_id %}
 
             <div class="house_card">
-                <a href="{{ url_for('h', house_id=current_user.house_id) }}">
-                    <img class="house_picture" src=" {{ url_for('send_image', filename=house_pic) }}" alt=""><!--===-->
-                </a>
+
+                {% if house.photo_id != -1 %}
+                    <a href="{{ url_for('h', house_id=current_user.house_id) }}">
+                        <img class="house_picture" src="../uploads/{{ house.house_id }}0.png" alt=""><!--===-->
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('h', house_id=current_user.house_id) }}">
+                        <img class="house_picture" src="../static/house-default.png" alt="">
+                    </a>
+                {% endif %}
+
                 <label>House Secret Code: {{ house.house_sc }}</label>
                 <label>{{ house.name }}</label>
 
                 <a href="{{ url_for('h_edit', house_id=current_user.house_id) }}">
-                    <button id="add_house_button">EDIT YOUR HOUSE</button>
+                    <button id="add_house_button">
+                        {% if house.photo_id == -1 %}
+                            ADD PHOTOS
+                        {% else %}
+                            EDIT YOUR HOUSE
+                        {% endif %}
+                    </button>
                 </a>
             </div>
 

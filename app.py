@@ -26,41 +26,70 @@ app.config[
 app.config[
     'STATIC_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
-app.config['available_cities'] = [("TURIN", "0")]
+app.config['available_types'] = [  # ("0", "NO PREFERENCES"),
+                                 ("1", "SINGLE"),
+                                 ("2", "DOUBLE")]
 
-app.config['available_neighbourhoods'] = [("AURORA", "1"),
-                                          ("BARCA", "2"),
-                                          ("BARRIERA DI MILANO", "3"),
-                                          ("BORGATA VITTORIA", "4"),
-                                          ("BORGO PO", "5"),
-                                          ("CAMPIDOGLIO", "6"),
-                                          ("CENISIA", "7"),
-                                          ("CENTRO", "8"),
-                                          ("CROCETTA", "9"),
-                                          ("FALCHERA", "a"),
-                                          ("LANZO", "b"),
-                                          ("LINGOTTO", "c"),
-                                          ("LUCENTO", "d"),
-                                          ("MADONNA DEL PILONE", "e"),
-                                          ("MIRAFIORI NORD", "f"),
-                                          ("MIRAFIORI SUD", "g"),
-                                          ("NIZZA", "h"),
-                                          ("PARELLA", "i"),
-                                          ("POZZO STRADA", "j"),
-                                          ("SAN PAOLO", "k"),
-                                          ("SAN SALVARIO", "l"),
-                                          ("SANTA RITA", "m"),
-                                          ("VANCHIGLIA", "n")]
+app.config['types'] = [("0", "NO PREFERENCES"),
+                       ("1", "SINGLE"),
+                       ("2", "DOUBLE")]
 
-app.config['available_types'] = [("SINGLE", "1"),
-                                 ("DOUBLE", "2")]
+app.config['available_cities'] = [("0", "TURIN")]
 
-app.config['housemate_sex'] = [("BOTH", "1"),
-                               ("MALE ONLY", "2"),
-                               ("FEMALE ONLY", "3")]
+app.config['available_neighbourhoods'] = [  # ("0", "NO PREFERENCES"),
+                                          ("1", "AURORA"),
+                                          ("2", "BARCA"),
+                                          ("3", "BARRIERA DI MILANO"),
+                                          ("4", "BORGATA VITTORIA"),
+                                          ("5", "BORGO PO"),
+                                          ("6", "CAMPIDOGLIO"),
+                                          ("7", "CENISIA"),
+                                          ("8", "CENTRO"),
+                                          ("9", "CROCETTA"),
+                                          ("a", "FALCHERA"),
+                                          ("b", "LANZO"),
+                                          ("c", "LINGOTTO"),
+                                          ("d", "LUCENTO"),
+                                          ("e", "MADONNA DEL PILONE"),
+                                          ("f", "MIRAFIORI NORD"),
+                                          ("g", "MIRAFIORI SUD"),
+                                          ("h", "NIZZA"),
+                                          ("i", "PARELLA"),
+                                          ("j", "POZZO STRADA"),
+                                          ("k", "SAN PAOLO"),
+                                          ("l", "SAN SALVARIO"),
+                                          ("m", "SANTA RITA"),
+                                          ("n", "VANCHIGLIA")]
 
-app.config['boolean_choice'] = [("NO", "0"),
-                                ("YES", "1")]
+app.config['neighbourhoods'] = [   ("0", "NO PREFERENCES"),
+                                          ("1", "AURORA"),
+                                          ("2", "BARCA"),
+                                          ("3", "BARRIERA DI MILANO"),
+                                          ("4", "BORGATA VITTORIA"),
+                                          ("5", "BORGO PO"),
+                                          ("6", "CAMPIDOGLIO"),
+                                          ("7", "CENISIA"),
+                                          ("8", "CENTRO"),
+                                          ("9", "CROCETTA"),
+                                          ("a", "FALCHERA"),
+                                          ("b", "LANZO"),
+                                          ("c", "LINGOTTO"),
+                                          ("d", "LUCENTO"),
+                                          ("e", "MADONNA DEL PILONE"),
+                                          ("f", "MIRAFIORI NORD"),
+                                          ("g", "MIRAFIORI SUD"),
+                                          ("h", "NIZZA"),
+                                          ("i", "PARELLA"),
+                                          ("j", "POZZO STRADA"),
+                                          ("k", "SAN PAOLO"),
+                                          ("l", "SAN SALVARIO"),
+                                          ("m", "SANTA RITA"),
+                                          ("n", "VANCHIGLIA")]
+
+app.config['housemate_sex'] = [  # ("0", "NO PREFERENCES"),
+                               ("1", "BOTH"),
+                               ("2", "MALE ONLY"),
+                               ("3", "FEMALE ONLY")]
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
@@ -328,7 +357,7 @@ def login_registration():
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
-            return redirect("http://127.0.0.1:5000/" + last_url)
+            return redirect('user')
 
     return render_template('login_registration.html',
 
@@ -391,15 +420,11 @@ def personal_page():
         bio_form.interests.data = current_user.interests
         bio_form.languages.data = current_user.languages
 
-    if current_user.house_id:  # ========================================================================================
+    if current_user.house_id:
         house = Residence.query.filter_by(house_id=current_user.house_id.capitalize()).first()
-        if house.photo_id >= 0:
-            house_pic = str(house.house_id) + str(house.photo_id) + ".png"
-        else:
-            house_pic = ""
+
     else:
         house = ""
-        house_pic = ""  # ===============================================================================================
 
     return render_template('private_profile.html',
                            is_auth=current_user.is_authenticated,
@@ -410,8 +435,7 @@ def personal_page():
                            bio_form=bio_form,
                            habits_form=habits_form,
 
-                           house=house,
-                           house_pic=house_pic)
+                           house=house)
 
 
 @app.route('/uploads/<filename>')
@@ -521,42 +545,34 @@ def search_results(filters):
         pro_pic = ""
     # c2_end
 
-    # [0] type > 0 all, 1 single, 2 double
-    # [1] city > 0 turin
-    # [2] neighbourhood > 0 all, 1 aurora, .. a lanzo, .. m vanchiglia
-    # [3] preferred_sex > 0 all, 1 both, 2 male only, 3 female only
-    # [4] lift > 0 all, 1 no, 2 yes  # ==================================================================================
-    # [5] pet_friendly  # could be better is I do 0 no, 1 yes, 2 all?
-    # [6] independent_heating
-    # [7] air_conditioned
-    # [8] furniture
-    # [9] wifi
+    all_houses = Residence.query.all()
 
-    if filters == "0000000000":
-        all_houses = Residence.query.all()
+    # FILTERS:
+    # filters[0] type > 0 all, 1 single, 2 double
+    # filters[1] city > 0 turin
+    # filters[2] neighbourhood > 0 all, 1 aurora, .. a lanzo, .. m vanchiglia
+    # filters[3] preferred_sex > 0 all, 1 both, 2 male only, 3 female only
+    # filters[4] lift > 0 all, 1 no, 2 yes
+    # filters[5] pet_friendly
+    # filters[6] independent_heating
+    # filters[7] air_conditioned
+    # filters[8] furniture
+    # filters[9] wifi
 
-    # else if there is something to filter I can either
-    # - filter the list already taken
-    # - redo a filtered search
+    if filters[0] == app.config['types'][1][0]:
+        all_houses = [house for house in all_houses if house.type == app.config['types'][1][1]]
+    elif filters[0] == app.config['types'][2][0]:
+        all_houses = [house for house in all_houses if house.type == app.config['types'][2][1]]
 
-    house_cards_images = []
-    for house_images in all_houses:
-        if house_images.photo_id == 0:
-            house_cards_images.append(str(house_images.house_id) + str(house_images.photo_id) + ".png")
-        else:
-            house_cards_images.append("")
-
-    print house_cards_images
-
-    houses_and_photos = zip(all_houses, house_cards_images)
+    # for i in range(1, 9):
+    #     if filters[2] == app.config['neighbourhoods'][i][0]:
+    #         all_houses
 
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
 
-                           all_houses=all_houses,
-                           house_cards_images=house_cards_images,
-                           houses_and_photos=houses_and_photos)
+                           all_houses=all_houses)
 
 
 @app.route('/house_creation', methods=['GET', 'POST'])
@@ -567,7 +583,6 @@ def house_creation():
     # c1_end
 
     house_form = EditHouseForm()
-
     if house_form.validate_on_submit():
         new_house = Residence()
         new_house.house_id = uuid.uuid4().hex[::4].capitalize()
@@ -580,19 +595,19 @@ def house_creation():
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
         new_house.neighbourhood = house_form.neighbourhood.data
-        new_house.amenities = "0000000"  # ===================================================================
+        new_house.amenities = "0000000"
         new_house.description = house_form.description.data
         new_house.rules = house_form.rules.data
         new_house.price = house_form.price.data
         new_house.bills = house_form.bills.data
 
         amenities_list = []
-        if house_form.preferred_sex.data == "MALE ONLY":
-            amenities_list.append(str(1))
-        elif house_form.preferred_sex.data == "FEMALE ONLY":
-            amenities_list.append(str(2))
-        else:
+        if house_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
             amenities_list.append(str(0))
+        elif house_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
+            amenities_list.append(str(1))
+        else:
+            amenities_list.append(str(2))
 
         amenities_list.append(str(int(house_form.lift.data)))
         amenities_list.append(str(int(house_form.pet_friendly.data)))
@@ -610,6 +625,7 @@ def house_creation():
 
     return render_template('house_creation.html',
                            pro_pic=pro_pic,
+
                            house_form=house_form)
 
 
@@ -621,143 +637,122 @@ def h_edit(house_id):
     # c1_end
 
     house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
+    house_form = EditHouseForm()
 
     if house.house_id == current_user.house_id:
+        if house_form.validate_on_submit():
+            house.type = house_form.type.data
+            house.city = house_form.city.data
+            house.neighbourhood = house_form.neighbourhood.data
+            house.street = house_form.street.data
+            house.civic = house_form.civic.data
+            house.description = house_form.description.data
+            house.rules = house_form.rules.data
+            house.price = house_form.price.data
+            house.bills = house_form.bills.data
 
-        # ADD LIST TO THE HOUSE IMAGES
+            amenities_list = []
+            if house_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
+                amenities_list.append(str(0))
+            elif house_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
+                amenities_list.append(str(1))
+            else:
+                amenities_list.append(str(2))
+            amenities_list.append(str(int(house_form.lift.data)))
+            amenities_list.append(str(int(house_form.pet_friendly.data)))
+            amenities_list.append(str(int(house_form.independent_heating.data)))
+            amenities_list.append(str(int(house_form.air_conditioned.data)))
+            amenities_list.append(str(int(house_form.furniture.data)))
+            amenities_list.append(str(int(house_form.wifi.data)))
+            house.amenities = "".join(amenities_list)
 
-        house_form = EditHouseForm()
+            db.session.commit()
+
+        if request.method == 'GET':
+            house_form.type.data = house.type
+            house_form.city.data = house.city
+            house_form.neighbourhood.data = house.neighbourhood
+            house_form.street.data = house.street
+            house_form.civic.data = house.civic
+            house_form.description.data = house.description
+            house_form.rules.data = house.rules
+            house_form.price.data = house.price
+            house_form.bills.data = house.bills
+
+            if house.amenities[0] == str(0):
+                house_form.preferred_sex.data = app.config['housemate_sex'][0][0]
+            elif house.amenities[0] == str(1):
+                house_form.preferred_sex.data = app.config['housemate_sex'][1][0]
+            elif house.amenities[0] == str(2):
+                house_form.preferred_sex.data = app.config['housemate_sex'][2][0]
+
+            if house.amenities[1] == str(0):
+                house_form.lift.data = False
+            else:
+                house_form.lift.data = True
+
+            if house.amenities[2] == str(0):
+                house_form.pet_friendly.data = False
+            else:
+                house_form.pet_friendly.data = True
+
+            if house.amenities[3] == str(0):
+                house_form.independent_heating.data = False
+            else:
+                house_form.independent_heating.data = True
+
+            if house.amenities[4] == str(0):
+                house_form.air_conditioned.data = False
+            else:
+                house_form.air_conditioned.data = True
+
+            if house.amenities[5] == str(0):
+                house_form.furniture.data = False
+            else:
+                house_form.furniture.data = True
+
+            if house.amenities[6] == str(0):
+                house_form.wifi.data = False
+            else:
+                house_form.wifi.data = True
+
     else:
-        amenities_form = ""
-        house_form = ""
         redirect(url_for('personal_page'))
-
-    if os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):  # NOT WORKING?????????????????????????????
-        folder_name = os.path.join(app.config['UPLOAD_FOLDER'], house_id)
-
-        image_list = os.listdir(folder_name)
-    else:
-        image_list = ""
-
-    if house_form.validate_on_submit():
-        house.type = house_form.type.data
-        house.city = house_form.city.data
-        house.neighbourhood = house_form.neighbourhood.data
-        house.street = house_form.street.data
-        house.civic = house_form.civic.data
-        house.description = house_form.description.data
-        house.rules = house_form.rules.data
-        house.price = house_form.price.data
-        house.bills = house_form.bills.data
-        db.session.commit()
-
-    elif amenities_form.validate_on_submit():
-        print "amenities_form validated"
-        amenities_list = []
-        if amenities_form.preferred_sex.data == "MALE ONLY":
-            amenities_list.append(str(1))
-        elif amenities_form.preferred_sex.data == "FEMALE ONLY":
-            amenities_list.append(str(2))
-        else:
-            amenities_list.append(str(0))
-
-        amenities_list.append(str(int(amenities_form.lift.data)))
-        amenities_list.append(str(int(amenities_form.pet_friendly.data)))
-        amenities_list.append(str(int(amenities_form.independent_heating.data)))
-        amenities_list.append(str(int(amenities_form.air_conditioned.data)))
-        amenities_list.append(str(int(amenities_form.furniture.data)))
-        amenities_list.append(str(int(amenities_form.wifi.data)))
-        house.amenities = "".join(amenities_list)
-
-        db.session.commit()
-
-    if request.method == 'GET':
-        house_form.type.data = house.type
-        house_form.city.data = house.city
-        house_form.neighbourhood.data = house.neighbourhood
-        house_form.street.data = house.street
-        house_form.civic.data = house.civic
-        house_form.description.data = house.description
-        house_form.rules.data = house.rules
-        house_form.price.data = house.price
-        house_form.bills.data = house.bills
-
-        if house.amenities[0] == str(0):
-            amenities_form.preferred_sex.data = "BOTH"
-        elif house.amenities[0] == str(1):
-            amenities_form.preferred_sex.data = "MALE ONLY"
-        elif house.amenities[0] == str(2):
-            amenities_form.preferred_sex.data = "FEMALE ONLY"
-
-        if house.amenities[1] == str(0):
-            amenities_form.lift.data = False
-        else:
-            amenities_form.lift.data = True
-
-        if house.amenities[2] == str(0):
-            amenities_form.pet_friendly.data = False
-        else:
-            amenities_form.pet_friendly.data = True
-
-        if house.amenities[3] == str(0):
-            amenities_form.independent_heating.data = False
-        else:
-            amenities_form.independent_heating.data = True
-
-        if house.amenities[4] == str(0):
-            amenities_form.air_conditioned.data = False
-        else:
-            amenities_form.air_conditioned.data = True
-
-        if house.amenities[5] == str(0):
-            amenities_form.furniture.data = False
-        else:
-            amenities_form.furniture.data = True
-
-        if house.amenities[6] == str(0):
-            amenities_form.wifi.data = False
-        else:
-            amenities_form.wifi.data = True
 
     return render_template('private_listing.html',
                            pro_pic=pro_pic,
-                           is_auth=current_user.is_authenticated,
+
                            house=house,
-                           amenities_form=amenities_form,
-                           house_form=house_form,
-                           image_list=image_list)
+                           house_form=house_form)
 
 
 @app.route('/upload_house_image/<house_id>', methods=['GET', 'POST'])
 @login_required
 def upload_house_image(house_id):
-    # c1. User's pro_pic for login_required pages
-    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
-    # c1_end
+    house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
 
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            print 'No file part'
-            return redirect(request.url)
-        house_picture = request.files['file']
-        # check if user has selected file
-        if house_picture.filename == '':
-            print 'No selected file'
-            return redirect(request.url)
-        house = Residence.query.filter_by(house_id=house_id.capitalize()).first_or_404()
-        if house_picture:
-            house.photo_id += 1
-            db.session.commit()
+    if house.house_id == current_user.house_id:
+        if request.method == 'POST':
+            # check if the post request has the file part
+            if 'file' not in request.files:
+                print 'No file part'
+                return redirect(request.url)
+            house_picture = request.files['file']
+            # check if user has selected file
+            if house_picture.filename == '':
+                print 'No selected file'
+                return redirect(request.url)
 
-            # if not os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], house_id)):
-            #     os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], house_id))
+            if house_picture:
+                house.photo_id += 1
+                db.session.commit()
 
-            # comment
-            filename = str(house.house_id) + str(house.photo_id) + ".png"
-            house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                filename = str(house.house_id) + str(house.photo_id) + ".png"
+                house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            return redirect(url_for('h_edit', house_id=house_id))
+                return redirect(url_for('h_edit', house_id=current_user.house_id))
+    else:
+        return redirect(url_for('h_edit', house_id=current_user.house_id))
 
     return render_template('upload_house_image.html')
 
@@ -785,32 +780,32 @@ def h(house_id):
 
     housemates_and_photos = zip(housemates, user_images_list)
 
-    if int (house.amenities[0]) == 0:
-        preferred_sex = "BOTH"
-    elif int (house.amenities[0]) == 1:
-        preferred_sex = "MALE ONLY"
+    if house.amenities[0] == "0":
+        preferred_sex = app.config['housemate_sex'][0][0]
+    elif house.amenities[0] == "1":
+        preferred_sex = app.config['housemate_sex'][1][0]
     else:
-        preferred_sex = "FEMALE ONLY"
-    print user_images_list
+        preferred_sex = app.config['housemate_sex'][2][0]
+
     return render_template('public_listing.html',
-                           pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
+                           pro_pic=pro_pic,
+
                            house=house,
                            housemates=housemates,
                            user_images_list=user_images_list,
                            housemates_and_photos=housemates_and_photos,
-                           preferred_sex=preferred_sex,
 
+                           preferred_sex=preferred_sex,
                            lift=int(house.amenities[1]),
                            pet_friendly=int(house.amenities[2]),
                            independent_heating=int(house.amenities[3]),
                            air_conditioned=int(house.amenities[4]),
                            furniture=int(house.amenities[5]),
-                           wifi=int(house.amenities[6]),
-                           )
+                           wifi=int(house.amenities[6]))
 
 
-@app.route('/existing',methods=['GET', 'POST'])
+@app.route('/existing', methods=['GET', 'POST'])
 @login_required
 def existing():
     # c1. User's pro_pic for login_required pages
@@ -820,26 +815,22 @@ def existing():
     existing_house_form = ExistingHouseForm()
 
     if request.method == 'POST':
-        print "post"
         if existing_house_form.validate_on_submit():
-            print "validate"
             # here the user must enter the house secret code in order to join the house
             house_sc = existing_house_form.house_sc.data
             house = Residence.query.filter_by(house_sc=house_sc.capitalize()).first()
 
-            if house is not None:
+            if house is None:
+                print "lets give this guy an error"  # ==================================================================
+            else:
                 current_user.house_id = house.house_id
                 db.session.commit()
                 return redirect(url_for('personal_page'))
-            else:
-                print "lets give this guy an error"
-
-
-    # ADD EXISTING HOUSE BY SECRET CODE FUNCTION STILL TO BE IMPLEMENTED????????????????????????????????????????????????
 
     return render_template('existing.html',
-                           pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
+                           pro_pic=pro_pic,
+
                            existing_house=existing_house_form)
 
 

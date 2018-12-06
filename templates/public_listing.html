@@ -61,7 +61,7 @@
             text-transform: uppercase;
         }
 
-         button {
+        button {
             font-size: 12px;
             text-align: center;
             text-transform: uppercase;
@@ -139,11 +139,6 @@
         }
 
 
-
-
-
-
-
         .listing .listing--header {
             min-height: 150px;
             width: 100%;
@@ -182,22 +177,19 @@
         }
 
 
-
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
             background: linear-gradient(to left, #eea849, #f46b45);
             opacity: 0.8;
             padding: 10px;
-        }
-
-        .listing--amens .amen {
             margin: 5px;
             font-family: 'Nunito', sans-serif;
             color: white;
             font-size: 16px;
             font-weight: 400;
         }
+
 
         /* Slideshow container */
         .slideshow-container {
@@ -238,16 +230,6 @@
         }
 
 
-
-
-
-
-
-
-
-
-
-
         .social-box {
             grid-row-start: 1;
             grid-row-end: 3;
@@ -261,12 +243,12 @@
 
         }
 
-        .social-box-grid{
+        .social-box-grid {
             dysplay: grid;
-            height:100%;
+            height: 100%;
             width: 100%;
             grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-            grid-template-columns: 1fr 3fr ;
+            grid-template-columns: 1fr 3fr;
 
         }
 
@@ -282,7 +264,7 @@
             color: white;
         }
 
-        .house-bills {/*every info will have their block*/
+        .house-bills { /*every info will have their block*/
             grid-row-start: 2;
             grid-row-end: 3;
             grid-column-start: 1;
@@ -294,7 +276,7 @@
             color: white;
         }
 
-        .house-price {/*every info will have their block*/
+        .house-price { /*every info will have their block*/
             grid-row-start: 3;
             grid-row-end: 4;
             grid-column-start: 1;
@@ -306,7 +288,7 @@
             color: white;
         }
 
-        .house-type {/*every info will have their block*/
+        .house-type { /*every info will have their block*/
             grid-row-start: 4;
             grid-row-end: 5;
             grid-column-start: 1;
@@ -318,7 +300,7 @@
             color: white;
         }
 
-        .house-type {/*every info will have their block*/
+        .house-type { /*every info will have their block*/
             grid-row-start: 4;
             grid-row-end: 5;
             grid-column-start: 1;
@@ -330,7 +312,7 @@
             color: white;
         }
 
-        .house-city {/*every info will have their block*/
+        .house-city { /*every info will have their block*/
             grid-row-start: 5;
             grid-row-end: 6;
             grid-column-start: 1;
@@ -341,7 +323,8 @@
             width: 82%;
             color: white;
         }
-        .house-add {/*every info will have their block*/
+
+        .house-add { /*every info will have their block*/
             grid-row-start: 6;
             grid-row-end: 7;
             grid-column-start: 1;
@@ -353,7 +336,7 @@
             color: white;
         }
 
-        .info_L{
+        .info_L {
 
             grid-column-start: 1;
             grid-column-end: 2;
@@ -364,7 +347,8 @@
             left: 5%;
             width: 15%;
         }
-        .info_I{
+
+        .info_I {
             grid-column-start: 2;
             grid-column-end: 3;
             /*border: 1px solid white;*/
@@ -374,6 +358,7 @@
             left: 5%;
             width: 85%;
         }
+
         .profile-card {
             position: relative;
             display: flex;
@@ -392,17 +377,11 @@
             height: 150px;
         }
 
-        .user-information{
+        .user-information {
             display: block;
             position: relative;
             right: -100px;
         }
-
-
-
-
-
-
 
 
     </style>
@@ -508,28 +487,34 @@
             </div>
             <div class="listing--amens">
 
+                {% if preferred_sex == 1 %}
+                    <span title="Male Only" class="mdi mdi-gender-male"></span>
+                {% elif preferred_sex == 2 %}
+                    <span title="Female Only" class="mdi mdi-gender-female"></span>
+                {% endif %}
+
                 {% if lift %}
                     <span title="Lift" class="mdi mdi-elevator"></span>
                 {% endif %}
 
                 {% if pet_friendly %}
-                    <span class="mdi mdi-paw"></span>
+                    <span title="Per Friendly" class="mdi mdi-paw"></span>
                 {% endif %}
 
                 {% if independent_heating %}
-                   <span class="mdi mdi-thermometer"></span>
+                    <span title="Independent Heating" class="mdi mdi-thermometer"></span>
                 {% endif %}
 
                 {% if air_conditioned %}
-                    <span class="mdi mdi-snowflake"></span>
+                    <span title="Air Conditioned" class="mdi mdi-snowflake"></span>
                 {% endif %}
 
                 {% if furniture %}
-                    <span class="mdi mdi-pillar"></span>
+                    <span title="Furniture" class="mdi mdi-pillar"></span>
                 {% endif %}
 
                 {% if wifi %}
-                    <span class="mdi mdi-signal-variant"></span>
+                    <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
                 {% endif %}
 
 
@@ -538,7 +523,7 @@
     </div>
 
     <div class="social-box">
-        <div class = social-box-grid>
+        <div class=social-box-grid>
             <!-- created by lucas to grid everything*-->
             <div class="house-rules">
                 <div class="info_L">
@@ -594,24 +579,23 @@
                 </div>
             </div>
 
-
             {% for housemate, photo in housemates_and_photos %}
-            <div class="profile-card">
-                <a href="{{ url_for('u', user_id=housemate.user_id) }}">
-            <img class="social-pics" src="{{ url_for('send_image', filename=photo) }}" alt=""/>
-        </a>
+                <div class="profile-card">
+                    <a href="{{ url_for('u', user_id=housemate.user_id) }}">
+                        <img class="social-pics" src="{{ url_for('send_image', filename=photo) }}" alt=""/>
+                    </a>
 
-                <div class="user-information">
-                    <label>{{ housemate.first_name }} {{ housemate.last_name }}</label>
-                    {% if housemate.university %}
-                    <label>{{ housemate.university }}</label>
-                    {% endif %}
+                    <div class="user-information">
+                        <label>{{ housemate.first_name }} {{ housemate.last_name }}</label>
+                        {% if housemate.university %}
+                            <label>{{ housemate.university }}</label>
+                        {% endif %}
 
-                    {% if housemate.interests %}
-                    <label>{{ housemate.interests }}</label>
-                    {% endif %}
+                        {% if housemate.interests %}
+                            <label>{{ housemate.interests }}</label>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
             {% endfor %}
         </div>
     </div>

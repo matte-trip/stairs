@@ -213,12 +213,13 @@
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
+            opacity: 0.8;
             padding: 10px;
-        }
-
-        .listing--amens .amen {
             margin: 5px;
-            color: sandybrown;
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
         }
 
         #the_box {
@@ -238,7 +239,7 @@
 
     {% if is_auth %}
         <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
         </a>
         <a href="{{ url_for('personal_page') }}">
             <button id="account_button">ACCOUNT</button>
@@ -260,35 +261,64 @@
         <div id="the_box">
 
 
-            {% for house, photo in houses_and_photos %}
-            <article class="download-card">
+            {% for house in all_houses %}
+                <article class="download-card">
 
-                {% if photo %}
-                <div class="download-card__icon-box"><img src="{{ url_for('send_image', filename=house_pic) }}" alt="This house doesn't have photos yet"></div>
-                {% else %}
-                <div class="download-card__icon-box">This house doesn't have photos yet</div>
-                {% endif %}
-
-                <div class="download-card__content-box">
-                    <div class="content">
-                        <h2 class="download-card__content-box__catagory">{{ house.neighbourhood }}</h2>
-                        <a href="{{ url_for('h', house_id=house.house_id) }}"><h2 class="download-card__content-box__title">{{ house.name }}</h2></a>
-                        <p class="download-card__content-box__description">{{ house.description }}</p>
-
-                        {% if house.amenities != "0000000" %}
-                        <div class="listing--amens">
-                            <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                            <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                            <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                    {% if house.photo_id != -1 %}
+                        <div class="download-card__icon-box">
+                            <img src="../uploads/{{ house.house_id }}0.png" alt="">
                         </div>
-                        {% endif %}
+                    {% else %}
+                        <div class="download-card__icon-box">This house doesn't have photos yet</div>
+                    {% endif %}
 
-                        <a class="button"> <i class="fa fa-cloud-download"></i>{{ house.price }}</a>
+                    <div class="download-card__content-box">
+                        <div class="content">
+                            <h2 class="download-card__content-box__catagory">{{ house.neighbourhood }}</h2>
+                            <a href="{{ url_for('h', house_id=house.house_id) }}"><h2
+                                    class="download-card__content-box__title">{{ house.name }}</h2></a>
+                            <p class="download-card__content-box__description">{{ house.description }}</p>
+
+                            {% if house.amenities != "0000000" %}
+                                <div class="listing--amens">
+
+                                    {% if house.amenities[0] == "1" %}
+                                        <span title="Male Only" class="mdi mdi-gender-male"></span>
+                                    {% elif house.amenities[0] == "2" %}
+                                        <span title="Female Only" class="mdi mdi-gender-female"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[1] == "1" %}
+                                        <span title="Lift" class="mdi mdi-elevator"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[2] == "1" %}
+                                        <span title="Per Friendly" class="mdi mdi-paw"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[3] == "1" %}
+                                        <span title="Independent Heating" class="mdi mdi-thermometer"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[4] == "1" %}
+                                        <span title="Air Conditioned" class="mdi mdi-snowflake"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[5] == "1" %}
+                                        <span title="Furniture" class="mdi mdi-pillar"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[6] == "1" %}
+                                        <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <a class="button">Price: {{ house.price }}</a>
+                        </div>
                     </div>
-                </div>
 
-            </article>
+                </article>
             {% endfor %}
 
         </div>

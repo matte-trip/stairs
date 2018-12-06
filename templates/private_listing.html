@@ -386,21 +386,15 @@
         <button id="home_button">HOMEPAGE</button>
     </a>
 
-    {% if is_auth %}
-        <a href="{{ url_for('u', user_id=current_user.user_id) }}">
-            <img id="pro_pic" src=" {{ url_for('send_image', filename=image_name) }}" alt="">
-        </a>
-        <a href="{{ url_for('personal_page') }}">
-            <button id="account_button">ACCOUNT</button>
-        </a>
-        <a href="{{ url_for('logout') }}">
-            <button id="logout_button">LOGOUT</button>
-        </a>
-    {% else %}
-        <a href="{{ url_for('login_registration') }}">
-            <button id="login_button">LOGIN</button>
-        </a>
-    {% endif %}
+    <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
+    </a>
+    <a href="{{ url_for('personal_page') }}">
+        <button id="account_button">ACCOUNT</button>
+    </a>
+    <a href="{{ url_for('logout') }}">
+        <button id="logout_button">LOGOUT</button>
+    </a>
 
 </div>
 
@@ -410,24 +404,17 @@
 
         <div class="listing">
 
-            <div class="listing--header">
-
-
-            </div>
             <div class="listing--content">
-
 
                 {{ wtf.quick_form(house_form) }}
 
             </div>
 
         </div>
+
     </div>
 
     <div class="social-box">
-
-        {{ wtf.quick_form(amenities_form) }}
-
 
         {% for i in range(0,house.photo_id) %}
 
@@ -437,7 +424,7 @@
 
 
         <a href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
-            <button id="change_button">ADD</button>
+            <button id="change_button">ADD PHOTO</button>
         </a>
 
     </div>
