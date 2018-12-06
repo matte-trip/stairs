@@ -758,29 +758,45 @@ def h(house_id):
                            house=house,
                            housemates=housemates,
                            user_images_list=user_images_list,
-                           housemates_and_photos=housemates_and_photos
+                           housemates_and_photos=housemates_and_photos,
+                           lift=int(house.amenities[1]),
+                           pet_friendly=int(house.amenities[2]),
+                           independent_heating=int(house.amenities[3]),
+                           air_conditioned=int(house.amenities[4]),
+                           furniture=int(house.amenities[5]),
+                           wifi=int(house.amenities[6]),
                            )
 
 
-@app.route('/existing')
+@app.route('/existing',methods=['GET', 'POST'])
 @login_required
 def existing():
     pro_pic = current_user.user_id + str(current_user.photo_id) + ".png"
 
-    existing_house = ExistingHouseForm()
-    # here the user must enter the house secret code in order to join the house
-    house_sc = existing_house.house_sc.data
-    house = Residence.query.filter_by(house_id=house_sc.capitalize()).first_or_404()
+    existing_house_form = ExistingHouseForm()
 
-    if house:
-        redirect(url_for('personal_page'))
+    if request.method == 'POST':
+        print "post"
+        if existing_house_form.validate_on_submit():
+            print "validate"
+            # here the user must enter the house secret code in order to join the house
+            house_sc = existing_house_form.house_sc.data
+            house = Residence.query.filter_by(house_sc=house_sc.capitalize()).first()
+
+            if house is not None:
+                current_user.house_id = house.house_id
+                db.session.commit()
+                return redirect(url_for('personal_page'))
+            else:
+                print "lets give this guy an error"
+
 
     # ADD EXISTING HOUSE BY SECRET CODE FUNCTION STILL TO BE IMPLEMENTED????????????????????????????????????????????????
 
     return render_template('existing.html',
                            pro_pic=pro_pic,
                            is_auth=current_user.is_authenticated,
-                           existing_house=existing_house)
+                           existing_house=existing_house_form)
 
 
 # ======================================================================================================================
