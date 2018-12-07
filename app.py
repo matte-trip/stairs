@@ -17,14 +17,14 @@ bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
 app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\uploads'
+    'UPLOAD_FOLDER1'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\uploads'
 app.config[
-    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\static'
+    'STATIC_FOLDER1'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\static'
 
 app.config[
-    'UPLOAD_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
+    'UPLOAD_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
 app.config[
-    'STATIC_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
+    'STATIC_FOLDER'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
 
 app.config['available_types'] = [  # ("0", "NO PREFERENCES"),
                                  ("1", "SINGLE"),
@@ -271,6 +271,24 @@ class EditHouseForm(FlaskForm):
     wifi = BooleanField('Wi-Fi')
 
     save_information = SubmitField('Save Information')
+
+
+
+# <!-- =====================================LUCAS============================================== -->
+class FilterForm (FlaskForm):
+    type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
+    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
+    preferred_sex = RadioField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
+    lift = BooleanField('Lift')
+    pet_friendly = BooleanField('Pet Friendly')
+    independent_heating = BooleanField('Independent Heating')
+    air_conditioned = BooleanField('Air Conditioned')
+    furniture = BooleanField('Furniture')
+    wifi = BooleanField('Wi-Fi')
+# <!-- =====================================LUCAS============================================== -->
+
+
+
 
 
 # ======================================================================================================================
@@ -538,6 +556,10 @@ def search_results(filters):
     last_url = "results"
     # a_end
 
+
+    filter_form = FilterForm()
+
+
     # c2. User's pro_pic for public pages
     if current_user.is_authenticated:
         pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
@@ -571,7 +593,7 @@ def search_results(filters):
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
-
+                           filter_form=filter_form,
                            all_houses=all_houses)
 
 
