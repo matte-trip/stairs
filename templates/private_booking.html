@@ -1,0 +1,276 @@
+<head>
+    {% import "bootstrap/wtf.html" as wtf %}
+
+    <title>Calendar Availability</title>
+
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+
+    <style>
+
+        body {
+            margin: 0;
+            background: url('../static/upload-background.png') fixed center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+        }
+
+        img {
+            object-fit: cover;
+        }
+
+        .container {
+            width: 300px;
+            height: 140px;
+            margin-left: -150px;
+            margin-top: -70px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+
+        .choose_button {
+            width: 100%;
+            height: 40px;
+
+            border: 1px solid white;
+        }
+
+        .container_crop {
+            overflow: hidden;
+
+            width: 100%;
+            height: 40px;
+            margin-left: -150px;
+            margin-top: -20px;
+            position: absolute;
+            left: 50%;
+            top: 52%;
+        }
+
+        .browse_label {
+            position: relative;
+            right: 30%;
+
+            width: 390px;
+            padding: 5px;
+        }
+
+        .upload_button {
+            width: 100%;
+            height: 40px;
+            position: absolute;
+            bottom: 0;
+
+            border: 1px solid white;
+        }
+
+        .choose_button, .browse_label, .upload_button {
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            background: transparent;
+            color: white;
+            transition: all 0.25s;
+        }
+
+        .choose_button:hover, .browse_label:hover, .upload_button:hover {
+            background-color: sandybrown;
+        }
+
+    </style>
+
+    <style>
+
+        body {
+            margin: 0;
+            background: url('../static/habits-background.png') fixed center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+            align-items: center;
+        }
+
+        img {
+            object-fit: cover;
+        }
+
+        button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        button:hover, #save_habits:hover {
+            background: sandybrown;
+        }
+
+        .container {
+            width: 500px;
+            height: 750px;
+            margin-left: -250px;
+            margin-top: 0;
+            margin-bottom: 40px;
+            position: absolute;
+            left: 50%;
+            top: 80px;
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .25);
+        }
+
+        .slider_input {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+            margin-left: 0;
+            height: 16px;
+        }
+
+        #smoking_habits,#time_at_home,#pet_friendly, #past_experience,#ideal_week_end1,#ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #play_music {
+            margin-left: 5%;
+            margin-top: 18px;
+        }
+
+         #smoking_habits,#time_at_home,#pet_friendly, #past_experience,#ideal_week_end1,#ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #play_music {
+            -webkit-appearance: none;
+        }
+
+        #smoking_habits::-webkit-slider-thumb,
+        #time_at_home::-webkit-slider-thumb,
+        #past_experience::-webkit-slider-thumb,
+        #ideal_week_end1::-webkit-slider-thumb,
+        #ideal_week_end2::-webkit-slider-thumb,
+        #eat_together::-webkit-slider-thumb,
+        #do_sports::-webkit-slider-thumb,
+        #house_parties::-webkit-slider-thumb,
+        #invite_friends::-webkit-slider-thumb,
+        #pet_friendly::-webkit-slider-thumb,
+        #overnight_guests::-webkit-slider-thumb,
+        #play_music::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: sandybrown;
+        }
+
+        /* Bootstrap*/
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
+        input {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            padding: 5px;
+            border: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.74;
+            cursor: pointer;
+        }
+
+        input:hover {
+            opacity: 0.99;
+        }
+
+        /* "#" identifies an element by variable name in python script: submit_button = SubmitField('Login')*/
+        #save_habits {
+            position: relative;
+            margin-top: 10px;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 38px;
+            width: 38px;
+            border: 1px solid white;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div id="nav_bar">
+
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
+
+    <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
+    </a>
+    <a href="{{ url_for('personal_page') }}">
+        <button id="account_button">ACCOUNT</button>
+    </a>
+    <a href="{{ url_for('logout') }}">
+        <button id="logout_button">LOGOUT</button>
+    </a>
+
+</div>
+
+<div class="container">
+
+    {{ wtf.quick_form(calendar_availability) }}
+
+</div>
+</body>

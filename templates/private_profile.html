@@ -1,0 +1,549 @@
+<head>
+    {% import "bootstrap/wtf.html" as wtf %}
+
+    <title>{{ current_user.first_name }} {{ current_user.last_name }}</title>
+
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
+    <style>
+
+        body {
+            margin: 0;
+            background: url('../static/private_profile-background.png') fixed center;
+            background-size: cover;
+            width: 100%;
+
+
+            height: auto;
+            min-height: 100%;
+        }
+
+        img {
+            object-fit: cover;
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 30px;
+        }
+
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        p {
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+        }
+
+        button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        button:hover {
+            background: sandybrown;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 38px;
+            width: 38px;
+            border: 1px solid white;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
+
+        .grid {
+            position: absolute;
+            width: 100%;
+            margin-left: -50%;
+            margin-top: 0;
+            left: 50%;
+            top: 80px;
+
+            background: transparent;
+            display: grid;
+            grid-template-columns: 0.25fr 1fr 0.1fr 1fr 0.25fr;
+            grid-template-rows: 2fr 1fr 0.05fr;
+        }
+
+        .bio_form {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 2;
+
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
+        }
+
+        .photo_grid {
+            background: transparent;
+            display: grid;
+            grid-template-rows: 0.1fr 0.1fr;
+            justify-items: center;
+        }
+
+        #profile_picture {
+            grid-row-start: 1;
+
+            width: 200px;
+            height: 200px;
+            margin-top: 5%;
+        }
+
+        #change_btn {
+            grid-row-start: 2;
+        }
+
+        .house_card {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            margin-left: 5%;
+            height: 80px;
+        }
+
+        .house_picture {
+            width: 80px;
+            height: 80px;
+            left: 5%;
+        }
+
+        .profile_form {
+            grid-row-start: 1;
+            grid-row-end: 3;
+            grid-column-start: 4;
+
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .25);
+        }
+
+        #wrong_private_profile {
+            position: relative;
+            margin-top: 10px;
+            margin-left: 5%;
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            width: 90%;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #wrong_private_profile:hover {
+            background-color: sandybrown;
+        }
+
+
+        .slider_input {
+            margin-top: 0;
+            display: flex;
+            justify-content: space-between;
+            width: 95%;
+            margin-left: 0;
+            height: 16px;
+        }
+
+        #smoking_habits, #time_at_home, #pet_friendly, #past_experience, #ideal_week_end1, #ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #play_music {
+            margin-left: 5%;
+            margin-top: 18px;
+            opacity: 0.85;
+
+            background-color: white;
+        }
+
+        #smoking_habits, #time_at_home, #pet_friendly, #past_experience, #ideal_week_end1, #ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #play_music {
+            -webkit-appearance: none;
+        }
+
+        #smoking_habits::-webkit-slider-thumb,
+        #time_at_home::-webkit-slider-thumb,
+        #past_experience::-webkit-slider-thumb,
+        #ideal_week_end1::-webkit-slider-thumb,
+        #ideal_week_end2::-webkit-slider-thumb,
+        #eat_together::-webkit-slider-thumb,
+        #do_sports::-webkit-slider-thumb,
+        #house_parties::-webkit-slider-thumb,
+        #invite_friends::-webkit-slider-thumb,
+        #pet_friendly::-webkit-slider-thumb,
+        #overnight_guests::-webkit-slider-thumb,
+        #play_music::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: sandybrown;
+        }
+
+        /* Bootstrap*/
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
+        input, textarea, #city {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            padding: 5px;
+            border: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.75;
+            transition: all 0.25s;
+        }
+
+        textarea {
+            height: 100px;
+        }
+
+        #languages {
+            height: 60px;
+        }
+
+        input:hover, #city:hover {
+            opacity: 1;
+        }
+
+        /* "#" identifies an element by variable name in python script: submit_button = SubmitField('Login')*/
+        #submit_button, #save_button, #change_button, #save_habits {
+            position: relative;
+            margin-top: 10px;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #submit_button:hover, #save_button:hover, #change_button:hover, #save_habits:hover, #add_house_button:hover {
+            background-color: sandybrown;
+        }
+
+        #add_house_button, #modify_button {
+            margin-left: 5%;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+
+<script>
+    function disableSlider() {
+        document.getElementById("smoking_habits").disabled = true;
+        document.getElementById("past_experience").disabled = true;
+        document.getElementById("do_sports").disabled = true;
+        document.getElementById("pet_friendly").disabled = true;
+        document.getElementById("eat_together").disabled = true;
+        document.getElementById("ideal_week_end1").disabled = true;
+        document.getElementById("ideal_week_end2").disabled = true;
+        document.getElementById("house_parties").disabled = true;
+        document.getElementById("invite_friends").disabled = true;
+        document.getElementById("overnight_guests").disabled = true;
+        document.getElementById("play_music").disabled = true;
+        document.getElementById("time_at_home").disabled = true;
+    }
+</script>
+
+<body onload="disableSlider()">
+<div id="nav_bar">
+
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
+
+    <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
+    </a>
+    <a href="{{ url_for('personal_page') }}">
+        <button id="account_button">ACCOUNT</button>
+    </a>
+    <a href="{{ url_for('logout') }}">
+        <button id="logout_button">LOGOUT</button>
+    </a>
+
+</div>
+
+<div class="grid">
+
+    <div class="bio_form">
+
+        <label>Your Public Profile:</label>
+
+        <div class="photo_grid">
+            <img id="profile_picture" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
+
+            <a href="{{ url_for('upload') }}">
+                <button id="change_button">CHANGE</button>
+            </a>
+        </div>
+
+
+        <label>User id: {{ current_user.user_id }}</label>
+
+        {{ wtf.quick_form(bio_form) }}
+
+        <br><br>
+
+        <label>Your House:</label>
+
+        {% if current_user.house_id %}
+
+            <div class="house_card">
+
+                {% if house.photo_id != -1 %}
+                    <a href="{{ url_for('h', house_id=current_user.house_id) }}">
+                        <img class="house_picture" src="../uploads/{{ house.house_id }}0.png" alt=""><!--===-->
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('h', house_id=current_user.house_id) }}">
+                        <img class="house_picture" src="../static/house-default.png" alt="">
+                    </a>
+                {% endif %}
+
+                <label>House Secret Code: {{ house.house_sc }}</label>
+                <label>{{ house.name }}</label>
+
+                <a href="{{ url_for('h_edit', house_id=current_user.house_id) }}">
+                    <button id="add_house_button">
+                        {% if house.photo_id == -1 %}
+                            ADD PHOTOS
+                        {% else %}
+                            EDIT YOUR HOUSE
+                        {% endif %}
+                    </button>
+                </a>
+            </div>
+
+        {% else %}
+
+            <a style="display: block" href="{{ url_for('existing') }}">
+                <button id="add_house_button">ADD EXISTING HOUSE BY SECRET CODE</button>
+            </a>
+            <a href="{{ url_for('house_creation') }}">
+                <button id="add_house_button">ADD NEW HOUSE</button>
+            </a>
+
+        {% endif %}
+
+        <label>Your Calendar Availability:</label>
+
+        {% for availability, days in calendar_availability %}
+            {% if availability == "1" %}
+                <label style="color: palegreen; display: inline">{{ days }}</label>
+            {% else %}
+                <label style="color: darkred; display: inline">{{ days }}</label>
+            {% endif %}
+
+            {% if days%7 == 0 %}
+                <br>
+            {% endif %}
+        {% endfor %}
+
+        <br>
+
+        <a href="{{ url_for('calendar') }}">
+            <button id="add_house_button">ADJUST</button>
+        </a>
+    </div>
+
+
+    <div class="profile_form">
+
+        {% if error == 1 %}
+            <div class="wrong_private_profile">
+                <a>
+                    <button id="wrong_private_profile">WRONG PASSWORD</button>
+                </a>
+            </div>
+        {% endif %}
+
+        <label>Your Sensitive Information:</label>
+
+        {{ wtf.quick_form(personal_profile_form) }}
+
+        <br><br>
+
+        <label style="display: inline;">My habits</label>
+
+        <a href="{{ url_for('habits') }}">
+            <button id="modify_button">MODIFY</button>
+        </a>
+
+        {{ habits_form.smoking_habits.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.smoking_habits(min=0, max=1, step=1, value=current_user.habits[0], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.past_experience.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.past_experience(min=0, max=1, step=1, value=current_user.habits[1], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.do_sports.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.do_sports(min=0, max=1, step=1, value=current_user.habits[2], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.pet_friendly.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.pet_friendly(min=0, max=1, step=1, value=current_user.habits[3], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+        <label style="text-align: center">I like</label>
+
+        {{ habits_form.eat_together.label }}
+        <div class="slider_input">
+            <label>0</label>
+            {{ habits_form.eat_together(min=0, max=9, step=1, value=current_user.habits[4], oninput="outputUpdate(value)") }}
+            <label>10</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.ideal_week_end1.label }}
+        <div class="slider_input">
+            <label>0</label>
+            {{ habits_form.ideal_week_end1(min=0, max=9, step=1, value=current_user.habits[5], oninput="outputUpdate(value)") }}
+            <label>10</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.ideal_week_end2.label }}
+        <div class="slider_input">
+            <label>0</label>
+            {{ habits_form.ideal_week_end2(min=0, max=9, step=1, value=current_user.habits[6], oninput="outputUpdate(value)") }}
+            <label>10</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.house_parties.label }}
+        <div class="slider_input">
+            <label>0</label>
+            {{ habits_form.house_parties(min=0, max=9, step=1, value=current_user.habits[7], oninput="outputUpdate(value)") }}
+            <label>10</label>
+        </div>
+
+        <br><br>
+        <label style="text-align: center">I am used to</label>
+
+        {{ habits_form.invite_friends.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.invite_friends(min=0, max=1, step=1, value=current_user.habits[8], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.overnight_guests.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.overnight_guests(min=0, max=1, step=1, value=current_user.habits[9], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.play_music.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.play_music(min=0, max=1, step=1, value=current_user.habits[10], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+        {{ habits_form.time_at_home.label }}
+        <div class="slider_input">
+            <label>NO</label>
+            {{ habits_form.time_at_home(min=0, max=1, step=1, value=current_user.habits[11], oninput="outputUpdate(value)") }}
+            <label>YES</label>
+        </div>
+
+        <br><br>
+
+
+    </div>
+</div>
+</body>
+
+

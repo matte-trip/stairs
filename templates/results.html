@@ -1,100 +1,103 @@
-<!--{% if user == current_user %}
-                <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-                {% endif %}
--->
-
 <head>
-    <!--title-->
+    {% import "bootstrap/wtf.html" as wtf %}
     <title>Results</title>
 
-    <!--imported fonts and icons-->
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
     <link href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Raleway:100,200,600,700" rel="stylesheet">
 
-    <!--css stylesheet-->  <!--try4-->
     <style>
-                /* Add a black background color to the top navigation bar */
-        .topnav {
-            font-family: 'Raleway', sans-serif ;
-            overflow: hidden;
-            background-color: #fbfbfb;
-            box-shadow: 0 1px 25px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
+
+        img {
+            object-fit: cover;
+        }
+
+        body {
+            margin: 0;
+            background: url('../static/results-background.png') fixed center;
+            background-size: cover;
+            width: 100%;
+            height: 100%;
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 30px;
+        }
+
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            font-size: 16px;
+
         }
 
 
+        p {
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+        }
 
-        /* Style the links inside the navigation bar */
-        .topnav a {
-            float: left;
-            display: block;
-            color: gray;
+        button {
+            font-size: 12px;
             text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            font-size: 17px;
-        }
-
-        /* Change the color of links on hover */
-        .topnav a:hover {
-            background-color: sandybrown;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: rgba(0, 0, 0, .5);
+            border: 1px solid white;
             color: white;
-            opacity: 0.5;
-
+            letter-spacing: 1px;
+            transition: all 0.25s;
         }
 
-        /* Style the "active" element to highlight the current page */
-        .topnav a.active {
-            background-color: sandybrown;
-            color: white;
+        button:hover {
+            background: sandybrown;
         }
 
-        /* Style the search box inside the navigation bar */
-        .topnav input[type=text] {
-            float: right;
-            padding: 6px;
-            border: none;
-            margin-top: 8px;
-            margin-right: 16px;
-            font-size: 17px;
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
         }
 
-        /* When the screen is less than 600px wide, stack the links and the search field vertically instead of horizontally */
-        @media screen and (max-width: 600px) {
-            .topnav a, .topnav input[type=text] {
-                float: none;
-                display: block;
-                text-align: left;
-                width: 100%;
-                margin: 0;
-                padding: 14px;
-            }
-            .topnav input[type=text] {
-                border: 1px solid #ccc;
-            }
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 40px;
+            width: 40px;
+            border: 1px solid white;
         }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #login_button, #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
+
+
     </style><!--the style fo the menu bar-->
     <style>
 
         body {
-            background-color: white;
-            font-family: 'Raleway', sans-serif;
+            font-family: 'Oswald', sans-serif;
         }
 
         * {
             box-sizing: border-box;
-        }
-
-        .clearfix {
-            content: '';
-            display: table;
-            clear: both;
-        }
-
-        .top_menu{
-            width: 100%;
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 3em 1em;
         }
 
 
@@ -102,8 +105,8 @@
             width: 100%;
             max-width: 1180px;
             margin: 0 auto;
-            padding: 0em 0em;
-        }hh
+            padding: 0;
+        }
 
         .download-cards {
             width: 100%;
@@ -112,28 +115,27 @@
         }
 
         .download-card {
+            min-height: 250px;
+
             display: flex;
             flex-direction: column;
             width: calc(100% - 2em);
-            background: #fbfbfb;
             position: relative;
             overflow: hidden;
-            margin-bottom: 2em;
-            box-shadow: 0 1px 25px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.06);
-            border-bottom: 1px solid #d2d2d2;
-            border-left: 1px solid #dadada;
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
             margin: 0 1em 2em 1em;
         }
 
         .download-card__icon-box {
             display: flex;
             align-items: center;
-            background: #f1f1f1;
-            padding: 0; /*padding do frame da foto*/
+            background-color: rgba(0, 0, 0, .25);
             text-align: center;
+            color: white;
         }
 
-        @media (min-width: 700px) {
+        @media (min-width: 100px) {
             .download-card__icon-box {
                 justify-content: center;
             }
@@ -146,7 +148,7 @@
             margin: 0;
         }
 
-        @media (min-width: 700px) {
+        @media (min-width: 100px) {
             .download-cards[data-view='list-view'] .download-card__icon-box {
                 width: 40%; /*found it mother fucker !!!!!!!*/
                 position: absolute;
@@ -154,7 +156,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                border-right: 1px solid #e6e6e6;
+                border-right: 1px solid white;
 
             }
         }
@@ -162,10 +164,10 @@
         .download-card__content-box {
             padding: 2em 2em 3em;
             flex: 1;
-            height: 300px; /* this ajust the height of the white block */
+            height: 300px; /* this adjusts the height of the white block */
         }
 
-        @media (min-width: 700px) {
+        @media (min-width: 100px) {
             .download-cards[data-view="list-view"] .download-card__content-box {
                 margin-left: calc(40% + 2em);
             }
@@ -194,7 +196,6 @@
             padding: 0;
             margin: 0 0 1em;
             clear: both;
-            color: #929292;
             font-size: 16px;
         }
 
@@ -210,265 +211,139 @@
             font-size: 13px;
         }
 
-        .dc-view-switcher {
-            display: none;
-            margin: 1em;
-            text-align: right;
-        }
-
-        @media (min-width: 700px) {
-            .dc-view-switcher {
-                display: block;
-            }
-        }
-
-        .dc-view-switcher > button {
-            font-family: 'fontAwesome';
-            background-color: transparent;
-            background-repeat: no-repeat;
-            background-position: 0px 0px;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5em;
-            vertical-align: middle;
-            color: gray;
-            opacity: 0.3;
-            outline: none;
-            transition: opacity .4s ease;
-        }
-
-        .dc-view-switcher > button[data-trigger="list-view"]::before {
-            content: "\f00b";
-        }
-
-        .dc-view-switcher > button[data-trigger="grid-view"]::before {
-            content: "\f009";
-        }
-
-        .dc-view-switcher > button[data-trigger].active {
-            opacity: 1;
-        }
-
         .listing--amens {
             display: flex;
             flex-wrap: wrap;
+            opacity: 0.8;
             padding: 10px;
+            margin: 5px;
+            font-family: 'Nunito', sans-serif;
+            color: white;
+            font-size: 16px;
+            font-weight: 400;
         }
 
-        .listing--amens .amen {
-            margin: 5px;
-            color: sandybrown;
+        #the_box {
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .filter_box{
+            position: fixed;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            width: 15%;
+            background: rgba(0, 0, 0, .5);
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            line-height: 30px;
+
+            margin-top: 80px;
         }
 
     </style><!--the style for the rest of the site-->
-
-    <script>
-
-        var downloadGrid = (function () {
-
-            "use strict";
-
-            var $cardContainer = $('.download-cards');
-            var $downloadCard = $('.download-card__content-box');
-            var $viewTrigger = $('button').attr('data', 'trigger');
-
-            function swapTriggerActiveClass(e) {
-                $viewTrigger.removeClass('active');
-                $(e.target).addClass('active');
-            }
-
-            function swapView(e) {
-                var $currentView = $(e.target).attr('data-trigger');
-                $cardContainer.attr('data-view', $currentView);
-            }
-
-            $(document).ready(function () {
-                // Event Listener
-                $viewTrigger.click(function (e) {
-                    swapTriggerActiveClass(e);
-                    swapView(e);
-                });
-            });
-
-        })();
-
-    </script>
 </head>
 
 <body>
+<div id="nav_bar">
 
-<!--============================================================-->
-<div class = "top_menu">
-    <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a>Option 1</a>
-        <a>Option 2</a>
-        <a>Option 3</a>
-        <a>Option 4</a>
-        <a>Option 5</a>
-        <a>Option 6</a>
-        <a>Option 7</a>
-        <a>Option 8</a>
-        <input type="text" placeholder="Search..">
-    </div>
-    <div class="topnav">
-        <a>Option 10</a>
-        <a>Option 11</a>
-        <a>Option 12</a>
-        <a>Option 13</a>
-        <a>Option 14</a>
-        <a>Option 15</a>
-        <a>Option 16</a>
-        <a>Option 17</a>
-        <a>Option 18</a>
-        <a>Option 19</a>
-    </div>
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
+
+    {% if is_auth %}
+        <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+            <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
+        </a>
+        <a href="{{ url_for('personal_page') }}">
+            <button id="account_button">ACCOUNT</button>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <button id="logout_button">LOGOUT</button>
+        </a>
+    {% else %}
+        <a href="{{ url_for('login_registration') }}">
+            <button id="login_button">LOGIN</button>
+        </a>
+    {% endif %}
+
 </div>
-<!--============================================================-->
 
-
+    <div class="filter_box">
+          {{ wtf.quick_form(filter_form) }}
+    </div>
 
 <div class="container">
     <div data-view="list-view" class="download-cards">
-        <!--============================================================-->
+
+        <div id="the_box">
 
 
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-1.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Photos</h2>
-                    <h3 class="download-card__content-box__title">Tool Safety Products</h3>
-                    <p class="download-card__content-box__description">High & low-res photos for print and web
-                        media. </p>
+            {% for house in all_houses %}
+                <article class="download-card">
 
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
+                    {% if house.photo_id != -1 %}
+                        <div class="download-card__icon-box">
+                            <img src="../uploads/{{ house.house_id }}0.png" alt="">
+                        </div>
+                    {% else %}
+                        <div class="download-card__icon-box">This house doesn't have photos yet</div>
+                    {% endif %}
 
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
+                    <div class="download-card__content-box">
+                        <div class="content">
+                            <h2 class="download-card__content-box__catagory">{{ house.neighbourhood }}</h2>
+                            <a href="{{ url_for('h', house_id=house.house_id) }}"><h2
+                                    class="download-card__content-box__title">{{ house.name }}</h2></a>
+                            <p class="download-card__content-box__description">{{ house.description }}</p>
+
+                            {% if house.amenities != "0000000" %}
+                                <div class="listing--amens">
+
+                                    {% if house.amenities[0] == "1" %}
+                                        <span title="Male Only" class="mdi mdi-gender-male"></span>
+                                    {% elif house.amenities[0] == "2" %}
+                                        <span title="Female Only" class="mdi mdi-gender-female"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[1] == "1" %}
+                                        <span title="Lift" class="mdi mdi-elevator"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[2] == "1" %}
+                                        <span title="Per Friendly" class="mdi mdi-paw"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[3] == "1" %}
+                                        <span title="Independent Heating" class="mdi mdi-thermometer"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[4] == "1" %}
+                                        <span title="Air Conditioned" class="mdi mdi-snowflake"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[5] == "1" %}
+                                        <span title="Furniture" class="mdi mdi-pillar"></span>
+                                    {% endif %}
+
+                                    {% if house.amenities[6] == "1" %}
+                                        <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <a class="button">Price: {{ house.price }}</a>
+                        </div>
                     </div>
 
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-        <!--============================================================-->
+                </article>
+            {% endfor %}
 
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-2.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">PDF</h2>
-                    <h3 class="download-card__content-box__title">Tool Safety Catalogues</h3>
-                    <p class="download-card__content-box__description">Print and web ready PDF's. </p>
-
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
-                    </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-        <!--============================================================-->
-
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-3.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Photos</h2>
-                    <h3 class="download-card__content-box__title">Height Safety Products</h3>
-                    <p class="download-card__content-box__description">High & low-res photos for print and web
-                        media. </p>
-
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
-                    </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-        <!--============================================================-->
-
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-1.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Document</h2>
-                    <h3 class="download-card__content-box__title">Course Booking Form</h3>
-                    <p class="download-card__content-box__description">Word document </p>
-
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
-                    </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-        <!--============================================================-->
-
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-2.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Photos</h2>
-                    <h3 class="download-card__content-box__title">Height Safety Products</h3>
-                    <p class="download-card__content-box__description">High & low-res photos for print and web
-                        media. </p>
-
-                    <div class="listing--amens">
-                        <div class="amen"><span class="bed">3</span> <i class="mdi mdi-bed-empty"></i></div>
-                        <div class="amen"><span class="bath">2</span> <i class="mdi mdi-toilet"></i></div>
-
-                        <div class="amen"><i class="mdi mdi-snowflake"></i></div>
-                    </div>
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-        <!--============================================================-->
-
-
-        <!--============================================================-->
-        <article class="download-card">
-            <div class="download-card__icon-box"><img src="../static/homepage-background-3.png"/></div>
-            <div class="download-card__content-box">
-                <div class="content">
-                    <h2 class="download-card__content-box__catagory">Photos</h2>
-                    <h3 class="download-card__content-box__title">Height Safety Products</h3>
-                    <p class="download-card__content-box__description">High & low-res photos for print and web
-                        media. </p>
-
-
-
-                    <a class="button"> <i class="fa fa-cloud-download"></i> Download</a>
-                </div>
-            </div>
-        </article>
-
-
+        </div>
     </div>
 </div>
 </body>

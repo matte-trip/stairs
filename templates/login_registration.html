@@ -1,20 +1,13 @@
-<!--
-To DO:
--# class selector is working for forms created in the py file!
--->
-
 <head>
-    <!--bootstrap import to take advantage of forms-->
     {% import "bootstrap/wtf.html" as wtf %}
 
-    <!--title-->
     <title>Login and Registration</title>
 
-    <!--imported fonts-->
+    <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
+
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
 
-    <!--css stylesheet-->
     <style>
 
         body {
@@ -22,43 +15,31 @@ To DO:
         }
 
         .background {
-            background: url('../static/login_registration-background.png') center;
+            background: url('../static/login_registration-background.png') fixed center;
             background-size: cover;
-            width: 100%;
-            height: 100%;
-        }
-
-        .overlay {
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.25);
+            min-height: 100%;
         }
 
         .grid {
             background: transparent;
             display: grid;
-            grid-template-rows: 0.2fr 0.8fr;
             grid-template-columns: 0.4fr 1fr 0.4fr 1fr 0.4fr;
-        }
-
-        .home_button {
-            margin: 2.5% -15%;
-            grid-row-start: 1;
-            grid-column-start: 2;
+            position: relative;
+            top: 80px;
         }
 
         .login_form {
-            grid-row-start: 2;
             grid-column-start: 2;
-
+            background-color: rgba(0, 0, 0, .25);
             border: 1px solid white;
+            margin-bottom: 40px;
         }
 
         .registration_form {
-            grid-row-start: 2;
             grid-column-start: 4;
-
+            background-color: rgba(0, 0, 0, .25);
             border: 1px solid white;
+            margin-bottom: 40px;
         }
 
         /*Forms Classes*/
@@ -77,7 +58,7 @@ To DO:
             text-transform: uppercase;
         }
 
-        input {
+        input, #city {
             display: block;
             width: 90%;
             margin-left: 5%;
@@ -90,12 +71,31 @@ To DO:
             transition: all 0.1s;
         }
 
-        input:hover {
-            opacity: 0.9;
+        input:hover, #city:hover {
+            opacity: .9;
         }
 
-        /* "#" identifies an element by variable name in python script: submit = SubmitField('Login')*/
-        #login, #register, #home_button {
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        /* "#" identifies an element by variable name in python script: login_button = SubmitField('Login')*/
+        #login_button, #registration_button {
             position: relative;
             margin-top: 10px;
 
@@ -114,7 +114,29 @@ To DO:
             opacity: 1;
         }
 
-        #login:hover, #register:hover, #home_button:hover {
+        #login_button:hover, #registration_button:hover, #home_button:hover {
+            background-color: sandybrown;
+        }
+
+        #wrong_login_registration {
+            position: relative;
+            margin-top: 10px;
+            margin-left: 5%;
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            width: 90%;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #wrong_login_registration:hover {
             background-color: sandybrown;
         }
 
@@ -122,29 +144,59 @@ To DO:
 </head>
 
 <body>
+
 <div class="background">
-    <div class="overlay">
+
+    <div id="nav_bar">
+
+        <a href="{{ url_for('home') }}">
+            <button id="home_button">HOMEPAGE</button>
+        </a>
+
+    </div>
 
 
-        <div class="grid">
+    <div class="grid">
 
-            <div class="home_button">
-                <a href="{{ url_for('home') }}">
-                    <button id="home_button">RETURN</button>
-                </a>
-            </div>
+        <div class="login_form">
+            <label>LOGIN</label>
 
-            <div class="login_form">
-                {{ wtf.quick_form(login_form) }}
-            </div>
+            {% if error == 1 %}
+                <div class="wrong_login_registration">
+                    <a>
+                        <button id="wrong_login_registration">WRONG EMAIL/PASSWORD</button>
+                    </a>
+                </div>
+            {% endif %}
 
-            <div class="registration_form">
-                {{ wtf.quick_form(registration_form) }}
-            </div>
+            {{ wtf.quick_form(login_form) }}
+        </div>
 
+        <div class="registration_form">
+            <label>REGISTRATION</label>
+
+            {% if error == 2 %}
+                <div class="wrong_login_registration">
+                    <a>
+                        <button id="wrong_login_registration">USER ALREADY REGISTERED</button>
+                    </a>
+                </div>
+            {% endif %}
+
+            {% if error == 3 %}
+                <div class="wrong_login_registration">
+                    <a>
+                        <button id="wrong_login_registration">PASSWORDS DO NOT MATCH</button>
+                    </a>
+                </div>
+            {% endif %}
+
+            {{ wtf.quick_form(registration_form) }}
         </div>
 
     </div>
+
+
 </div>
 
 </body>
