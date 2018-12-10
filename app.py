@@ -91,6 +91,11 @@ app.config['housemate_sex'] = [  # ("0", "NO PREFERENCES"),
                                ("2", "MALE ONLY"),
                                ("3", "FEMALE ONLY")]
 
+app.config['housemate_sex_complete'] = [("0", "NO PREFERENCES"),
+                               ("1", "BOTH"),
+                               ("2", "MALE ONLY"),
+                               ("3", "FEMALE ONLY")]
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
 db = SQLAlchemy(app)
@@ -128,12 +133,13 @@ class User(UserMixin, db.Model):
     languages = db.Column('languages', db.String(50))
 
     # Habits
-    habits = db.Column('habits', db.String(12))
+    habits = db.Column('habits', db.String(12), default="000000000000")
 
     # Other fields
     house_id = db.Column('house_id', db.String(8))
-    photo_id = db.Column('photo_id', db.Integer)
+    photo_id = db.Column('photo_id', db.Integer, default=0)
     phone_number = db.Column('phone_number', db.String(10))
+    calendar = db.Column('calendar', db.String(31), default="0000000000000000000000000000000")
 
     def get_id(self):
         return self.email
@@ -167,7 +173,7 @@ class Residence(db.Model):
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(7))
+    amenities = db.Column('amenities', db.String(7), default="0000000")
     description = db.Column('description', db.String(1000), nullable=False)
     rules = db.Column('rules', db.String(1000), nullable=False)
     bills = db.Column('bills', db.String(1000), nullable=False)
@@ -273,6 +279,67 @@ class EditHouseForm(FlaskForm):
     save_information = SubmitField('Save Information')
 
 
+class FilterForm(FlaskForm):
+    type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
+    neighbourhood = SelectField('Neighbourhood', choices=app.config['available_neighbourhoods'],
+                                validators=[DataRequired()])
+
+    preferred_sex = RadioField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
+    lift = BooleanField('Lift')
+    pet_friendly = BooleanField('Pet Friendly')
+    independent_heating = BooleanField('Independent Heating')
+    air_conditioned = BooleanField('Air Conditioned')
+    furniture = BooleanField('Furniture')
+    wifi = BooleanField('Wi-Fi')
+
+    apply_filters = SubmitField('Apply Filters')
+
+
+class EditCalendarForm(FlaskForm):
+    c1 = BooleanField('1')
+    c2 = BooleanField('2')
+    c3 = BooleanField('3')
+    c4 = BooleanField('4')
+    c5 = BooleanField('5')
+    c6 = BooleanField('6')
+    c7 = BooleanField('7')
+    c8 = BooleanField('8')
+    c9 = BooleanField('9')
+    c10 = BooleanField('10')
+    c11 = BooleanField('11')
+    c12 = BooleanField('12')
+    c13 = BooleanField('13')
+    c14 = BooleanField('14')
+    c15 = BooleanField('15')
+    c16 = BooleanField('16')
+    c17 = BooleanField('17')
+    c18 = BooleanField('18')
+    c19 = BooleanField('19')
+    c20 = BooleanField('20')
+    c21 = BooleanField('21')
+    c22 = BooleanField('22')
+    c23 = BooleanField('23')
+    c24 = BooleanField('24')
+    c25 = BooleanField('25')
+    c26 = BooleanField('26')
+    c27 = BooleanField('27')
+    c28 = BooleanField('28')
+    c29 = BooleanField('29')
+    c30 = BooleanField('30')
+    c31 = BooleanField('31')
+
+    confirm = SubmitField('Confirm')
+
+
+# ======================================================================================================================
+# FUNCTIONS
+# ======================================================================================================================
+
+def char_range(c1, c2):
+    for c in xrange(ord(c1), ord(c2)+1):
+        yield chr(c)
+
+
 # ======================================================================================================================
 # VIEWS
 # ======================================================================================================================
@@ -349,8 +416,6 @@ def login_registration():
             new_user.city = registration_form.city.data
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
-            new_user.photo_id = 0
-            new_user.habits = "000000000000"
             default_image_destination_path = str(new_user.user_id) + "0.png"
             shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
                         os.path.join(app.config['UPLOAD_FOLDER'], default_image_destination_path))
@@ -400,6 +465,14 @@ def personal_page():
         db.session.commit()
         return redirect(url_for('personal_page'))
 
+    availability = current_user.calendar
+
+    days = []
+    for i in range(1, 32):
+        days.append(i)
+
+    calendar_availability = zip(availability, days)
+
     habits_form = EditSlidersDataForm()
     if request.method == 'GET' or errors_in_private_page:
         show_wrong_password_box = 0
@@ -435,7 +508,9 @@ def personal_page():
                            bio_form=bio_form,
                            habits_form=habits_form,
 
-                           house=house)
+                           house=house,
+
+                           calendar_availability=calendar_availability)
 
 
 @app.route('/uploads/<filename>')
@@ -564,15 +639,59 @@ def search_results(filters):
     elif filters[0] == app.config['types'][2][0]:
         all_houses = [house for house in all_houses if house.type == app.config['types'][2][1]]
 
-    # for i in range(1, 9):
-    #     if filters[2] == app.config['neighbourhoods'][i][0]:
-    #         all_houses
+    for i in range(1, 23):
+        if str(filters[2]) == app.config['neighbourhoods'][i][0]:
+            all_houses = [house for house in all_houses if house.neighbourhood == app.config['neighbourhoods'][i][1]]
+
+    if filters[3] == app.config['housemate_sex_complete'][1][0]:
+        all_houses = [house for house in all_houses if house.amenities[0] == app.config['housemate_sex_complete'][1][1]]
+    elif filters[3] == app.config['housemate_sex_complete'][2][0]:
+        all_houses = [house for house in all_houses if house.amenities[0] == app.config['housemate_sex_complete'][2][1]]
+    elif filters[3] == app.config['housemate_sex_complete'][3][0]:
+        all_houses = [house for house in all_houses if house.amenities[0] == app.config['housemate_sex_complete'][2][1]]
+
+    if filters[4] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+
+    if filters[5] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+
+    if filters[6] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+
+    if filters[7] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+
+    if filters[8] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+
+    if filters[9] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+
+    filter_form = FilterForm()
+    amenities_list = []
+    if filter_form.validate_on_submit():
+        if filter_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
+            amenities_list.append(str(0))
+        elif filter_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
+            amenities_list.append(str(1))
+        else:
+            amenities_list.append(str(2))
+        amenities_list.append(str(int(filter_form.lift.data)))
+        amenities_list.append(str(int(filter_form.pet_friendly.data)))
+        amenities_list.append(str(int(filter_form.independent_heating.data)))
+        amenities_list.append(str(int(filter_form.air_conditioned.data)))
+        amenities_list.append(str(int(filter_form.furniture.data)))
+        amenities_list.append(str(int(filter_form.wifi.data)))
+        filters = "".join(amenities_list)
+        return redirect(url_for('results', filters=filters))
 
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
 
-                           all_houses=all_houses)
+                           all_houses=all_houses,
+                           filter_form=filter_form)
 
 
 @app.route('/house_creation', methods=['GET', 'POST'])
@@ -595,7 +714,6 @@ def house_creation():
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
         new_house.neighbourhood = house_form.neighbourhood.data
-        new_house.amenities = "0000000"
         new_house.description = house_form.description.data
         new_house.rules = house_form.rules.data
         new_house.price = house_form.price.data
@@ -832,6 +950,109 @@ def existing():
                            pro_pic=pro_pic,
 
                            existing_house=existing_house_form)
+
+
+@app.route('/calendar', methods=['GET', 'POST'])
+@login_required
+def calendar():
+    # c1. User's pro_pic for login_required pages
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
+
+    calendar_availability = EditCalendarForm()
+
+    print bool(0)
+    print int(current_user.calendar[0])
+
+
+    calendar_availability.c1.data = bool(int(current_user.calendar[0]))
+    calendar_availability.c2.data = bool(int(current_user.calendar[1]))
+    calendar_availability.c3.data = bool(int(current_user.calendar[2]))
+    calendar_availability.c4.data = bool(int(current_user.calendar[3]))
+    calendar_availability.c5.data = bool(int(current_user.calendar[4]))
+    calendar_availability.c6.data = bool(int(current_user.calendar[5]))
+    calendar_availability.c7.data = bool(int(current_user.calendar[6]))
+    calendar_availability.c8.data = bool(int(current_user.calendar[7]))
+    calendar_availability.c9.data = bool(int(current_user.calendar[8]))
+    calendar_availability.c10.data = bool(int(current_user.calendar[9]))
+    calendar_availability.c11.data = bool(int(current_user.calendar[10]))
+    calendar_availability.c12.data = bool(int(current_user.calendar[11]))
+    calendar_availability.c13.data = bool(int(current_user.calendar[12]))
+    calendar_availability.c14.data = bool(int(current_user.calendar[13]))
+    calendar_availability.c15.data = bool(int(current_user.calendar[14]))
+    calendar_availability.c16.data = bool(int(current_user.calendar[15]))
+    calendar_availability.c17.data = bool(int(current_user.calendar[16]))
+    calendar_availability.c18.data = bool(int(current_user.calendar[17]))
+    calendar_availability.c19.data = bool(int(current_user.calendar[18]))
+    calendar_availability.c20.data = bool(int(current_user.calendar[19]))
+    calendar_availability.c21.data = bool(int(current_user.calendar[20]))
+    calendar_availability.c22.data = bool(int(current_user.calendar[21]))
+    calendar_availability.c23.data = bool(int(current_user.calendar[22]))
+    calendar_availability.c24.data = bool(int(current_user.calendar[23]))
+    calendar_availability.c25.data = bool(int(current_user.calendar[24]))
+    calendar_availability.c26.data = bool(int(current_user.calendar[25]))
+    calendar_availability.c27.data = bool(int(current_user.calendar[26]))
+    calendar_availability.c28.data = bool(int(current_user.calendar[27]))
+    calendar_availability.c29.data = bool(int(current_user.calendar[28]))
+    calendar_availability.c30.data = bool(int(current_user.calendar[29]))
+    calendar_availability.c31.data = bool(int(current_user.calendar[30]))
+
+    if request.method == 'POST':
+        days_available = [str(calendar_availability.c1.data),
+                          str(calendar_availability.c2.data),
+                          str(calendar_availability.c3.data),
+                          str(calendar_availability.c4.data),
+                          str(calendar_availability.c5.data),
+                          str(calendar_availability.c6.data),
+                          str(calendar_availability.c7.data),
+                          str(calendar_availability.c8.data),
+                          str(calendar_availability.c9.data),
+                          str(calendar_availability.c10.data),
+                          str(calendar_availability.c11.data),
+                          str(calendar_availability.c12.data),
+                          str(calendar_availability.c13.data),
+                          str(calendar_availability.c14.data),
+                          str(calendar_availability.c15.data),
+                          str(calendar_availability.c16.data),
+                          str(calendar_availability.c17.data),
+                          str(calendar_availability.c18.data),
+                          str(calendar_availability.c19.data),
+                          str(calendar_availability.c20.data),
+                          str(calendar_availability.c21.data),
+                          str(calendar_availability.c22.data),
+                          str(calendar_availability.c23.data),
+                          str(calendar_availability.c24.data),
+                          str(calendar_availability.c25.data),
+                          str(calendar_availability.c26.data),
+                          str(calendar_availability.c27.data),
+                          str(calendar_availability.c28.data),
+                          str(calendar_availability.c29.data),
+                          str(calendar_availability.c30.data),
+                          str(calendar_availability.c31.data)]
+        current_user.calendar = "".join(days_available)
+        db.session.commit()
+
+        return redirect(url_for('personal_page'))
+
+    return render_template('private_booking.html',
+                           pro_pic=pro_pic,
+
+                           calendar_availability=calendar_availability)
+
+
+@app.route('/b/<user_id>')
+@login_required
+def booking(user_id):
+    # c1. User's pro_pic for login_required pages
+    pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
+    # c1_end
+
+    user = User.db.Query.filter_by(user_id=user_id.capitalize()).first_or_404
+
+    return render_template('habits.html',
+                           pro_pic=pro_pic,
+
+                           user=user)
 
 
 @app.route('/logout')
