@@ -228,36 +228,26 @@
             width: 100%;
         }
 
-
-
-        .filters {
-
+        .filter_box{
             position: fixed;
+
             font-size: 12px;
             text-align: center;
             text-transform: uppercase;
-            height: 400px;
-            width: 200px;
+            width: 15%;
             background: rgba(0, 0, 0, .5);
             border: 1px solid white;
             color: white;
             letter-spacing: 1px;
             transition: all 0.25s;
             line-height: 30px;
+
+            margin-top: 80px;
         }
-
-        .filter_box{
-            margin-top: 30px;
-
-
-        }
-
-
 
     </style><!--the style for the rest of the site-->
 </head>
 
-<>
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
@@ -282,18 +272,9 @@
 
 </div>
 
-<!-- =====================================LUCAS============================================== -->
-<div class="filters">
-
-
     <div class="filter_box">
           {{ wtf.quick_form(filter_form) }}
     </div>
-
-
-</div>
-
-<!-- ======================================================================================== -->
 
 <div class="container">
     <div data-view="list-view" class="download-cards">
