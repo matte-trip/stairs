@@ -686,6 +686,9 @@ def search_results(filters):
         filters = "".join(amenities_list)
         return redirect(url_for('results', filters=filters))
 
+    filter_form = FilterForm()
+    # ===================================================================================================================
+
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
