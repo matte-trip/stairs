@@ -521,23 +521,26 @@
 
             <div class="mapouter">
                 <div class="gmap_canvas">
-                    <iframe width="769" height="500" id="gmap_canvas"
-                            src="https://maps.google.com/maps?q=via%20pomaro%20turin&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                            frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
-                    <a href="https://www.pureblack.de/webdesign-kiel/"></a></div>
+                    <iframe width="98%" height="500" id="gmap_canvas"
+                            src="https://maps.google.com/maps?q={{ house.street }}%20{{ house.civic }}%20{{ house.city }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                    </iframe>
+                </div>
 
                 <style>
                     .mapouter {
-                        text-align: right;
+                        text-align: center;
                         height: 500px;
-                        width: 200px;
+                        width: 100%;
+
+                        margin-bottom: 10px;
                     }
 
                     .gmap_canvas {
                         overflow: hidden;
                         background: none !important;
                         height: 500px;
-                        width: 769px;
+                        width: 100%;
                     }
                 </style>
 
@@ -595,7 +598,7 @@
 
             <div class="house-add">
                 <div class="info_L">
-                    <label>ADD:</label>
+                    <label>ADDRESS:</label>
                 </div>
                 <div class="info_I">
                     <p>{{ house.street }} {{ house.civic }}</p>

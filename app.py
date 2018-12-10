@@ -3,8 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DecimalRangeField
-from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, BooleanField, \
-    RadioField
+from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, BooleanField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
@@ -16,85 +15,63 @@ app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config['SECRET_KEY'] = 'C0fUTr5*iB5o&uWi-r@&'
 
-app.config[
-    'UPLOAD_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\uploads'
-app.config[
-    'STATIC_FOLDER'] = 'C:\Users\Matteo\Desktop\Drive\Information Systems\Housr - Information Systems\stairs\static'
+cities = [("0", "TURIN")]
 
-app.config[
-    'UPLOAD_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\uploads'
-app.config[
-    'STATIC_FOLDER1'] = 'C:\Users\lucas\PycharmProjects\stairs\static'
+types = [("0", "SINGLE"),
+         ("1", "DOUBLE")]
 
-app.config['available_types'] = [  # ("0", "NO PREFERENCES"),
-                                 ("1", "SINGLE"),
-                                 ("2", "DOUBLE")]
+types_query = [("0", "---"),
+               ("1", "SINGLE"),
+               ("2", "DOUBLE")]
 
-app.config['types'] = [("0", "NO PREFERENCES"),
-                       ("1", "SINGLE"),
-                       ("2", "DOUBLE")]
+neighbourhoods = [("0", "AURORA"),
+                  ("1", "BARCA"),
+                  ("2", "BARRIERA DI MILANO"),
+                  ("3", "BORGATA VITTORIA"),
+                  ("4", "BORGO PO"),
+                  ("5", "CAMPIDOGLIO"),
+                  ("6", "CENISIA"),
+                  ("7", "CENTRO"),
+                  ("8", "CROCETTA"),
+                  ("9", "FALCHERA"),
+                  ("10", "LANZO"),
+                  ("11", "LINGOTTO"),
+                  ("12", "LUCENTO"),
+                  ("13", "MADONNA DEL PILONE"),
+                  ("14", "MIRAFIORI NORD"),
+                  ("15", "MIRAFIORI SUD"),
+                  ("16", "NIZZA"),
+                  ("17", "PARELLA"),
+                  ("18", "POZZO STRADA"),
+                  ("19", "SAN PAOLO"),
+                  ("20", "SAN SALVARIO"),
+                  ("21", "SANTA RITA"),
+                  ("22", "VANCHIGLIA")]
 
-app.config['available_cities'] = [("0", "TURIN")]
-
-app.config['available_neighbourhoods'] = [  # ("0", "NO PREFERENCES"),
-                                          ("1", "AURORA"),
-                                          ("2", "BARCA"),
-                                          ("3", "BARRIERA DI MILANO"),
-                                          ("4", "BORGATA VITTORIA"),
-                                          ("5", "BORGO PO"),
-                                          ("6", "CAMPIDOGLIO"),
-                                          ("7", "CENISIA"),
-                                          ("8", "CENTRO"),
-                                          ("9", "CROCETTA"),
-                                          ("a", "FALCHERA"),
-                                          ("b", "LANZO"),
-                                          ("c", "LINGOTTO"),
-                                          ("d", "LUCENTO"),
-                                          ("e", "MADONNA DEL PILONE"),
-                                          ("f", "MIRAFIORI NORD"),
-                                          ("g", "MIRAFIORI SUD"),
-                                          ("h", "NIZZA"),
-                                          ("i", "PARELLA"),
-                                          ("j", "POZZO STRADA"),
-                                          ("k", "SAN PAOLO"),
-                                          ("l", "SAN SALVARIO"),
-                                          ("m", "SANTA RITA"),
-                                          ("n", "VANCHIGLIA")]
-
-app.config['neighbourhoods'] = [   ("0", "NO PREFERENCES"),
-                                          ("1", "AURORA"),
-                                          ("2", "BARCA"),
-                                          ("3", "BARRIERA DI MILANO"),
-                                          ("4", "BORGATA VITTORIA"),
-                                          ("5", "BORGO PO"),
-                                          ("6", "CAMPIDOGLIO"),
-                                          ("7", "CENISIA"),
-                                          ("8", "CENTRO"),
-                                          ("9", "CROCETTA"),
-                                          ("a", "FALCHERA"),
-                                          ("b", "LANZO"),
-                                          ("c", "LINGOTTO"),
-                                          ("d", "LUCENTO"),
-                                          ("e", "MADONNA DEL PILONE"),
-                                          ("f", "MIRAFIORI NORD"),
-                                          ("g", "MIRAFIORI SUD"),
-                                          ("h", "NIZZA"),
-                                          ("i", "PARELLA"),
-                                          ("j", "POZZO STRADA"),
-                                          ("k", "SAN PAOLO"),
-                                          ("l", "SAN SALVARIO"),
-                                          ("m", "SANTA RITA"),
-                                          ("n", "VANCHIGLIA")]
-
-app.config['housemate_sex'] = [  # ("0", "NO PREFERENCES"),
-                               ("1", "BOTH"),
-                               ("2", "MALE ONLY"),
-                               ("3", "FEMALE ONLY")]
-
-app.config['housemate_sex_complete'] = [("0", "NO PREFERENCES"),
-                               ("1", "BOTH"),
-                               ("2", "MALE ONLY"),
-                               ("3", "FEMALE ONLY")]
+neighbourhoods_query = [("0", "---"),
+                        ("1", "AURORA"),
+                        ("2", "BARCA"),
+                        ("3", "BARRIERA DI MILANO"),
+                        ("4", "BORGATA VITTORIA"),
+                        ("5", "BORGO PO"),
+                        ("6", "CAMPIDOGLIO"),
+                        ("7", "CENISIA"),
+                        ("8", "CENTRO"),
+                        ("9", "CROCETTA"),
+                        ("a", "FALCHERA"),
+                        ("b", "LANZO"),
+                        ("c", "LINGOTTO"),
+                        ("d", "LUCENTO"),
+                        ("e", "MADONNA DEL PILONE"),
+                        ("f", "MIRAFIORI NORD"),
+                        ("g", "MIRAFIORI SUD"),
+                        ("h", "NIZZA"),
+                        ("i", "PARELLA"),
+                        ("j", "POZZO STRADA"),
+                        ("k", "SAN PAOLO"),
+                        ("l", "SAN SALVARIO"),
+                        ("m", "SANTA RITA"),
+                        ("n", "VANCHIGLIA")]
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = 'False'
@@ -173,7 +150,7 @@ class Residence(db.Model):
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(7), default="0000000")
+    amenities = db.Column('amenities', db.String(7), default="000000")
     description = db.Column('description', db.String(1000), nullable=False)
     rules = db.Column('rules', db.String(1000), nullable=False)
     bills = db.Column('bills', db.String(1000), nullable=False)
@@ -200,7 +177,7 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     first_name = StringField('First name', validators=[DataRequired()])
     last_name = StringField('Last name', validators=[DataRequired()])
-    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
+    city = SelectField('City', choices=cities, validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password')])
     registration_button = SubmitField('Register')
@@ -216,7 +193,7 @@ class EditPrivateDataForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     first_name = StringField('First name', validators=[DataRequired()])
     last_name = StringField('Last name', validators=[DataRequired()])
-    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
+    city = SelectField('City', choices=cities, validators=[DataRequired()])
     phone_number = StringField('Phone Number')
     password = PasswordField('Password Verification', validators=[DataRequired()])
     submit_button = SubmitField('Submit')
@@ -257,9 +234,9 @@ class ExistingHouseForm(FlaskForm):
 
 
 class EditHouseForm(FlaskForm):
-    type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
-    city = SelectField('City', choices=app.config['available_cities'], validators=[DataRequired()])
-    neighbourhood = SelectField('Neighbourhood', choices=app.config['available_neighbourhoods'],
+    type = SelectField('Type', choices=types, validators=[DataRequired()])
+    city = SelectField('City', choices=cities, validators=[DataRequired()])
+    neighbourhood = SelectField('Neighbourhood', choices=neighbourhoods,
                                 validators=[DataRequired()])
     street = StringField('Street', validators=[DataRequired()])
     civic = IntegerField('Civic', validators=[DataRequired()])
@@ -268,7 +245,6 @@ class EditHouseForm(FlaskForm):
     price = IntegerField('Price', validators=[DataRequired()])
     bills = TextAreaField('Bills')
 
-    preferred_sex = RadioField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
     lift = BooleanField('Lift')
     pet_friendly = BooleanField('Pet Friendly')
     independent_heating = BooleanField('Independent Heating')
@@ -280,11 +256,9 @@ class EditHouseForm(FlaskForm):
 
 
 class FilterForm(FlaskForm):
-    type = SelectField('Type', choices=app.config['types'], validators=[DataRequired()])
-    neighbourhood = SelectField('Neighbourhood', choices=app.config['neighbourhoods'],
-                                validators=[DataRequired()])
+    type = SelectField('Type', choices=types_query, validators=[DataRequired()])
+    neighbourhood = SelectField('Neighbourhood', choices=neighbourhoods_query, validators=[DataRequired()])
 
-    preferred_sex = SelectField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
     lift = BooleanField('Lift')
     pet_friendly = BooleanField('Pet Friendly')
     independent_heating = BooleanField('Independent Heating')
@@ -336,7 +310,7 @@ class EditCalendarForm(FlaskForm):
 # ======================================================================================================================
 
 def char_range(c1, c2):
-    for c in xrange(ord(c1), ord(c2)+1):
+    for c in xrange(ord(c1), ord(c2) + 1):
         yield chr(c)
 
 
@@ -417,8 +391,8 @@ def login_registration():
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
             default_image_destination_path = str(new_user.user_id) + "0.png"
-            shutil.copy(os.path.join(app.config['STATIC_FOLDER'], 'user-default.png'),
-                        os.path.join(app.config['UPLOAD_FOLDER'], default_image_destination_path))
+            shutil.copy(os.path.join(static_folder, 'user-default.png'),
+                        os.path.join(uploads_folder, default_image_destination_path))
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user)
@@ -537,10 +511,10 @@ def upload():
             db.session.commit()
             filename = str(current_user.user_id) + str(current_user.photo_id) + ".png"
             # saving new image to /uploads
-            profile_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            profile_picture.save(os.path.join(uploads_folder, filename))
             # deleting old image associated to the user
             filename = str(current_user.user_id) + str(current_user.photo_id - 1) + ".png"
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            os.remove(os.path.join(uploads_folder, filename))
             return redirect(url_for('personal_page'))
 
     return render_template('upload.html')
@@ -606,8 +580,8 @@ def u(user_id):
                            habits_form=habits_form)
 
 
-@app.route('/results/<filters>', methods=['GET', 'POST'])
-def search_results(filters):
+@app.route('/s/<filters>', methods=['GET', 'POST'])
+def s(filters):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
     last_url = "results"
@@ -624,49 +598,40 @@ def search_results(filters):
 
     # FILTERS:
     # filters[0] type > 0 all, 1 single, 2 double
-    # filters[1] city > 0 turin
-    # filters[2] neighbourhood > 0 all, 1 aurora, .. a lanzo, .. m vanchiglia
-    # filters[3] preferred_sex > 0 all, 1 both, 2 male only, 3 female only
-    # filters[4] lift > 0 all, 1 no, 2 yes
-    # filters[5] pet_friendly
-    # filters[6] independent_heating
-    # filters[7] air_conditioned
-    # filters[8] furniture
-    # filters[9] wifi
+    # filters[1] neighbourhood > 0 all, 1 aurora, .. a lanzo, .. m vanchiglia
+    # filters[2] lift > 0 all, 1 yes
+    # filters[3] pet_friendly
+    # filters[4] independent_heating
+    # filters[5] air_conditioned
+    # filters[6] furniture
+    # filters[7] wifi
 
-    if filters[0] == app.config['types'][1][0]:
-        all_houses = [house for house in all_houses if house.type == app.config['types'][1][1]]
-    elif filters[0] == app.config['types'][2][0]:
-        all_houses = [house for house in all_houses if house.type == app.config['types'][2][1]]
+    if filters[0] == types_query[1][0]:
+        all_houses = [house for house in all_houses if house.type == types_query[1][1]]
+    elif filters[0] == types_query[2][0]:
+        all_houses = [house for house in all_houses if house.type == types_query[2][1]]
 
     for i in range(1, 23):
-        if str(filters[2]) == app.config['neighbourhoods'][i][0]:
-            all_houses = [house for house in all_houses if house.neighbourhood == app.config['neighbourhoods'][i][1]]
+        if str(filters[1]) == neighbourhoods_query[i][0]:
+            all_houses = [house for house in all_houses if house.neighbourhood == neighbourhoods_query[i][1]]
 
-    if filters[3] == app.config['housemate_sex_complete'][1][0]:
-        all_houses = [house for house in all_houses if house.amenities[0] == app.config['housemate_sex_complete'][1][1]]
-    elif filters[3] == app.config['housemate_sex_complete'][2][0]:
-        all_houses = [house for house in all_houses if house.amenities[0] == app.config['housemate_sex_complete'][2][1]]
-    elif filters[3] == app.config['housemate_sex_complete'][3][0]:
-        all_houses = [house for house in all_houses if house.amenities[0] == app.config['housemate_sex_complete'][2][1]]
+    if filters[2] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[0] == str(1)]
+
+    if filters[3] == str(1):
+        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
 
     if filters[4] == str(1):
-        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+        all_houses = [house for house in all_houses if house.amenities[2] == str(1)]
 
     if filters[5] == str(1):
-        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+        all_houses = [house for house in all_houses if house.amenities[3] == str(1)]
 
     if filters[6] == str(1):
-        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+        all_houses = [house for house in all_houses if house.amenities[4] == str(1)]
 
     if filters[7] == str(1):
-        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
-
-    if filters[8] == str(1):
-        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
-
-    if filters[9] == str(1):
-        all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
+        all_houses = [house for house in all_houses if house.amenities[5] == str(1)]
 
     filter_form = FilterForm()
     filter_list = []
@@ -676,12 +641,7 @@ def search_results(filters):
             filter_list.append(filter_form.type.data)
             filter_list.append(str(0))
             filter_list.append(filter_form.neighbourhood.data)
-            if filter_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
-                filter_list.append(str(0))
-            elif filter_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
-                filter_list.append(str(1))
-            else:
-                filter_list.append(str(2))
+
             filter_list.append(str(int(filter_form.lift.data)))
             filter_list.append(str(int(filter_form.pet_friendly.data)))
             filter_list.append(str(int(filter_form.independent_heating.data)))
@@ -689,7 +649,7 @@ def search_results(filters):
             filter_list.append(str(int(filter_form.furniture.data)))
             filter_list.append(str(int(filter_form.wifi.data)))
             filters = "".join(filter_list)
-            return redirect(url_for('search_results', filters=filters))
+            return redirect(url_for('s', filters=filters))
 
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
@@ -713,10 +673,10 @@ def house_creation():
         new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
         new_house.photo_id = -1
 
-        new_house.type = app.config['available_types'][int(house_form.type.data)-1][1]
-        new_house.neighbourhood = app.config['available_neighbourhoods'][int(house_form.neighbourhood.data)-1][1]
+        new_house.type = types[int(house_form.type.data)][1]
+        new_house.neighbourhood = neighbourhoods[int(house_form.neighbourhood.data)][1]
         new_house.name = new_house.type + " Room in " + new_house.neighbourhood
-        new_house.city = app.config['available_cities'][house_form.city.data][1]
+        new_house.city = cities[int(house_form.city.data)][1]
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
         new_house.description = house_form.description.data
@@ -724,20 +684,13 @@ def house_creation():
         new_house.price = house_form.price.data
         new_house.bills = house_form.bills.data
 
-        amenities_list = []
-        if house_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
-            amenities_list.append(str(0))
-        elif house_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
-            amenities_list.append(str(1))
-        else:
-            amenities_list.append(str(2))
+        amenities_list = [str(int(house_form.lift.data)),
+                          str(int(house_form.pet_friendly.data)),
+                          str(int(house_form.independent_heating.data)),
+                          str(int(house_form.air_conditioned.data)),
+                          str(int(house_form.furniture.data)),
+                          str(int(house_form.wifi.data))]
 
-        amenities_list.append(str(int(house_form.lift.data)))
-        amenities_list.append(str(int(house_form.pet_friendly.data)))
-        amenities_list.append(str(int(house_form.independent_heating.data)))
-        amenities_list.append(str(int(house_form.air_conditioned.data)))
-        amenities_list.append(str(int(house_form.furniture.data)))
-        amenities_list.append(str(int(house_form.wifi.data)))
         new_house.amenities = "".join(amenities_list)
 
         current_user.house_id = new_house.house_id
@@ -764,10 +717,10 @@ def h_edit(house_id):
 
     if house.house_id == current_user.house_id:
         if house_form.validate_on_submit():
-            house.type = app.config['available_types'][int(house_form.type.data) - 1][1]
-            house.neighbourhood = app.config['available_neighbourhoods'][int(house_form.neighbourhood.data) - 1][1]
+            house.type = types[int(house_form.type.data)][1]
+            house.neighbourhood = neighbourhoods[int(house_form.neighbourhood.data)][1]
             house.name = house.type + " Room in " + house.neighbourhood
-            house.city = app.config['available_cities'][house_form.city.data][1]
+            house.city = cities[int(house_form.city.data)][1]
 
             house.street = house_form.street.data
             house.civic = house_form.civic.data
@@ -776,19 +729,13 @@ def h_edit(house_id):
             house.price = house_form.price.data
             house.bills = house_form.bills.data
 
-            amenities_list = []
-            if house_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
-                amenities_list.append(str(0))
-            elif house_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
-                amenities_list.append(str(1))
-            else:
-                amenities_list.append(str(2))
-            amenities_list.append(str(int(house_form.lift.data)))
-            amenities_list.append(str(int(house_form.pet_friendly.data)))
-            amenities_list.append(str(int(house_form.independent_heating.data)))
-            amenities_list.append(str(int(house_form.air_conditioned.data)))
-            amenities_list.append(str(int(house_form.furniture.data)))
-            amenities_list.append(str(int(house_form.wifi.data)))
+            amenities_list = [str(int(house_form.lift.data)),
+                              str(int(house_form.pet_friendly.data)),
+                              str(int(house_form.independent_heating.data)),
+                              str(int(house_form.air_conditioned.data)),
+                              str(int(house_form.furniture.data)),
+                              str(int(house_form.wifi.data))]
+
             house.amenities = "".join(amenities_list)
 
             db.session.commit()
@@ -803,13 +750,6 @@ def h_edit(house_id):
             house_form.rules.data = house.rules
             house_form.price.data = house.price
             house_form.bills.data = house.bills
-
-            if house.amenities[0] == str(0):
-                house_form.preferred_sex.data = app.config['housemate_sex'][0][0]
-            elif house.amenities[0] == str(1):
-                house_form.preferred_sex.data = app.config['housemate_sex'][1][0]
-            elif house.amenities[0] == str(2):
-                house_form.preferred_sex.data = app.config['housemate_sex'][2][0]
 
             if house.amenities[1] == str(0):
                 house_form.lift.data = False
@@ -873,7 +813,7 @@ def upload_house_image(house_id):
                 db.session.commit()
 
                 filename = str(house.house_id) + str(house.photo_id) + ".png"
-                house_picture.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                house_picture.save(os.path.join(uploads_folder, filename))
 
                 return redirect(url_for('h_edit', house_id=current_user.house_id))
     else:
@@ -905,13 +845,6 @@ def h(house_id):
 
     housemates_and_photos = zip(housemates, user_images_list)
 
-    if house.amenities[0] == "0":
-        preferred_sex = app.config['housemate_sex'][0][0]
-    elif house.amenities[0] == "1":
-        preferred_sex = app.config['housemate_sex'][1][0]
-    else:
-        preferred_sex = app.config['housemate_sex'][2][0]
-
     return render_template('public_listing.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
@@ -921,13 +854,12 @@ def h(house_id):
                            user_images_list=user_images_list,
                            housemates_and_photos=housemates_and_photos,
 
-                           preferred_sex=preferred_sex,
-                           lift=int(house.amenities[1]),
-                           pet_friendly=int(house.amenities[2]),
-                           independent_heating=int(house.amenities[3]),
-                           air_conditioned=int(house.amenities[4]),
-                           furniture=int(house.amenities[5]),
-                           wifi=int(house.amenities[6]))
+                           lift=int(house.amenities[0]),
+                           pet_friendly=int(house.amenities[1]),
+                           independent_heating=int(house.amenities[2]),
+                           air_conditioned=int(house.amenities[3]),
+                           furniture=int(house.amenities[4]),
+                           wifi=int(house.amenities[5]))
 
 
 @app.route('/existing', methods=['GET', 'POST'])
@@ -1028,11 +960,20 @@ def b(user_id):
 
     calendar_availability = zip(availability, days)
 
+    if user.phone_number is not None:
+        phone = user.phone_number
+    else:
+        phone = 0
+
+    house = Residence.query.filter_by(house_id=user.house_id.capitalize()).first_or_404()
+
     return render_template('public_booking.html',
                            pro_pic=pro_pic,
 
                            user=user,
-                           calendar_availability=calendar_availability)
+                           calendar_availability=calendar_availability,
+                           phone=phone,
+                           house=house)
 
 
 @app.route('/logout')
@@ -1072,6 +1013,9 @@ show_wrong_password_box = 0
 last_url = ''
 # used to keep track of the last page the user was visiting (public pages)
 # in order to redirect him there after login/logout
+
+static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
+uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
 
 # ======================================================================================================================
 # STARTUP

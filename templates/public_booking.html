@@ -87,6 +87,7 @@
 <body>
 <div class="container">
 
+    <label>To rent {{ house.name }} you can contact:</label>
     <label>{{ user.first_name }} {{ user.last_name }}</label>
 
     <label>This Month's Availability</label>
@@ -103,8 +104,8 @@
             {% endif %}
         {% endfor %}
 
-    {% if user.phone != 0000000000 %}
-        <label>{{ user.phone_number }}</label>
+    {% if phone != 0 %}
+        <label>{{ phone }}</label>
     {% endif %}
 
     <a href="mailto:{{ user.email }}">
