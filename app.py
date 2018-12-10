@@ -280,11 +280,11 @@ class EditHouseForm(FlaskForm):
 
 
 class FilterForm(FlaskForm):
-    type = SelectField('Type', choices=app.config['available_types'], validators=[DataRequired()])
-    neighbourhood = SelectField('Neighbourhood', choices=app.config['available_neighbourhoods'],
+    type = SelectField('Type', choices=app.config['types'], validators=[DataRequired()])
+    neighbourhood = SelectField('Neighbourhood', choices=app.config['neighbourhoods'],
                                 validators=[DataRequired()])
 
-    preferred_sex = RadioField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
+    preferred_sex = SelectField('Preferred Sex', choices=app.config['housemate_sex'], validators=[DataRequired()])
     lift = BooleanField('Lift')
     pet_friendly = BooleanField('Pet Friendly')
     independent_heating = BooleanField('Independent Heating')
@@ -606,7 +606,7 @@ def u(user_id):
                            habits_form=habits_form)
 
 
-@app.route('/results/<filters>')
+@app.route('/results/<filters>', methods=['GET', 'POST'])
 def search_results(filters):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
@@ -669,25 +669,27 @@ def search_results(filters):
         all_houses = [house for house in all_houses if house.amenities[1] == str(1)]
 
     filter_form = FilterForm()
-    amenities_list = []
-    if filter_form.validate_on_submit():
-        if filter_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
-            amenities_list.append(str(0))
-        elif filter_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
-            amenities_list.append(str(1))
-        else:
-            amenities_list.append(str(2))
-        amenities_list.append(str(int(filter_form.lift.data)))
-        amenities_list.append(str(int(filter_form.pet_friendly.data)))
-        amenities_list.append(str(int(filter_form.independent_heating.data)))
-        amenities_list.append(str(int(filter_form.air_conditioned.data)))
-        amenities_list.append(str(int(filter_form.furniture.data)))
-        amenities_list.append(str(int(filter_form.wifi.data)))
-        filters = "".join(amenities_list)
-        return redirect(url_for('results', filters=filters))
+    filter_list = []
+    if request.method == 'POST':
 
-    filter_form = FilterForm()
-    # ===================================================================================================================
+        if filter_form.validate_on_submit():
+            filter_list.append(filter_form.type.data)
+            filter_list.append(str(0))
+            filter_list.append(filter_form.neighbourhood.data)
+            if filter_form.preferred_sex.data == app.config['housemate_sex'][0][0]:
+                filter_list.append(str(0))
+            elif filter_form.preferred_sex.data == app.config['housemate_sex'][1][0]:
+                filter_list.append(str(1))
+            else:
+                filter_list.append(str(2))
+            filter_list.append(str(int(filter_form.lift.data)))
+            filter_list.append(str(int(filter_form.pet_friendly.data)))
+            filter_list.append(str(int(filter_form.independent_heating.data)))
+            filter_list.append(str(int(filter_form.air_conditioned.data)))
+            filter_list.append(str(int(filter_form.furniture.data)))
+            filter_list.append(str(int(filter_form.wifi.data)))
+            filters = "".join(filter_list)
+            return redirect(url_for('search_results', filters=filters))
 
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
@@ -711,12 +713,12 @@ def house_creation():
         new_house.house_sc = uuid.uuid4().hex[::4].capitalize()
         new_house.photo_id = -1
 
-        new_house.type = house_form.type.data
-        new_house.name = new_house.type + " Room in " + house_form.neighbourhood.data
-        new_house.city = house_form.city.data
+        new_house.type = app.config['available_types'][int(house_form.type.data)-1][1]
+        new_house.neighbourhood = app.config['available_neighbourhoods'][int(house_form.neighbourhood.data)-1][1]
+        new_house.name = new_house.type + " Room in " + new_house.neighbourhood
+        new_house.city = app.config['available_cities'][house_form.city.data][1]
         new_house.street = house_form.street.data
         new_house.civic = house_form.civic.data
-        new_house.neighbourhood = house_form.neighbourhood.data
         new_house.description = house_form.description.data
         new_house.rules = house_form.rules.data
         new_house.price = house_form.price.data
@@ -762,9 +764,11 @@ def h_edit(house_id):
 
     if house.house_id == current_user.house_id:
         if house_form.validate_on_submit():
-            house.type = house_form.type.data
-            house.city = house_form.city.data
-            house.neighbourhood = house_form.neighbourhood.data
+            house.type = app.config['available_types'][int(house_form.type.data) - 1][1]
+            house.neighbourhood = app.config['available_neighbourhoods'][int(house_form.neighbourhood.data) - 1][1]
+            house.name = house.type + " Room in " + house.neighbourhood
+            house.city = app.config['available_cities'][house_form.city.data][1]
+
             house.street = house_form.street.data
             house.civic = house_form.civic.data
             house.description = house_form.description.data
@@ -942,7 +946,7 @@ def existing():
             house = Residence.query.filter_by(house_sc=house_sc.capitalize()).first()
 
             if house is None:
-                print "lets give this guy an error"  # ==================================================================
+                return redirect(url_for('personal_page'))
             else:
                 current_user.house_id = house.house_id
                 db.session.commit()
@@ -963,77 +967,41 @@ def calendar():
     # c1_end
 
     calendar_availability = EditCalendarForm()
-
-    print bool(0)
-    print int(current_user.calendar[0])
-
-
-    calendar_availability.c1.data = bool(int(current_user.calendar[0]))
-    calendar_availability.c2.data = bool(int(current_user.calendar[1]))
-    calendar_availability.c3.data = bool(int(current_user.calendar[2]))
-    calendar_availability.c4.data = bool(int(current_user.calendar[3]))
-    calendar_availability.c5.data = bool(int(current_user.calendar[4]))
-    calendar_availability.c6.data = bool(int(current_user.calendar[5]))
-    calendar_availability.c7.data = bool(int(current_user.calendar[6]))
-    calendar_availability.c8.data = bool(int(current_user.calendar[7]))
-    calendar_availability.c9.data = bool(int(current_user.calendar[8]))
-    calendar_availability.c10.data = bool(int(current_user.calendar[9]))
-    calendar_availability.c11.data = bool(int(current_user.calendar[10]))
-    calendar_availability.c12.data = bool(int(current_user.calendar[11]))
-    calendar_availability.c13.data = bool(int(current_user.calendar[12]))
-    calendar_availability.c14.data = bool(int(current_user.calendar[13]))
-    calendar_availability.c15.data = bool(int(current_user.calendar[14]))
-    calendar_availability.c16.data = bool(int(current_user.calendar[15]))
-    calendar_availability.c17.data = bool(int(current_user.calendar[16]))
-    calendar_availability.c18.data = bool(int(current_user.calendar[17]))
-    calendar_availability.c19.data = bool(int(current_user.calendar[18]))
-    calendar_availability.c20.data = bool(int(current_user.calendar[19]))
-    calendar_availability.c21.data = bool(int(current_user.calendar[20]))
-    calendar_availability.c22.data = bool(int(current_user.calendar[21]))
-    calendar_availability.c23.data = bool(int(current_user.calendar[22]))
-    calendar_availability.c24.data = bool(int(current_user.calendar[23]))
-    calendar_availability.c25.data = bool(int(current_user.calendar[24]))
-    calendar_availability.c26.data = bool(int(current_user.calendar[25]))
-    calendar_availability.c27.data = bool(int(current_user.calendar[26]))
-    calendar_availability.c28.data = bool(int(current_user.calendar[27]))
-    calendar_availability.c29.data = bool(int(current_user.calendar[28]))
-    calendar_availability.c30.data = bool(int(current_user.calendar[29]))
-    calendar_availability.c31.data = bool(int(current_user.calendar[30]))
-
     if request.method == 'POST':
-        days_available = [str(calendar_availability.c1.data),
-                          str(calendar_availability.c2.data),
-                          str(calendar_availability.c3.data),
-                          str(calendar_availability.c4.data),
-                          str(calendar_availability.c5.data),
-                          str(calendar_availability.c6.data),
-                          str(calendar_availability.c7.data),
-                          str(calendar_availability.c8.data),
-                          str(calendar_availability.c9.data),
-                          str(calendar_availability.c10.data),
-                          str(calendar_availability.c11.data),
-                          str(calendar_availability.c12.data),
-                          str(calendar_availability.c13.data),
-                          str(calendar_availability.c14.data),
-                          str(calendar_availability.c15.data),
-                          str(calendar_availability.c16.data),
-                          str(calendar_availability.c17.data),
-                          str(calendar_availability.c18.data),
-                          str(calendar_availability.c19.data),
-                          str(calendar_availability.c20.data),
-                          str(calendar_availability.c21.data),
-                          str(calendar_availability.c22.data),
-                          str(calendar_availability.c23.data),
-                          str(calendar_availability.c24.data),
-                          str(calendar_availability.c25.data),
-                          str(calendar_availability.c26.data),
-                          str(calendar_availability.c27.data),
-                          str(calendar_availability.c28.data),
-                          str(calendar_availability.c29.data),
-                          str(calendar_availability.c30.data),
-                          str(calendar_availability.c31.data)]
-        current_user.calendar = "".join(days_available)
-        db.session.commit()
+        if calendar_availability.validate_on_submit():
+            days_available = [str(int(calendar_availability.c1.data)),
+                              str(int(calendar_availability.c2.data)),
+                              str(int(calendar_availability.c3.data)),
+                              str(int(calendar_availability.c4.data)),
+                              str(int(calendar_availability.c5.data)),
+                              str(int(calendar_availability.c6.data)),
+                              str(int(calendar_availability.c7.data)),
+                              str(int(calendar_availability.c8.data)),
+                              str(int(calendar_availability.c9.data)),
+                              str(int(calendar_availability.c10.data)),
+                              str(int(calendar_availability.c11.data)),
+                              str(int(calendar_availability.c12.data)),
+                              str(int(calendar_availability.c13.data)),
+                              str(int(calendar_availability.c14.data)),
+                              str(int(calendar_availability.c15.data)),
+                              str(int(calendar_availability.c16.data)),
+                              str(int(calendar_availability.c17.data)),
+                              str(int(calendar_availability.c18.data)),
+                              str(int(calendar_availability.c19.data)),
+                              str(int(calendar_availability.c20.data)),
+                              str(int(calendar_availability.c21.data)),
+                              str(int(calendar_availability.c22.data)),
+                              str(int(calendar_availability.c23.data)),
+                              str(int(calendar_availability.c24.data)),
+                              str(int(calendar_availability.c25.data)),
+                              str(int(calendar_availability.c26.data)),
+                              str(int(calendar_availability.c27.data)),
+                              str(int(calendar_availability.c28.data)),
+                              str(int(calendar_availability.c29.data)),
+                              str(int(calendar_availability.c30.data)),
+                              str(int(calendar_availability.c31.data))]
+            current_user.calendar = "".join(days_available)
+            db.session.commit()
 
         return redirect(url_for('personal_page'))
 
@@ -1045,17 +1013,26 @@ def calendar():
 
 @app.route('/b/<user_id>')
 @login_required
-def booking(user_id):
+def b(user_id):
     # c1. User's pro_pic for login_required pages
     pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     # c1_end
 
-    user = User.db.Query.filter_by(user_id=user_id.capitalize()).first_or_404
+    user = User.query.filter_by(user_id=user_id.capitalize()).first_or_404()
 
-    return render_template('habits.html',
+    availability = user.calendar
+
+    days = []
+    for i in range(1, 32):
+        days.append(i)
+
+    calendar_availability = zip(availability, days)
+
+    return render_template('public_booking.html',
                            pro_pic=pro_pic,
 
-                           user=user)
+                           user=user,
+                           calendar_availability=calendar_availability)
 
 
 @app.route('/logout')

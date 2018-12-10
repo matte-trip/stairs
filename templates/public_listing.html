@@ -517,6 +517,29 @@
                     <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
                 {% endif %}
 
+            </div>
+
+            <div class="mapouter">
+                <div class="gmap_canvas">
+                    <iframe width="769" height="500" id="gmap_canvas"
+                            src="https://maps.google.com/maps?q=via%20pomaro%20turin&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                            frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                    <a href="https://www.pureblack.de/webdesign-kiel/"></a></div>
+
+                <style>
+                    .mapouter {
+                        text-align: right;
+                        height: 500px;
+                        width: 200px;
+                    }
+
+                    .gmap_canvas {
+                        overflow: hidden;
+                        background: none !important;
+                        height: 500px;
+                        width: 769px;
+                    }
+                </style>
 
             </div>
         </div>
@@ -594,6 +617,10 @@
                         {% if housemate.interests %}
                             <label>{{ housemate.interests }}</label>
                         {% endif %}
+
+                        <a href="{{ url_for('b', user_id=housemate.user_id) }}">
+                            <button id="add_house_button">BOOK AN APPOINTMENT</button>
+                        </a>
                     </div>
                 </div>
             {% endfor %}

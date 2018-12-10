@@ -87,22 +87,28 @@
 <body>
 <div class="container">
 
+    <label>{{ user.first_name }} {{ user.last_name }}</label>
+
     <label>This Month's Availability</label>
 
-    {% for day in user.calendar[day] %}
-        {% if user.calendar[day] == 1 %}
-            <label style="color: palegreen">{{ day }}</label>
-        {% else %}
-            <label style="color: darkred">{{ day }}</label>
-        {% endif %}
-    {% endfor %}
+    {% for availability, days in calendar_availability %}
+            {% if availability == "1" %}
+                <label style="color: palegreen; display: inline">{{ days }}</label>
+            {% else %}
+                <label style="color: darkred; display: inline">{{ days }}</label>
+            {% endif %}
+
+            {% if days%7 == 0 %}
+                <br>
+            {% endif %}
+        {% endfor %}
 
     {% if user.phone != 0000000000 %}
-        <label>user.phone</label>
+        <label>{{ user.phone_number }}</label>
     {% endif %}
 
     <a href="mailto:{{ user.email }}">
-        <label>user.email</label>
+        <label>{{ user.email }}</label>
     </a>
 
 </div>

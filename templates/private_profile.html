@@ -390,7 +390,7 @@
         <label>Your Calendar Availability:</label>
 
         {% for availability, days in calendar_availability %}
-            {% if availability == 1 %}
+            {% if availability == "1" %}
                 <label style="color: palegreen; display: inline">{{ days }}</label>
             {% else %}
                 <label style="color: darkred; display: inline">{{ days }}</label>
