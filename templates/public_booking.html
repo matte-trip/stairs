@@ -9,7 +9,7 @@
 
         body {
             margin: 0;
-            background: url('../static/upload-background.png') fixed center;
+            background: url('../static/public_booking-background.png') fixed center;
             background-size: cover;
             width: 100%;
             height: 100%;
@@ -21,20 +21,23 @@
         }
 
         .container {
-            width: 300px;
-            height: 140px;
-            margin-left: -150px;
-            margin-top: -70px;
+            width: auto;
+            height: auto;
+            margin-left: -232px;
+            margin-top: -175px;
             position: absolute;
             left: 50%;
             top: 50%;
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .25);
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            text-align: center;
         }
 
-        .choose_button {
-            width: 100%;
-            height: 40px;
-
-            border: 1px solid white;
+        .pad {
+            padding: 40px;
         }
 
         .container_crop {
@@ -86,11 +89,11 @@
 
 <body>
 <div class="container">
+<div class="pad">
+    <label>To rent {{ house.name }} you can contact:<br></label>
+    <label>{{ user.first_name }} {{ user.last_name }}<br></label>
 
-    <label>To rent {{ house.name }} you can contact:</label>
-    <label>{{ user.first_name }} {{ user.last_name }}</label>
-
-    <label>This Month's Availability</label>
+    <label>This Month's Availability<br></label>
 
     {% for availability, days in calendar_availability %}
             {% if availability == "1" %}
@@ -103,14 +106,14 @@
                 <br>
             {% endif %}
         {% endfor %}
-
+    <br>
     {% if phone != 0 %}
         <label>{{ phone }}</label>
     {% endif %}
-
+    <br>
     <a href="mailto:{{ user.email }}">
         <label>{{ user.email }}</label>
     </a>
-
+</div>
 </div>
 </body>

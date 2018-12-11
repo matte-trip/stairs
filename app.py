@@ -1014,9 +1014,8 @@ last_url = ''
 # used to keep track of the last page the user was visiting (public pages)
 # in order to redirect him there after login/logout
 
-static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
-uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
-
+static_folder = 'C:\\Users\\lucas\\PycharmProjects\\stairs\\static'
+uploads_folder = 'C:\\Users\\lucas\\PycharmProjects\\stairs\\uploads'
 # ======================================================================================================================
 # STARTUP
 # ======================================================================================================================
