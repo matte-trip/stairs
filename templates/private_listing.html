@@ -243,6 +243,7 @@
 
             flex-direction: column;
             display: grid;
+
             text-align: center;
         }
 
@@ -345,6 +346,9 @@
             opacity: .9;
         }
 
+        #add_photo_button {
+            margin-top: 20px;
+        }
 
     </style>
 
@@ -424,7 +428,7 @@
 
 
         <a href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
-            <button id="change_button">ADD PHOTO</button>
+            <button id="add_photo_button">ADD PHOTO</button>
         </a>
 
     </div>
