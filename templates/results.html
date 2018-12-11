@@ -58,7 +58,23 @@
             transition: all 0.25s;
         }
 
-        button:hover {
+        #apply_filters {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+
+            background: rgba(0, 0, 0, 0);
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        button:hover, #apply_filters:hover {
             background: sandybrown;
         }
 
@@ -301,36 +317,30 @@
                                     class="download-card__content-box__title">{{ house.name }}</h2></a>
                             <p class="download-card__content-box__description">{{ house.description }}</p>
 
-                            {% if house.amenities != "0000000" %}
+                            {% if house.amenities != "00000000" %}
                                 <div class="listing--amens">
 
                                     {% if house.amenities[0] == "1" %}
-                                        <span title="Male Only" class="mdi mdi-gender-male"></span>
-                                    {% elif house.amenities[0] == "2" %}
-                                        <span title="Female Only" class="mdi mdi-gender-female"></span>
-                                    {% endif %}
-
-                                    {% if house.amenities[1] == "1" %}
                                         <span title="Lift" class="mdi mdi-elevator"></span>
                                     {% endif %}
 
-                                    {% if house.amenities[2] == "1" %}
-                                        <span title="Per Friendly" class="mdi mdi-paw"></span>
+                                    {% if house.amenities[1] == "1" %}
+                                        <span title="Pet Friendly" class="mdi mdi-paw"></span>
                                     {% endif %}
 
-                                    {% if house.amenities[3] == "1" %}
+                                    {% if house.amenities[2] == "1" %}
                                         <span title="Independent Heating" class="mdi mdi-thermometer"></span>
                                     {% endif %}
 
-                                    {% if house.amenities[4] == "1" %}
+                                    {% if house.amenities[3] == "1" %}
                                         <span title="Air Conditioned" class="mdi mdi-snowflake"></span>
                                     {% endif %}
 
-                                    {% if house.amenities[5] == "1" %}
+                                    {% if house.amenities[4] == "1" %}
                                         <span title="Furniture" class="mdi mdi-pillar"></span>
                                     {% endif %}
 
-                                    {% if house.amenities[6] == "1" %}
+                                    {% if house.amenities[5] == "1" %}
                                         <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
                                     {% endif %}
                                 </div>

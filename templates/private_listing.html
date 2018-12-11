@@ -1,7 +1,7 @@
 <head>
     {% import "bootstrap/wtf.html" as wtf %}
 
-    <title>{{ house.name }}</title>
+    <title>Edit {{ house.name }}</title>
 
     <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
 
@@ -102,7 +102,7 @@
             width: 15%;
         }
 
-        #login_button, #logout_button {
+        #logout_button {
             position: absolute;
             right: 0;
             width: 15%;
@@ -194,44 +194,6 @@
             font-weight: 400;
         }
 
-        /* Slideshow container */
-        .slideshow-container {
-            max-width: 1000px;
-            position: relative;
-            margin: auto;
-        }
-
-        /* Hide the images by default */
-        .mySlides {
-            display: none;
-        }
-
-        /* Next & previous buttons */
-        .prev, .next {
-            cursor: pointer;
-            position: absolute;
-            top: 50%;
-            right: 95%;
-            width: auto;
-            margin-top: -22px;
-            padding: 16px;
-            color: white;
-            font-weight: bold;
-            font-size: 18px;
-            transition: 0.25s ease;
-        }
-
-        /* Position the "next button" to the right */
-        .next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
-        }
-
-        /* On hover, add a black background color with a little bit see-through */
-        .prev:hover, .next:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
 
         .social-box {
             grid-row-start: 1;
@@ -247,34 +209,6 @@
             text-align: center;
         }
 
-        .house-rules {
-            display: flex;
-            position: relative;
-            height: 160px;
-
-            left: 5%;
-            width: 90%;
-            top: 10px;
-
-
-            color: white;
-        }
-
-        .profile-card {
-            position: relative;
-            display: flex;
-            top: 10px;
-            left: 5%;
-            width: 90%;
-            height: 154px;
-            border: 3px solid #111111;
-            background: #f46b45;
-            background: -webkit-linear-gradient(to right, #eea849, #f46b45);
-            background: linear-gradient(to right, #eea849, #f46b45);
-            opacity: 0.9;
-            text-align: center;
-
-        }
 
         .user-information {
             display: block;

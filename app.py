@@ -641,7 +641,6 @@ def s(filters):
 
         if filter_form.validate_on_submit():
             filter_list.append(filter_form.type.data)
-            filter_list.append(str(0))
             filter_list.append(filter_form.neighbourhood.data)
 
             filter_list.append(str(int(filter_form.lift.data)))

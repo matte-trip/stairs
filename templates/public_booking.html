@@ -16,15 +16,42 @@
             align-items: center;
         }
 
-        img {
-            object-fit: cover;
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
+        button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            width: 130px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+        }
+
+        button:hover {
+            background: sandybrown;
         }
 
         .container {
-            width: auto;
-            height: auto;
-            margin-left: -232px;
-            margin-top: -175px;
+            width: 500px;
+            height: 420px;
+            margin-left: -250px;
+            margin-top: -210px;
             position: absolute;
             left: 50%;
             top: 50%;
@@ -40,62 +67,63 @@
             padding: 40px;
         }
 
-        .container_crop {
-            overflow: hidden;
-
-            width: 100%;
-            height: 40px;
-            margin-left: -150px;
-            margin-top: -20px;
+        #home_button {
             position: absolute;
-            left: 50%;
-            top: 52%;
+            left: 0;
+            width: 15%;
         }
 
-        .browse_label {
-            position: relative;
+        #pro_pic {
+            position: absolute;
             right: 30%;
-
-            width: 390px;
-            padding: 5px;
-        }
-
-        .upload_button {
-            width: 100%;
             height: 40px;
-            position: absolute;
-            bottom: 0;
-
+            width: 40px;
             border: 1px solid white;
+            box-sizing: border-box;
         }
 
-        .choose_button, .browse_label, .upload_button {
-            font-size: 16px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-family: 'Oswald', sans-serif;
-            cursor: pointer;
-            background: transparent;
-            color: white;
-            transition: all 0.25s;
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
         }
 
-        .choose_button:hover, .browse_label:hover, .upload_button:hover {
-            background-color: sandybrown;
+        #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
         }
 
     </style>
 </head>
 
 <body>
+<div id="nav_bar">
+
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
+
+    <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
+    </a>
+    <a href="{{ url_for('personal_page') }}">
+        <button id="account_button">ACCOUNT</button>
+    </a>
+    <a href="{{ url_for('logout') }}">
+        <button id="logout_button">LOGOUT</button>
+    </a>
+
+</div>
+
 <div class="container">
-<div class="pad">
-    <label>To rent {{ house.name }} you can contact:<br></label>
-    <label>{{ user.first_name }} {{ user.last_name }}<br></label>
+    <div class="pad">
+        <label>To rent {{ house.name }} you can contact:<br></label>
+        <label>{{ user.first_name }} {{ user.last_name }}<br></label>
 
-    <label>This Month's Availability<br></label>
+        <label>This Month's Availability<br></label>
 
-    {% for availability, days in calendar_availability %}
+        {% for availability, days in calendar_availability %}
             {% if availability == "1" %}
                 <label style="color: palegreen; display: inline">{{ days }}</label>
             {% else %}
@@ -106,14 +134,13 @@
                 <br>
             {% endif %}
         {% endfor %}
-    <br>
-    {% if phone != 0 %}
-        <label>{{ phone }}</label>
-    {% endif %}
-    <br>
-    <a href="mailto:{{ user.email }}">
-        <label>{{ user.email }}</label>
-    </a>
-</div>
+        <br>
+        {% if phone != 0 %}
+            <label>{{ phone }}</label>
+        {% endif %}
+        <a href="mailto:{{ user.email }}">
+            <label>{{ user.email }}</label>
+        </a>
+    </div>
 </div>
 </body>
