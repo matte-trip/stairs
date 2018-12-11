@@ -18,7 +18,6 @@
             width: 100%;
             height: 100%;
             position: relative;
-            text-align: center;
         }
 
         img {
@@ -74,6 +73,7 @@
             color: white;
             letter-spacing: 1px;
             transition: all 0.25s;
+
         }
 
         button:hover {
@@ -365,11 +365,10 @@
             top: 10px;
             left: 5%;
             width: 90%;
-            height: 150px;
+            height: auto;
             border: 1px solid white;
             background: sandybrown;
             opacity: 0.9;
-            text-align: center;
         }
 
         .social-pics {
@@ -380,7 +379,8 @@
         .user-information {
             display: block;
             position: relative;
-            right: -100px;
+
+            width: 70%;
         }
 
 
@@ -473,9 +473,7 @@
                 <h1 class="listing--title">
                     {{ house.name }}
                 </h1>
-                <div class="listing--sub">
-                    <p>{{ house.neighbourhood }}</p>
-                </div>
+
                 <p class="listing--desc">
                     {{ house.description }}
                 </p>
@@ -574,14 +572,7 @@
                 </div>
             </div>
 
-            <div class="house-type">
-                <div class="info_L">
-                    <label>TYPE:</label>
-                </div>
-                <div class="info_I">
-                    <p>{{ house.type }}</p>
-                </div>
-            </div>
+
 
             <div class="house-city">
                 <div class="info_L">
