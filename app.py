@@ -242,7 +242,7 @@ class EditHouseForm(FlaskForm):
     civic = IntegerField('Civic', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     rules = TextAreaField('Rules', validators=[DataRequired()])
-    price = IntegerField('Price', validators=[DataRequired()])
+    price = IntegerField('Price in Euros', validators=[DataRequired()])
     bills = TextAreaField('Bills')
 
     lift = BooleanField('Lift')
@@ -613,8 +613,9 @@ def s(filters):
     elif filters[0] == types_query[2][0]:
         all_houses = [house for house in all_houses if house.type == types_query[2][1]]
 
-    for i in range(1, 23):
+    for i in range(1, 24):
         if str(filters[1]) == neighbourhoods_query[i][0]:
+
             all_houses = [house for house in all_houses if house.neighbourhood == neighbourhoods_query[i][1]]
 
     if filters[2] == str(1):

@@ -223,20 +223,12 @@
             display: inline-block;
             text-transform: uppercase;
             letter-spacing: 1px;
-            font-weight: bold;
-            font-size: 13px;
+            font-size: 20px;
         }
 
         .listing--amens {
-            display: flex;
-            flex-wrap: wrap;
-            opacity: 0.8;
-            padding: 10px;
-            margin: 5px;
-            font-family: 'Nunito', sans-serif;
             color: white;
-            font-size: 16px;
-            font-weight: 400;
+            font-size: 20px;
         }
 
         #the_box {
@@ -255,7 +247,6 @@
             border: 1px solid white;
             color: white;
             letter-spacing: 1px;
-            transition: all 0.25s;
             line-height: 30px;
 
             margin-top: 80px;
@@ -298,7 +289,6 @@
 
         <div id="the_box">
 
-
             {% for house in all_houses %}
                 <article class="download-card">
 
@@ -317,7 +307,7 @@
                                     class="download-card__content-box__title">{{ house.name }}</h2></a>
                             <p class="download-card__content-box__description">{{ house.description }}</p>
 
-                            {% if house.amenities != "00000000" %}
+                            {% if house.amenities != "000000" %}
                                 <div class="listing--amens">
 
                                     {% if house.amenities[0] == "1" %}
@@ -346,7 +336,7 @@
                                 </div>
                             {% endif %}
 
-                            <a class="button">Price: {{ house.price }}</a>
+                            <a class="button">{{ house.price }}€</a>
                         </div>
                     </div>
 

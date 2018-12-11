@@ -8,7 +8,6 @@
 
     <style>
 
-
         img {
             object-fit: cover;
         }
@@ -91,9 +90,9 @@
         }
 
         .container2 {
-            width: 400px;
+            width: 600px;
             height: 250px;
-            margin-left: -200px;
+            margin-left: -300px;
             margin-top: -125px;
             position: absolute;
             left: 50%;
@@ -101,25 +100,13 @@
         }
 
         .container3 {
-            width: 400px;
-            height: 550px;
-            margin-left: -200px;
-            margin-top: -275px;
+            width: 550px;
+            height: 350px;
+            margin-left: -275px;
+            margin-top: -175px;
             position: absolute;
             left: 50%;
             top: 250%;
-        }
-
-        #login_button, #logout_button {
-            position: absolute;
-            right: 0;
-            width: 15%;
-        }
-
-        #account_button {
-            position: absolute;
-            right: 15%;
-            width: 15%;
         }
 
         #pro_pic {
@@ -128,6 +115,18 @@
             height: 38px;
             width: 38px;
             border: 1px solid white;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #login_button, #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
         }
 
     </style>
@@ -160,7 +159,7 @@
 
         <h1 class="title">HOUSR</h1>
         <p>Meet your Turin housemates since 2018</p>
-        <p>Start looking!</p>
+        <p>Start here!</p>
 
         <a href="{{ url_for('s', filters="00000000") }}">
             <button>ALL LISTINGS</button>
@@ -180,9 +179,13 @@
     <div class="container2">
 
         <h1>OUR STORY</h1>
-        <p>We are Engineering and Management students and we want to tackle the problem of renting a house from the
-            point of view of new students in a new city.<br>With our system you can make friends more easily and let
-            your academic year be better by living with people who share the same interests as yours.
+        <p>
+            We are Engineering and Management students and we want to tackle the problem of renting a house from the
+            point of view of a new student in a new city.
+        </p>
+        <p>
+            Thanks to our system you can make friends more easily and you will get to live with people who share the
+            same interests as yours.
         </p>
 
     </div>

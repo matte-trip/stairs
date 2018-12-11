@@ -387,7 +387,15 @@
 
         {% endif %}
 
-        <label>Your Calendar Availability:</label>
+        <br>
+
+        <label style="display: inline;">Your Calendar Availability:</label>
+
+        <a href="{{ url_for('calendar') }}">
+            <button id="add_house_button">ADJUST</button>
+        </a>
+
+        <br>
 
         {% for availability, days in calendar_availability %}
             {% if availability == "1" %}
@@ -401,11 +409,7 @@
             {% endif %}
         {% endfor %}
 
-        <br>
 
-        <a href="{{ url_for('calendar') }}">
-            <button id="add_house_button">ADJUST</button>
-        </a>
     </div>
 
 
