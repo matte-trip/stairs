@@ -1024,8 +1024,11 @@ last_url = ''
 errors_in_existing = 0
 # 1 wrong secret code, user did not entered a valid house_sc
 
-static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
-uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
+static_folder1 = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
+uploads_folder1 = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
+
+static_folder = 'C:\\Users\\lucas\\PycharmProjects\\stairs\\static'
+uploads_folder = 'C:\\Users\\lucas\\PycharmProjects\\stairs\\uploads'
 
 # ======================================================================================================================
 # STARTUP
