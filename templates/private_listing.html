@@ -244,6 +244,7 @@
             flex-direction: column;
             display: grid;
 
+            text-align: center;
         }
 
         .house-rules {
@@ -345,6 +346,9 @@
             opacity: .9;
         }
 
+        #add_photo_button {
+            margin-top: 20px;
+        }
 
     </style>
 
@@ -416,7 +420,7 @@
 
     <div class="social-box">
 
-        {% for i in range(0,house.photo_id) %}
+        {% for i in range(0, house.photo_id + 1) %}
 
             <img style="height: 100px; width: 200px;" id="profile_picture" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
 
@@ -424,7 +428,7 @@
 
 
         <a href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
-            <button id="change_button">ADD PHOTO</button>
+            <button id="add_photo_button">ADD PHOTO</button>
         </a>
 
     </div>
