@@ -414,6 +414,8 @@ def personal_page():
 
     global errors_in_private_page
     global show_wrong_password_box
+    global errors_in_existing
+    errors_in_existing = 0
 
     personal_profile_form = EditPrivateDataForm()
     bio_form = EditPublicDataForm()
@@ -751,32 +753,32 @@ def h_edit(house_id):
             house_form.price.data = house.price
             house_form.bills.data = house.bills
 
-            if house.amenities[1] == str(0):
+            if house.amenities[0] == str(0):
                 house_form.lift.data = False
             else:
                 house_form.lift.data = True
 
-            if house.amenities[2] == str(0):
+            if house.amenities[1] == str(0):
                 house_form.pet_friendly.data = False
             else:
                 house_form.pet_friendly.data = True
 
-            if house.amenities[3] == str(0):
+            if house.amenities[2] == str(0):
                 house_form.independent_heating.data = False
             else:
                 house_form.independent_heating.data = True
 
-            if house.amenities[4] == str(0):
+            if house.amenities[3] == str(0):
                 house_form.air_conditioned.data = False
             else:
                 house_form.air_conditioned.data = True
 
-            if house.amenities[5] == str(0):
+            if house.amenities[4] == str(0):
                 house_form.furniture.data = False
             else:
                 house_form.furniture.data = True
 
-            if house.amenities[6] == str(0):
+            if house.amenities[5] == str(0):
                 house_form.wifi.data = False
             else:
                 house_form.wifi.data = True
@@ -869,6 +871,8 @@ def existing():
     pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     # c1_end
 
+    global errors_in_existing
+
     existing_house_form = ExistingHouseForm()
 
     if request.method == 'POST':
@@ -878,7 +882,8 @@ def existing():
             house = Residence.query.filter_by(house_sc=house_sc.capitalize()).first()
 
             if house is None:
-                return redirect(url_for('personal_page'))
+                errors_in_existing = 1
+                return redirect(url_for('existing'))
             else:
                 current_user.house_id = house.house_id
                 db.session.commit()
@@ -888,7 +893,9 @@ def existing():
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
 
-                           existing_house=existing_house_form)
+                           existing_house=existing_house_form,
+
+                           error=errors_in_existing)
 
 
 @app.route('/calendar', methods=['GET', 'POST'])
@@ -1014,8 +1021,12 @@ last_url = ''
 # used to keep track of the last page the user was visiting (public pages)
 # in order to redirect him there after login/logout
 
-static_folder = 'C:\\Users\\lucas\\PycharmProjects\\stairs\\static'
-uploads_folder = 'C:\\Users\\lucas\\PycharmProjects\\stairs\\uploads'
+errors_in_existing = 0
+# 1 wrong secret code, user did not entered a valid house_sc
+
+static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
+uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
+
 # ======================================================================================================================
 # STARTUP
 # ======================================================================================================================

@@ -20,15 +20,18 @@
 
         .container {
             width: 300px;
-            height: 140px;
+            height: 170px;
             margin-left: -150px;
-            margin-top: -70px;
+            margin-top: -85px;
             position: absolute;
             left: 50%;
             top: 50%;
+
+            text-align: center;
+            border: 1px white solid;
         }
 
-        button {
+        #enter_button {
             font-size: 16px;
             letter-spacing: 1px;
             text-transform: uppercase;
@@ -37,10 +40,69 @@
             background: transparent;
             color: white;
             transition: all 0.25s;
+
+            position: relative;
+            margin-top: 10px;
+
+            text-align: center;
+            height: 40px;
+            width: 90%;
+            border: 1px solid white;
+            opacity: 1;
         }
 
-        button:hover {
+        #enter_button:hover {
             background-color: sandybrown;
+        }
+
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
+        }
+
+        #wrong_private_profile {
+            position: relative;
+            margin-top: 10px;
+            margin-left: 5%;
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            width: 90%;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #wrong_private_profile:hover {
+            background-color: sandybrown;
+        }
+
+        input {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            padding: 5px;
+            border: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.75;
+            transition: all 0.25s;
+        }
+
+        input:hover, #city:hover {
+            opacity: 1;
         }
 
     </style>
@@ -48,6 +110,16 @@
 
 <body>
 <div class="container">
+
+    <label>Input the house secret code:</label>
+
+    {% if error == 1 %}
+        <div class="wrong_private_profile">
+            <a>
+                <button id="wrong_private_profile">CODE IS NOT VALID</button>
+            </a>
+        </div>
+    {% endif %}
 
     {{ wtf.quick_form(existing_house) }}
 
