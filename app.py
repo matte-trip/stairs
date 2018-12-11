@@ -150,7 +150,7 @@ class Residence(db.Model):
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(7), default="000000")
+    amenities = db.Column('amenities', db.String(6), default="000000")
     description = db.Column('description', db.String(1000), nullable=False)
     rules = db.Column('rules', db.String(1000), nullable=False)
     bills = db.Column('bills', db.String(1000), nullable=False)
