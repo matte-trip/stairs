@@ -14,7 +14,7 @@
 
         body {
             margin: 0;
-            background: url('../static/private_listing-background.png') fixed center;
+            background: url('../static/house_creation.png') fixed center;
             background-size: cover;
             display: grid;
             width: 100%;
@@ -49,8 +49,6 @@
             font-size: 16px;
             width: 90%;
         }
-
-
 
         label {
             font-family: "Oswald", sans-serif;
@@ -104,7 +102,7 @@
             width: 15%;
         }
 
-        #login_button, #logout_button {
+        #logout_button {
             position: absolute;
             right: 0;
             width: 15%;
@@ -133,71 +131,17 @@
             background-color: rgba(0, 0, 0, .5);
 
             flex-direction: column;
-            display: grid;
         }
-
-        .listing {
-            display: flex;
-            flex-direction: column;
-        }
-
-
-        .listing  {
-            min-height: 150px;
-            width: 100%;
-            overflow: hidden;
-
-        }
-
-        .listing .listing--header img {
-            max-width: 100%;
-        }
-
-
-
-        .listing  {
-            font-size: .9em;
-            padding: 5px 0 2.5px;
-            margin: 0;
-            position: relative;
-        }
-
-        .listing {
-            position: relative;
-            display: block;
-            border-bottom: 1px solid white;
-            content: " ";
-            max-width: 100%;
-            padding: 2.5px 0;
-        }
-
-        .listing {
-            font-size: .8em;
-            padding: 5px 0;
-        }
-
-
-
-        .listing--amens {
-            margin: 5px;
-            font-family: 'Nunito', sans-serif;
-            color: white;
-            font-size: 16px;
-            font-weight: 400;
-        }
-
-
 
         .social-box {
             grid-row-start: 1;
             grid-row-end: 3;
             grid-column-start: 4;
             border: 1px solid white;
-            background-color: rgba(0, 0, 0, .25);
+            background-color: rgba(0, 0, 0, .5);
             flex-direction: column;
-            display: grid;
-            text-align: center;
-            height: 600px;
+            text-align: justify;
+            height: 300px;
         }
 
         .social-box > label {
@@ -230,6 +174,7 @@
             opacity: 1;
 
         }
+
         #save_information:hover {
              background-color: sandybrown;
         }
@@ -240,41 +185,104 @@
             margin-left: 30%;
             padding: 5px;
             border: 0;
-            border-radius: 0;
             font-family: "Oswald", sans-serif;
             font-size: 14px;
             opacity: 0.4;
             transition: all 0.1s;
         }
-        #description , #rules , #bills{
+        #description, #rules, #bills {
             display: block;
             width: 45%;
             height: 100px;
             margin-left: 30%;
             padding: 5px;
             border: 0;
-            border-radius: 0;
             font-family: "Oswald", sans-serif;
             font-size: 14px;
             opacity: 0.4;
             transition: all 0.1s;
 
         }
-        #street:hover , #civic:hover , #price:hover , #type:hover , #city:hover , #neighbourhood:hover, #description:hover , #rules:hover , #bills:hover {
+        #street:hover,
+        #civic:hover,
+        #price:hover,
+        #type:hover,
+        #city:hover,
+        #neighbourhood:hover,
+        #description:hover,
+        #rules:hover,
+        #bills:hover {
             opacity: .9;
         }
+
+        #search_button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #search_button:hover {
+            background-color: sandybrown;
+        }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            background: transparent;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
+        }
+
 
     </style>
 
 </head>
 
-<body onload="showSlides(1)">
+<body>
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">
         <button id="home_button">HOMEPAGE</button>
     </a>
+    <a href="{{ url_for('s', filters="00000000") }}">
+        <button id="search_button">SEARCH</button>
+    </a>
 
+    <a>
+        <button id="logo_button">HOUSR</button>
+    </a>
 
     <a href="{{ url_for('u', user_id=current_user.user_id) }}">
         <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
@@ -292,28 +300,30 @@
 
     <div class="listing-container">
 
-        <div class="listing">
+            <label>All fields are required to create a new listing:</label>
 
             {{ wtf.quick_form(house_form) }}
 
-        </div>
     </div>
 
     <div class="social-box">
-        <h1 style="color: sandybrown;">INSTRUCTIONS</h1>
-        <label>Description: describe the whole house underlying strengths and weaknesses
-        i.e. number and kind of rooms , furniture and household appliances ,
-        floor number , closeness to place of interest and bus stops,
+        <label>Here are some tips for you:</label>
+        <br>
+        <label>
+            Description: describe the whole house in terms of number and kind of other rooms,
+            furniture and household appliances, floor number, closeness to place of interest and bus stops,
         contract terms and whatever information could be relevant to the new housemate.</label>
-        <label>House Rules : explain what are the common rules accepted in your house like:
-        smoking allowing , cleaning rules, per allowed or not , house parties accepted or not etc. etc. ,
-        practically every term or condition the new housemate must be accept in order to
-        maintain the already existing equilibrium in your house environment.</label>
-        <label>Bills : write all fixed bills and specify which of those are included in price</label>
+        <br>
+        <label>
+            House Rules: explain what are the common rules accepted in your house, for example
+            cleaning rules, if pets are allowed and so on.
+        </label>
+        <br>
+        <label>
+            Bills: specify which of the fixed bills are included in the price.
+        </label>
 
     </div>
 
-
 </div>
-
 </body>

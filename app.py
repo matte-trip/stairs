@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DecimalRangeField
 from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, BooleanField
-from wtforms.validators import DataRequired, EqualTo, ValidationError
+from wtforms.validators import DataRequired, EqualTo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
 import uuid
@@ -132,9 +132,6 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def print_user(self):
-        print "Email: " + self.email + " ID: " + self.user_id
-
 
 class Residence(db.Model):
     __tablename__ = 'houses'
@@ -150,7 +147,7 @@ class Residence(db.Model):
     street = db.Column('street', db.String(50), nullable=False)
     civic = db.Column('civic', db.Integer)
     neighbourhood = db.Column('neighbourhood', db.String(50), nullable=False)
-    amenities = db.Column('amenities', db.String(7), default="000000")
+    amenities = db.Column('amenities', db.String(6), default="000000")
     description = db.Column('description', db.String(1000), nullable=False)
     rules = db.Column('rules', db.String(1000), nullable=False)
     bills = db.Column('bills', db.String(1000), nullable=False)
@@ -166,12 +163,6 @@ class LoginForm(FlaskForm):
     login_password = PasswordField('Password', validators=[DataRequired()])
     login_button = SubmitField('Login')
 
-    @staticmethod
-    def validate_username(email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is None:
-            raise ValidationError('Email does not exist')
-
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
@@ -181,12 +172,6 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password')])
     registration_button = SubmitField('Register')
-
-    @staticmethod
-    def validate_username(email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is None:
-            raise ValidationError('Email does not exist')
 
 
 class EditPrivateDataForm(FlaskForm):
@@ -242,7 +227,7 @@ class EditHouseForm(FlaskForm):
     civic = IntegerField('Civic', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
     rules = TextAreaField('Rules', validators=[DataRequired()])
-    price = IntegerField('Price', validators=[DataRequired()])
+    price = IntegerField('Price in Euros', validators=[DataRequired()])
     bills = TextAreaField('Bills')
 
     lift = BooleanField('Lift')
@@ -303,15 +288,6 @@ class EditCalendarForm(FlaskForm):
     c31 = BooleanField('31')
 
     confirm = SubmitField('Confirm')
-
-
-# ======================================================================================================================
-# FUNCTIONS
-# ======================================================================================================================
-
-def char_range(c1, c2):
-    for c in xrange(ord(c1), ord(c2) + 1):
-        yield chr(c)
 
 
 # ======================================================================================================================
@@ -387,7 +363,7 @@ def login_registration():
             new_user.email = registration_form.email.data
             new_user.first_name = registration_form.first_name.data
             new_user.last_name = registration_form.last_name.data
-            new_user.city = registration_form.city.data
+            new_user.city = cities[int(registration_form.city.data)][1]
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
             default_image_destination_path = str(new_user.user_id) + "0.png"
@@ -414,6 +390,8 @@ def personal_page():
 
     global errors_in_private_page
     global show_wrong_password_box
+    global errors_in_existing
+    errors_in_existing = 0
 
     personal_profile_form = EditPrivateDataForm()
     bio_form = EditPublicDataForm()
@@ -422,7 +400,7 @@ def personal_page():
             current_user.email = personal_profile_form.email.data
             current_user.first_name = personal_profile_form.first_name.data
             current_user.last_name = personal_profile_form.last_name.data
-            current_user.city = personal_profile_form.city.data
+            current_user.city = cities[int(personal_profile_form.city.data)][1]
             current_user.phone_number = personal_profile_form.phone_number.data
             db.session.commit()
             return redirect(url_for('personal_page'))
@@ -511,6 +489,7 @@ def upload():
             db.session.commit()
             filename = str(current_user.user_id) + str(current_user.photo_id) + ".png"
             # saving new image to /uploads
+            # profile_picture.save(os.path.join(uploads_folder, filename))
             profile_picture.save(os.path.join(uploads_folder, filename))
             # deleting old image associated to the user
             filename = str(current_user.user_id) + str(current_user.photo_id - 1) + ".png"
@@ -584,7 +563,7 @@ def u(user_id):
 def s(filters):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
-    last_url = "results"
+    last_url = "s/" + filters
     # a_end
 
     # c2. User's pro_pic for public pages
@@ -611,7 +590,7 @@ def s(filters):
     elif filters[0] == types_query[2][0]:
         all_houses = [house for house in all_houses if house.type == types_query[2][1]]
 
-    for i in range(1, 23):
+    for i in range(1, 24):
         if str(filters[1]) == neighbourhoods_query[i][0]:
             all_houses = [house for house in all_houses if house.neighbourhood == neighbourhoods_query[i][1]]
 
@@ -639,7 +618,6 @@ def s(filters):
 
         if filter_form.validate_on_submit():
             filter_list.append(filter_form.type.data)
-            filter_list.append(str(0))
             filter_list.append(filter_form.neighbourhood.data)
 
             filter_list.append(str(int(filter_form.lift.data)))
@@ -741,9 +719,18 @@ def h_edit(house_id):
             db.session.commit()
 
         if request.method == 'GET':
-            house_form.type.data = house.type
-            house_form.city.data = house.city
-            house_form.neighbourhood.data = house.neighbourhood
+            if house.type == types[0][1]:
+                house_form.type.data = types[0][0]
+            elif house.type == types[1][1]:
+                house_form.type.data = types[1][0]
+
+            if house.city == cities[0][1]:
+                house_form.city.data = cities[0][0]
+
+            for i in range(0, 23):
+                if house.neighbourhood == neighbourhoods[i][1]:
+                    house_form.neighbourhood.data = neighbourhoods[i][0]
+
             house_form.street.data = house.street
             house_form.civic.data = house.civic
             house_form.description.data = house.description
@@ -751,32 +738,32 @@ def h_edit(house_id):
             house_form.price.data = house.price
             house_form.bills.data = house.bills
 
-            if house.amenities[1] == str(0):
+            if house.amenities[0] == str(0):
                 house_form.lift.data = False
             else:
                 house_form.lift.data = True
 
-            if house.amenities[2] == str(0):
+            if house.amenities[1] == str(0):
                 house_form.pet_friendly.data = False
             else:
                 house_form.pet_friendly.data = True
 
-            if house.amenities[3] == str(0):
+            if house.amenities[2] == str(0):
                 house_form.independent_heating.data = False
             else:
                 house_form.independent_heating.data = True
 
-            if house.amenities[4] == str(0):
+            if house.amenities[3] == str(0):
                 house_form.air_conditioned.data = False
             else:
                 house_form.air_conditioned.data = True
 
-            if house.amenities[5] == str(0):
+            if house.amenities[4] == str(0):
                 house_form.furniture.data = False
             else:
                 house_form.furniture.data = True
 
-            if house.amenities[6] == str(0):
+            if house.amenities[5] == str(0):
                 house_form.wifi.data = False
             else:
                 house_form.wifi.data = True
@@ -826,7 +813,7 @@ def upload_house_image(house_id):
 def h(house_id):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
-    last_url = "u/" + house_id
+    last_url = "h/" + house_id
     # a_end
 
     # c2. User's pro_pic for public pages
@@ -869,6 +856,8 @@ def existing():
     pro_pic = str(current_user.user_id) + str(current_user.photo_id) + ".png"
     # c1_end
 
+    global errors_in_existing
+
     existing_house_form = ExistingHouseForm()
 
     if request.method == 'POST':
@@ -878,7 +867,8 @@ def existing():
             house = Residence.query.filter_by(house_sc=house_sc.capitalize()).first()
 
             if house is None:
-                return redirect(url_for('personal_page'))
+                errors_in_existing = 1
+                return redirect(url_for('existing'))
             else:
                 current_user.house_id = house.house_id
                 db.session.commit()
@@ -888,7 +878,9 @@ def existing():
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
 
-                           existing_house=existing_house_form)
+                           existing_house=existing_house_form,
+
+                           error=errors_in_existing)
 
 
 @app.route('/calendar', methods=['GET', 'POST'])
@@ -1013,6 +1005,9 @@ show_wrong_password_box = 0
 last_url = ''
 # used to keep track of the last page the user was visiting (public pages)
 # in order to redirect him there after login/logout
+
+errors_in_existing = 0
+# 1 wrong secret code, user did not entered a valid house_sc
 
 static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
 uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'

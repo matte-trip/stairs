@@ -1,116 +1,205 @@
 <head>
-    <title>Upload Page</title>
+    <title>{{ user.first_name }} {{ user.last_name }}'s Availability</title>
 
     <link rel="icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type=“image/x-icon">
 
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
 
     <style>
 
         body {
             margin: 0;
-            background: url('../static/upload-background.png') fixed center;
+            background: url('../static/public_booking-background.png') fixed center;
             background-size: cover;
             width: 100%;
             height: 100%;
             align-items: center;
         }
 
-        img {
-            object-fit: cover;
+        label {
+            font-family: "Oswald", sans-serif;
+            display: block;
+            margin-left: 5%;
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: 400;
+            color: white;
+
+            text-transform: uppercase;
         }
 
-        .container {
-            width: 300px;
-            height: 140px;
-            margin-left: -150px;
-            margin-top: -70px;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-        }
-
-        .choose_button {
-            width: 100%;
-            height: 40px;
-
-            border: 1px solid white;
-        }
-
-        .container_crop {
-            overflow: hidden;
-
-            width: 100%;
-            height: 40px;
-            margin-left: -150px;
-            margin-top: -20px;
-            position: absolute;
-            left: 50%;
-            top: 52%;
-        }
-
-        .browse_label {
-            position: relative;
-            right: 30%;
-
-            width: 390px;
-            padding: 5px;
-        }
-
-        .upload_button {
-            width: 100%;
-            height: 40px;
-            position: absolute;
-            bottom: 0;
-
-            border: 1px solid white;
-        }
-
-        .choose_button, .browse_label, .upload_button {
-            font-size: 16px;
-            letter-spacing: 1px;
+        button {
+            font-size: 12px;
+            text-align: center;
             text-transform: uppercase;
             font-family: 'Oswald', sans-serif;
             cursor: pointer;
+            height: 40px;
+            width: 130px;
             background: transparent;
+            border: 1px solid white;
             color: white;
+            letter-spacing: 1px;
             transition: all 0.25s;
         }
 
-        .choose_button:hover, .browse_label:hover, .upload_button:hover {
+        button:hover {
+            background: sandybrown;
+        }
+
+        .container {
+            width: 500px;
+            height: 460px;
+            margin-left: -250px;
+            margin-top: -230px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            color: white;
+            text-align: center;
+        }
+
+        .pad {
+            padding: 40px;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+        }
+
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 40px;
+            width: 40px;
+            border: 1px solid white;
+            box-sizing: border-box;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+        }
+
+        #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+        }
+
+        #search_button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #search_button:hover {
             background-color: sandybrown;
         }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            background: transparent;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
+        }
+
 
     </style>
 </head>
 
 <body>
+<div id="nav_bar">
+
+    <a href="{{ url_for('home') }}">
+        <button id="home_button">HOMEPAGE</button>
+    </a>
+    <a href="{{ url_for('s', filters="00000000") }}">
+        <button id="search_button">SEARCH</button>
+    </a>
+
+    <a>
+        <button id="logo_button">HOUSR</button>
+    </a>
+
+    <a href="{{ url_for('u', user_id=current_user.user_id) }}">
+        <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
+    </a>
+    <a href="{{ url_for('personal_page') }}">
+        <button id="account_button">ACCOUNT</button>
+    </a>
+    <a href="{{ url_for('logout') }}">
+        <button id="logout_button">LOGOUT</button>
+    </a>
+
+</div>
+
 <div class="container">
+    <div class="pad">
+        <label>To rent {{ house.name }} you can contact:<br></label>
+        <label>{{ user.first_name }} {{ user.last_name }}<br></label>
 
-    <label>To rent {{ house.name }} you can contact:</label>
-    <label>{{ user.first_name }} {{ user.last_name }}</label>
+        <label>This Month's Availability<br></label>
 
-    <label>This Month's Availability</label>
-
-    {% for availability, days in calendar_availability %}
+        {% for availability, days in calendar_availability %}
             {% if availability == "1" %}
                 <label style="color: palegreen; display: inline">{{ days }}</label>
             {% else %}
-                <label style="color: darkred; display: inline">{{ days }}</label>
+                <label style="color: red; display: inline">{{ days }}</label>
             {% endif %}
 
             {% if days%7 == 0 %}
                 <br>
             {% endif %}
         {% endfor %}
-
-    {% if phone != 0 %}
-        <label>{{ phone }}</label>
-    {% endif %}
-
-    <a href="mailto:{{ user.email }}">
-        <label>{{ user.email }}</label>
-    </a>
-
+        <br>
+        {% if phone != 0 %}
+            <label>{{ phone }}</label>
+        {% endif %}
+        <a href="mailto:{{ user.email }}">
+            <label>{{ user.email }}</label>
+        </a>
+    </div>
 </div>
 </body>

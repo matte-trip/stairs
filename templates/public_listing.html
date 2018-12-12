@@ -18,7 +18,7 @@
             width: 100%;
             height: 100%;
             position: relative;
-            text-align: center;
+            text-align: justify;
         }
 
         img {
@@ -156,10 +156,12 @@
         }
 
         .listing .listing--title {
-            font-size: .9em;
-            padding: 5px 0 2.5px;
+            font-size: 24px;
+            padding: 5px 0 3px;
             margin: 0;
             position: relative;
+
+            text-align: center;
         }
 
         .listing .listing--title:after {
@@ -168,26 +170,15 @@
             border-bottom: 1px solid white;
             content: " ";
             max-width: 100%;
-            padding: 2.5px 0;
-        }
-
-        .listing .listing--sub {
-            font-size: .8em;
-            padding: 5px 0;
+            padding: 3px 0;
         }
 
 
         .listing--amens {
-            display: flex;
-            flex-wrap: wrap;
-            background: linear-gradient(to left, #eea849, #f46b45);
-            opacity: 0.8;
-            padding: 10px;
-            margin: 5px;
-            font-family: 'Nunito', sans-serif;
             color: white;
-            font-size: 16px;
-            font-weight: 400;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 3%;
         }
 
 
@@ -244,7 +235,6 @@
         }
 
         .social-box-grid {
-            dysplay: grid;
             height: 100%;
             width: 100%;
             grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -288,30 +278,6 @@
             color: white;
         }
 
-        .house-type { /*every info will have their block*/
-            grid-row-start: 4;
-            grid-row-end: 5;
-            grid-column-start: 1;
-            grid-column-end: 2;
-            display: flex;
-            position: relative;
-            left: 5%;
-            width: 82%;
-            color: white;
-        }
-
-        .house-type { /*every info will have their block*/
-            grid-row-start: 4;
-            grid-row-end: 5;
-            grid-column-start: 1;
-            grid-column-end: 2;
-            display: flex;
-            position: relative;
-            left: 5%;
-            width: 82%;
-            color: white;
-        }
-
         .house-city { /*every info will have their block*/
             grid-row-start: 5;
             grid-row-end: 6;
@@ -344,7 +310,7 @@
             display: flex;
             position: relative;
 
-            left: 5%;
+
             width: 15%;
         }
 
@@ -355,7 +321,7 @@
             display: flex;
             position: relative;
 
-            left: 5%;
+
             width: 85%;
         }
 
@@ -365,11 +331,9 @@
             top: 10px;
             left: 5%;
             width: 90%;
-            height: 150px;
+            height: auto;
             border: 1px solid white;
-            background: sandybrown;
             opacity: 0.9;
-            text-align: center;
         }
 
         .social-pics {
@@ -380,7 +344,58 @@
         .user-information {
             display: block;
             position: relative;
-            right: -100px;
+
+            width: 70%;
+        }
+
+        #search_button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #search_button:hover {
+            background-color: sandybrown;
+        }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            background: transparent;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
         }
 
 
@@ -393,11 +408,6 @@
         // Next/previous controls
         function plusSlides(n) {
             showSlides(slideIndex += n);
-        }
-
-        // Thumbnail image controls
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
         }
 
         function showSlides(n) {
@@ -422,6 +432,13 @@
 
     <a href="{{ url_for('home') }}">
         <button id="home_button">HOMEPAGE</button>
+    </a>
+    <a href="{{ url_for('s', filters="00000000") }}">
+        <button id="search_button">SEARCH</button>
+    </a>
+
+    <a>
+        <button id="logo_button">HOUSR</button>
     </a>
 
     {% if is_auth %}
@@ -448,43 +465,41 @@
 
         <div class="listing">
 
-            <div class="listing--header">
+            {% if house.photo_id != -1 %}
 
-                <div class="slideshow-container">
+                <div class="listing--header">
 
-                    <!-- Full-width images with number and caption text -->
-                    <div class="mySlides fade">
-                        <img class="slideshow_image" src="../static/homepage-background-1.png" alt="">
+                    <div class="slideshow-container">
+
+                        <!-- Full-width images with number and caption text -->
+                        {% for i in range(0, house.photo_id + 1) %}
+
+                            <div class="mySlides fade">
+                                <img class="slideshow_image" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
+                            </div>
+
+                        {% endfor %}
+
+                        <!-- Next and previous buttons -->
+                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
                     </div>
 
-                    <div class="mySlides fade">
-                        <img class="slideshow_image" src="../static/homepage-background-2.png" alt="">
-                    </div>
-
-                    <div class="mySlides fade">
-                        <img class="slideshow_image" src="../static/user-default.png" alt="">
-                    </div>
-
-                    <!-- Next and previous buttons -->
-                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
                 </div>
-                <br>
 
+            {% endif %}
 
-            </div>
             <div class="listing--content">
                 <h1 class="listing--title">
                     {{ house.name }}
                 </h1>
-                <div class="listing--sub">
-                    <p>{{ house.neighbourhood }}</p>
-                </div>
-                <p class="listing--desc">
+
+                <p style="margin: 3%; text-align: justify" class="listing--desc">
                     {{ house.description }}
                 </p>
 
             </div>
+
             <div class="listing--amens">
 
                 {% if preferred_sex == 1 %}
@@ -519,24 +534,22 @@
 
             </div>
 
-            <div class="mapouter">
-                <div class="gmap_canvas">
-                    <iframe width="98%" height="500" id="gmap_canvas"
+            <div class="map_outer">
+                <div class="g_map_canvas">
+                    <iframe width="100%" height="500" id="g_map_canvas"
                             src="https://maps.google.com/maps?q={{ house.street }}%20{{ house.civic }}%20{{ house.city }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                            frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                            frameborder="0" scrolling="no">
                     </iframe>
                 </div>
 
                 <style>
-                    .mapouter {
+                    .map_outer {
                         text-align: center;
                         height: 500px;
                         width: 100%;
-
-                        margin-bottom: 10px;
                     }
 
-                    .gmap_canvas {
+                    .g_map_canvas {
                         overflow: hidden;
                         background: none !important;
                         height: 500px;
@@ -578,14 +591,6 @@
                 </div>
             </div>
 
-            <div class="house-type">
-                <div class="info_L">
-                    <label>TYPE:</label>
-                </div>
-                <div class="info_I">
-                    <p>{{ house.type }}</p>
-                </div>
-            </div>
 
             <div class="house-city">
                 <div class="info_L">
@@ -605,6 +610,8 @@
                 </div>
             </div>
 
+            <label style="text-align: center; margin-left: 0;">Housemates already living here:</label>
+
             {% for housemate, photo in housemates_and_photos %}
                 <div class="profile-card">
                     <a href="{{ url_for('u', user_id=housemate.user_id) }}">
@@ -612,20 +619,27 @@
                     </a>
 
                     <div class="user-information">
-                        <label>{{ housemate.first_name }} {{ housemate.last_name }}</label>
+                        <label>
+                            {% if housemate.age %}
+                                {{ housemate.first_name }} {{ housemate.last_name }}, {{ housemate.age }}
+                            {% else %}
+                                {{ housemate.first_name }} {{ housemate.last_name }}
+                            {% endif %}
+                        </label>
+
                         {% if housemate.university %}
                             <label>{{ housemate.university }}</label>
                         {% endif %}
 
-                        {% if housemate.interests %}
-                            <label>{{ housemate.interests }}</label>
-                        {% endif %}
+                        <br>
 
-                        <a href="{{ url_for('b', user_id=housemate.user_id) }}">
+                        <a style="margin-left: 5%;" href="{{ url_for('b', user_id=housemate.user_id) }}">
                             <button id="add_house_button">BOOK AN APPOINTMENT</button>
                         </a>
                     </div>
                 </div>
+
+                <br>
             {% endfor %}
         </div>
     </div>
