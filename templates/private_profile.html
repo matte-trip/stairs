@@ -286,6 +286,57 @@
             margin-bottom: 10px;
         }
 
+        #search_button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #search_button:hover {
+            background-color: sandybrown;
+        }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            background: transparent;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
+        }
+
+
     </style>
 </head>
 
@@ -311,6 +362,13 @@
 
     <a href="{{ url_for('home') }}">
         <button id="home_button">HOMEPAGE</button>
+    </a>
+    <a href="{{ url_for('s', filters="00000000") }}">
+        <button id="search_button">SEARCH</button>
+    </a>
+
+    <a>
+        <button id="logo_button">HOUSR</button>
     </a>
 
     <a href="{{ url_for('u', user_id=current_user.user_id) }}">

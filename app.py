@@ -387,7 +387,7 @@ def login_registration():
             new_user.email = registration_form.email.data
             new_user.first_name = registration_form.first_name.data
             new_user.last_name = registration_form.last_name.data
-            new_user.city = registration_form.city.data
+            new_user.city = cities[int(registration_form.city.data)][1]
             new_user.password = registration_form.password.data
             new_user.user_id = uuid.uuid4().hex[::4].capitalize()
             default_image_destination_path = str(new_user.user_id) + "0.png"
@@ -424,7 +424,7 @@ def personal_page():
             current_user.email = personal_profile_form.email.data
             current_user.first_name = personal_profile_form.first_name.data
             current_user.last_name = personal_profile_form.last_name.data
-            current_user.city = personal_profile_form.city.data
+            current_user.city = cities[int(personal_profile_form.city.data)][1]
             current_user.phone_number = personal_profile_form.phone_number.data
             db.session.commit()
             return redirect(url_for('personal_page'))
@@ -586,7 +586,7 @@ def u(user_id):
 def s(filters):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
-    last_url = "results"
+    last_url = "s/" + filters
     # a_end
 
     # c2. User's pro_pic for public pages
@@ -828,7 +828,7 @@ def upload_house_image(house_id):
 def h(house_id):
     # a. Keeps track of user position and shows his pro_pic
     global last_url
-    last_url = "u/" + house_id
+    last_url = "h/" + house_id
     # a_end
 
     # c2. User's pro_pic for public pages

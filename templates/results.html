@@ -236,7 +236,7 @@
             width: 100%;
         }
 
-        .filter_box{
+        .filter_box {
             position: fixed;
 
             font-size: 12px;
@@ -252,6 +252,55 @@
             margin-top: 80px;
         }
 
+        #search_button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #search_button:hover {
+            background-color: sandybrown;
+        }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
+        }
+
+
     </style><!--the style for the rest of the site-->
 </head>
 
@@ -260,6 +309,13 @@
 
     <a href="{{ url_for('home') }}">
         <button id="home_button">HOMEPAGE</button>
+    </a>
+    <a href="{{ url_for('s', filters="00000000") }}">
+        <button id="search_button">SEARCH</button>
+    </a>
+
+    <a>
+        <button id="logo_button">HOUSR</button>
     </a>
 
     {% if is_auth %}
@@ -280,9 +336,9 @@
 
 </div>
 
-    <div class="filter_box">
-          {{ wtf.quick_form(filter_form) }}
-    </div>
+<div class="filter_box">
+    {{ wtf.quick_form(filter_form) }}
+</div>
 
 <div class="container">
     <div data-view="list-view" class="download-cards">
@@ -290,24 +346,36 @@
         <div id="the_box">
 
             {% for house in all_houses %}
-                <article class="download-card">
 
-                    {% if house.photo_id != -1 %}
-                        <div class="download-card__icon-box">
-                            <img src="../uploads/{{ house.house_id }}0.png" alt="">
-                        </div>
-                    {% else %}
-                        <div class="download-card__icon-box">This house doesn't have photos yet</div>
-                    {% endif %}
+                <a href="{{ url_for('h', house_id=house.house_id) }}">
+                    <article class="download-card">
 
-                    <div class="download-card__content-box">
-                        <div class="content">
-                            <h2 class="download-card__content-box__catagory">{{ house.neighbourhood }}</h2>
-                            <a href="{{ url_for('h', house_id=house.house_id) }}"><h2
-                                    class="download-card__content-box__title">{{ house.name }}</h2></a>
-                            <p class="download-card__content-box__description">{{ house.description }}</p>
+                        {% if house.photo_id != -1 %}
+                            <div class="download-card__icon-box">
 
-                            {% if house.amenities != "000000" %}
+                                <img src="../uploads/{{ house.house_id }}0.png" alt="">
+                            </div>
+                        {% else %}
+                            <div class="download-card__icon-box">This house doesn't have photos yet</div>
+                        {% endif %}
+
+                        <div class="download-card__content-box">
+                            <div class="content">
+
+                                <h2 class="download-card__content-box__catagory">
+                                    {{ house.neighbourhood }}
+                                </h2>
+
+                                <a href="{{ url_for('h', house_id=house.house_id) }}">
+                                    <h2 class="download-card__content-box__title">
+                                        {{ house.name }}
+                                    </h2>
+                                </a>
+
+                                <p class="download-card__content-box__description">
+                                    {{ house.description }}
+                                </p>
+
                                 <div class="listing--amens">
 
                                     {% if house.amenities[0] == "1" %}
@@ -333,17 +401,26 @@
                                     {% if house.amenities[5] == "1" %}
                                         <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
                                     {% endif %}
+
                                 </div>
-                            {% endif %}
 
-                            <a class="button">{{ house.price }}€</a>
+                                <br>
+                                <br>
+
+                                <a class="button">
+                                    {{ house.price }}€
+                                </a>
+
+                            </div>
                         </div>
-                    </div>
 
-                </article>
+                    </article>
+                </a>
+
             {% endfor %}
 
         </div>
+
     </div>
 </div>
 </body>

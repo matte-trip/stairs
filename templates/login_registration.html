@@ -75,11 +75,7 @@
             opacity: .9;
         }
 
-        #home_button {
-            position: absolute;
-            left: 0;
-            width: 15%;
-
+        #home_button, #search_button {
             font-size: 12px;
             text-align: center;
             text-transform: uppercase;
@@ -92,6 +88,47 @@
             letter-spacing: 1px;
             transition: all 0.25s;
             opacity: 1;
+        }
+
+        #home_button:hover, #search_button:hover {
+            background-color: sandybrown;
+        }
+
+        #home_button {
+            position: absolute;
+            left: 0;
+            width: 15%;
+        }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            background: transparent;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
         }
 
         /* "#" identifies an element by variable name in python script: login_button = SubmitField('Login')*/
@@ -114,7 +151,7 @@
             opacity: 1;
         }
 
-        #login_button:hover, #registration_button:hover, #home_button:hover {
+        #login_button:hover, #registration_button:hover {
             background-color: sandybrown;
         }
 
@@ -151,6 +188,13 @@
 
         <a href="{{ url_for('home') }}">
             <button id="home_button">HOMEPAGE</button>
+        </a>
+        <a href="{{ url_for('s', filters="00000000") }}">
+            <button id="search_button">SEARCH</button>
+        </a>
+
+        <a>
+            <button id="logo_button">HOUSR</button>
         </a>
 
     </div>

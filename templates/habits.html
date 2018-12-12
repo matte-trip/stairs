@@ -64,14 +64,22 @@
             height: 16px;
         }
 
-        #smoking_habits,#time_at_home,#pet_friendly, #past_experience,#ideal_week_end1,#ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
+        #smoking_habits,
+        #time_at_home,
+        #pet_friendly,
+        #past_experience,
+
+        #ideal_week_end1,
+        #ideal_week_end2,
+        #eat_together,
+        #do_sports,
+
+        #house_parties,
+        #invite_friends,
+        #overnight_guests,
         #play_music {
             margin-left: 5%;
-            margin-top: 18px;
-        }
-
-         #smoking_habits,#time_at_home,#pet_friendly, #past_experience,#ideal_week_end1,#ideal_week_end2, #eat_together, #do_sports, #house_parties, #invite_friends, #overnight_guests,
-        #play_music {
+            margin-top: 17px;
             -webkit-appearance: none;
         }
 
@@ -79,10 +87,12 @@
         #time_at_home::-webkit-slider-thumb,
         #past_experience::-webkit-slider-thumb,
         #ideal_week_end1::-webkit-slider-thumb,
+
         #ideal_week_end2::-webkit-slider-thumb,
         #eat_together::-webkit-slider-thumb,
         #do_sports::-webkit-slider-thumb,
         #house_parties::-webkit-slider-thumb,
+
         #invite_friends::-webkit-slider-thumb,
         #pet_friendly::-webkit-slider-thumb,
         #overnight_guests::-webkit-slider-thumb,
@@ -98,7 +108,6 @@
             font-family: "Oswald", sans-serif;
             display: block;
             margin-left: 5%;
-            margin-top: 10px;
             font-size: 16px;
             font-weight: 400;
             color: white;
@@ -168,6 +177,56 @@
             width: 15%;
         }
 
+        #search_button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #search_button:hover {
+            background-color: sandybrown;
+        }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            background: transparent;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
+        }
+
     </style>
 </head>
 
@@ -176,6 +235,13 @@
 
     <a href="{{ url_for('home') }}">
         <button id="home_button">HOMEPAGE</button>
+    </a>
+    <a href="{{ url_for('s', filters="00000000") }}">
+        <button id="search_button">SEARCH</button>
+    </a>
+
+    <a>
+        <button id="logo_button">HOUSR</button>
     </a>
 
     <a href="{{ url_for('u', user_id=current_user.user_id) }}">
@@ -194,7 +260,9 @@
 
     <form method="post">
 
-        <label  style="text-align: center">Your habits</label>
+        <br>
+
+        <label style="text-align: center; margin-left: 0;">Your habits</label>
 
         {{ habits_form.smoking_habits.label }}
         <div class="slider_input">
@@ -230,9 +298,9 @@
             <label>YES</label>
         </div>
 
-        <br><br>
+        <br><br><br><br>
 
-        <label style="text-align: center">Do you like</label>
+        <label style="text-align: center; margin-left: 0;">Do you like</label>
 
         {{ habits_form.house_parties.label }}
         <div class="slider_input">
@@ -268,9 +336,9 @@
             <label>10</label>
         </div>
 
-        <br><br>
+        <br><br><br><br>
 
-        <label style="text-align: center">Are you used to</label>
+        <label style="text-align: center; margin-left: 0;">Are you used to</label>
 
         {{ habits_form.invite_friends.label }}
         <div class="slider_input">

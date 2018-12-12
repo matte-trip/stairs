@@ -204,9 +204,7 @@
             background-color: rgba(0, 0, 0, .25);
 
             flex-direction: column;
-            display: grid;
-
-            text-align: center;
+            display: block;
         }
 
 
@@ -217,13 +215,6 @@
         }
 
 
-
-
-
-
-
-
-
         #save_information {
             display: block;
             height: 40px;
@@ -232,7 +223,7 @@
             border: 1px solid white;
             border-radius: 0;
             background: transparent;
-             position: relative;
+            position: relative;
             margin-top: 10px;
             font-size: 12px;
             text-align: center;
@@ -246,11 +237,12 @@
             opacity: 1;
 
         }
+
         #save_information:hover {
-             background-color: sandybrown;
+            background-color: sandybrown;
         }
 
-        #street , #civic , #price , #type , #city , #neighbourhood {
+        #street, #civic, #price, #type, #city, #neighbourhood {
             display: block;
             width: 45%;
             margin-left: 30%;
@@ -262,7 +254,8 @@
             opacity: 0.4;
             transition: all 0.1s;
         }
-        #description , #rules , #bills{
+
+        #description, #rules, #bills {
             display: block;
             width: 45%;
             height: 100px;
@@ -276,13 +269,65 @@
             transition: all 0.1s;
 
         }
-        #street:hover , #civic:hover , #price:hover , #type:hover , #city:hover , #neighbourhood:hover, #description:hover , #rules:hover , #bills:hover {
+
+        #street:hover, #civic:hover, #price:hover, #type:hover, #city:hover, #neighbourhood:hover, #description:hover, #rules:hover, #bills:hover {
             opacity: .9;
         }
 
         #add_photo_button {
             margin-top: 20px;
         }
+
+        #search_button {
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            cursor: pointer;
+            height: 40px;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+        }
+
+        #search_button:hover {
+            background-color: sandybrown;
+        }
+
+        #search_button {
+            position: absolute;
+            left: 15%;
+            width: 15%;
+        }
+
+        #logo_button {
+            position: absolute;
+            margin-left: -7.5%;
+            left: 50%;
+            width: 15%;
+
+            font-size: 22px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            height: 40px;
+            background: transparent;
+            border: 3px solid sandybrown;
+            color: white;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            opacity: 1;
+            cursor: default;
+        }
+
+        #logo_button:hover {
+            background: white;
+            color: sandybrown;
+        }
+
 
     </style>
 
@@ -323,6 +368,13 @@
     <a href="{{ url_for('home') }}">
         <button id="home_button">HOMEPAGE</button>
     </a>
+    <a href="{{ url_for('s', filters="00000000") }}">
+        <button id="search_button">SEARCH</button>
+    </a>
+
+    <a>
+        <button id="logo_button">HOUSR</button>
+    </a>
 
     <a href="{{ url_for('u', user_id=current_user.user_id) }}">
         <img id="pro_pic" src=" {{ url_for('send_image', filename=pro_pic) }}" alt="">
@@ -344,6 +396,9 @@
 
             <div class="listing--content">
 
+                <label>Your house information:</label>
+                <br>
+
                 {{ wtf.quick_form(house_form) }}
 
             </div>
@@ -354,16 +409,25 @@
 
     <div class="social-box">
 
+        <label style="margin-left: 0">Your house photos:</label>
+        <br>
+
         {% for i in range(0, house.photo_id + 1) %}
 
-            <img style="height: 100px; width: 200px;" id="profile_picture" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
+            <img style="height: 225px; width: 400px;" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
+
+            <br>
+            <br>
 
         {% endfor %}
 
 
-        <a href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
+        <a style="display: block" href="{{ url_for('upload_house_image', house_id=house.house_id) }}">
             <button id="add_photo_button">ADD PHOTO</button>
         </a>
+
+        <br>
+        <br>
 
     </div>
 
