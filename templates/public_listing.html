@@ -156,8 +156,8 @@
         }
 
         .listing .listing--title {
-            font-size: .9em;
-            padding: 5px 0 2.5px;
+            font-size: 24px;
+            padding: 5px 0 3px;
             margin: 0;
             position: relative;
 
@@ -170,12 +170,7 @@
             border-bottom: 1px solid white;
             content: " ";
             max-width: 100%;
-            padding: 2.5px 0;
-        }
-
-        .listing .listing--sub {
-            font-size: .8em;
-            padding: 5px 0;
+            padding: 3px 0;
         }
 
 
@@ -274,30 +269,6 @@
         .house-price { /*every info will have their block*/
             grid-row-start: 3;
             grid-row-end: 4;
-            grid-column-start: 1;
-            grid-column-end: 2;
-            display: flex;
-            position: relative;
-            left: 5%;
-            width: 82%;
-            color: white;
-        }
-
-        .house-type { /*every info will have their block*/
-            grid-row-start: 4;
-            grid-row-end: 5;
-            grid-column-start: 1;
-            grid-column-end: 2;
-            display: flex;
-            position: relative;
-            left: 5%;
-            width: 82%;
-            color: white;
-        }
-
-        .house-type { /*every info will have their block*/
-            grid-row-start: 4;
-            grid-row-end: 5;
             grid-column-start: 1;
             grid-column-end: 2;
             display: flex;
@@ -439,11 +410,6 @@
             showSlides(slideIndex += n);
         }
 
-        // Thumbnail image controls
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-
         function showSlides(n) {
             let i;
             let slides = document.getElementsByClassName("mySlides");
@@ -524,7 +490,7 @@
             {% endif %}
 
             <div class="listing--content">
-                <h1 style="font-size: 24px" class="listing--title">
+                <h1 class="listing--title">
                     {{ house.name }}
                 </h1>
 
@@ -568,22 +534,22 @@
 
             </div>
 
-            <div class="mapouter">
-                <div class="gmap_canvas">
-                    <iframe width="100%" height="500" id="gmap_canvas"
+            <div class="map_outer">
+                <div class="g_map_canvas">
+                    <iframe width="100%" height="500" id="g_map_canvas"
                             src="https://maps.google.com/maps?q={{ house.street }}%20{{ house.civic }}%20{{ house.city }}&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                            frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                            frameborder="0" scrolling="no">
                     </iframe>
                 </div>
 
                 <style>
-                    .mapouter {
+                    .map_outer {
                         text-align: center;
                         height: 500px;
                         width: 100%;
                     }
 
-                    .gmap_canvas {
+                    .g_map_canvas {
                         overflow: hidden;
                         background: none !important;
                         height: 500px;
@@ -644,6 +610,8 @@
                 </div>
             </div>
 
+            <label style="text-align: center; margin-left: 0;">Housemates already living here:</label>
+
             {% for housemate, photo in housemates_and_photos %}
                 <div class="profile-card">
                     <a href="{{ url_for('u', user_id=housemate.user_id) }}">
@@ -670,6 +638,8 @@
                         </a>
                     </div>
                 </div>
+
+                <br>
             {% endfor %}
         </div>
     </div>

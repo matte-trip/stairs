@@ -140,61 +140,6 @@
         }
 
 
-        .listing .listing--header {
-            min-height: 150px;
-            width: 100%;
-            overflow: hidden;
-            max-height: 500px;
-        }
-
-        .listing .listing--header img {
-            max-width: 100%;
-        }
-
-        .slideshow_image {
-            width: 100%;
-            height: 500px;
-        }
-
-        .listing .listing--title {
-            font-size: .9em;
-            padding: 5px 0 2.5px;
-            margin: 0;
-            position: relative;
-        }
-
-        .listing .listing--title:after {
-            position: relative;
-            display: block;
-            border-bottom: 1px solid white;
-            content: " ";
-            max-width: 100%;
-            padding: 2.5px 0;
-        }
-
-        .listing .listing--sub {
-            font-size: .8em;
-            padding: 5px 0;
-        }
-
-
-        .listing--amens {
-            display: flex;
-            flex-wrap: wrap;
-            background: linear-gradient(to left, #eea849, #f46b45);
-            opacity: 0.8;
-            padding: 10px;
-        }
-
-        .listing--amens .amen {
-            margin: 5px;
-            font-family: 'Nunito', sans-serif;
-            color: white;
-            font-size: 16px;
-            font-weight: 400;
-        }
-
-
         .social-box {
             grid-row-start: 1;
             grid-row-end: 3;
@@ -331,38 +276,9 @@
 
     </style>
 
-    <script>
-        let slideIndex = 1;
-        showSlides(slideIndex);
-
-        // Next/previous controls
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
-        }
-
-        // Thumbnail image controls
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-
-        function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            if (n > slides.length) {
-                slideIndex = 1
-            }
-            if (n < 1) {
-                slideIndex = slides.length
-            }
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            slides[slideIndex - 1].style.display = "block";
-        }
-    </script>
 </head>
 
-<body onload="showSlides(1)">
+<body>
 <div id="nav_bar">
 
     <a href="{{ url_for('home') }}">

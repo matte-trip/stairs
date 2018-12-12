@@ -4,7 +4,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_wtf import FlaskForm
 from wtforms.fields.html5 import DecimalRangeField
 from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, BooleanField
-from wtforms.validators import DataRequired, EqualTo, ValidationError
+from wtforms.validators import DataRequired, EqualTo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
 import uuid
@@ -132,9 +132,6 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    def print_user(self):
-        print "Email: " + self.email + " ID: " + self.user_id
-
 
 class Residence(db.Model):
     __tablename__ = 'houses'
@@ -166,12 +163,6 @@ class LoginForm(FlaskForm):
     login_password = PasswordField('Password', validators=[DataRequired()])
     login_button = SubmitField('Login')
 
-    @staticmethod
-    def validate_username(email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is None:
-            raise ValidationError('Email does not exist')
-
 
 class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
@@ -181,12 +172,6 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     password2 = PasswordField('Repeat password', validators=[DataRequired(), EqualTo('password')])
     registration_button = SubmitField('Register')
-
-    @staticmethod
-    def validate_username(email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is None:
-            raise ValidationError('Email does not exist')
 
 
 class EditPrivateDataForm(FlaskForm):
@@ -303,15 +288,6 @@ class EditCalendarForm(FlaskForm):
     c31 = BooleanField('31')
 
     confirm = SubmitField('Confirm')
-
-
-# ======================================================================================================================
-# FUNCTIONS
-# ======================================================================================================================
-
-def char_range(c1, c2):
-    for c in xrange(ord(c1), ord(c2) + 1):
-        yield chr(c)
 
 
 # ======================================================================================================================
@@ -513,6 +489,7 @@ def upload():
             db.session.commit()
             filename = str(current_user.user_id) + str(current_user.photo_id) + ".png"
             # saving new image to /uploads
+            # profile_picture.save(os.path.join(uploads_folder, filename))
             profile_picture.save(os.path.join(uploads_folder, filename))
             # deleting old image associated to the user
             filename = str(current_user.user_id) + str(current_user.photo_id - 1) + ".png"
@@ -615,7 +592,6 @@ def s(filters):
 
     for i in range(1, 24):
         if str(filters[1]) == neighbourhoods_query[i][0]:
-
             all_houses = [house for house in all_houses if house.neighbourhood == neighbourhoods_query[i][1]]
 
     if filters[2] == str(1):
@@ -743,9 +719,18 @@ def h_edit(house_id):
             db.session.commit()
 
         if request.method == 'GET':
-            house_form.type.data = house.type
-            house_form.city.data = house.city
-            house_form.neighbourhood.data = house.neighbourhood
+            if house.type == types[0][1]:
+                house_form.type.data = types[0][0]
+            elif house.type == types[1][1]:
+                house_form.type.data = types[1][0]
+
+            if house.city == cities[0][1]:
+                house_form.city.data = cities[0][0]
+
+            for i in range(0, 23):
+                if house.neighbourhood == neighbourhoods[i][1]:
+                    house_form.neighbourhood.data = neighbourhoods[i][0]
+
             house_form.street.data = house.street
             house_form.civic.data = house.civic
             house_form.description.data = house.description
