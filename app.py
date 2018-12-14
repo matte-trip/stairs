@@ -118,13 +118,16 @@ class User(UserMixin, db.Model):
     phone_number = db.Column('phone_number', db.String(10))
     calendar = db.Column('calendar', db.String(31), default="0000000000000000000000000000000")
 
+    # overrides get_id in UserMixin putting email as the attribute which identifies the user instead of id
     def get_id(self):
         return self.email
 
+    # password is a property of user, if read it raise an exception
     @property
     def password(self):
-        raise StandardError('Password is write-only')
+        raise StandardError('Password cannot be read')
 
+    # password is set through this method, by generating a hash value based on the user password
     @password.setter
     def password(self, value):
         self.password_hash = generate_password_hash(value)
@@ -1009,8 +1012,14 @@ last_url = ''
 errors_in_existing = 0
 # 1 wrong secret code, user did not entered a valid house_sc
 
+# paths to static and uploads folder in my os
 static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
 uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
+
+# paths to static and uploads folder in python anywhere
+static_folder_p = '/home/voq82809/mysite/static'
+uploads_folder_p = '/home/voq82809/mysite/uploads'
+# also to run in python anywhere redirect("http://voq82809.pythonanywhere.com/" ... at line 344
 
 # ======================================================================================================================
 # STARTUP
