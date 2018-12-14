@@ -380,19 +380,10 @@
 
             <label style="text-align: center">I like</label>
 
-            {{ habits_form.house_parties.label }}
-            <div class="slider_input">
-                <label>0</label>
-                {{ habits_form.house_parties(min=0, max=9, step=1, value=user.habits[4], oninput="outputUpdate(value)") }}
-                <label>10</label>
-            </div>
-
-            <br><br>
-
             {{ habits_form.eat_together.label }}
             <div class="slider_input">
                 <label>0</label>
-                {{ habits_form.eat_together(min=0, max=9, step=1, value=user.habits[5], oninput="outputUpdate(value)") }}
+                {{ habits_form.eat_together(min=0, max=9, step=1, value=user.habits[4], oninput="outputUpdate(value)") }}
                 <label>10</label>
             </div>
 
@@ -401,7 +392,7 @@
             {{ habits_form.ideal_week_end1.label }}
             <div class="slider_input">
                 <label>0</label>
-                {{ habits_form.ideal_week_end1(min=0, max=9, step=1, value=user.habits[6], oninput="outputUpdate(value)") }}
+                {{ habits_form.ideal_week_end1(min=0, max=9, step=1, value=user.habits[5], oninput="outputUpdate(value)") }}
                 <label>10</label>
             </div>
 
@@ -410,7 +401,16 @@
             {{ habits_form.ideal_week_end2.label }}
             <div class="slider_input">
                 <label>0</label>
-                {{ habits_form.ideal_week_end2(min=0, max=9, step=1, value=user.habits[7], oninput="outputUpdate(value)") }}
+                {{ habits_form.ideal_week_end2(min=0, max=9, step=1, value=user.habits[6], oninput="outputUpdate(value)") }}
+                <label>10</label>
+            </div>
+
+            <br><br>
+
+            {{ habits_form.house_parties.label }}
+            <div class="slider_input">
+                <label>0</label>
+                {{ habits_form.house_parties(min=0, max=9, step=1, value=user.habits[7], oninput="outputUpdate(value)") }}
                 <label>10</label>
             </div>
 
