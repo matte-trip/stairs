@@ -632,6 +632,16 @@ def s(filters):
             filters = "".join(filter_list)
             return redirect(url_for('s', filters=filters))
 
+    else:
+        filter_form.type.data = types_query[int(filters[0])][0]
+        filter_form.neighbourhood.data = neighbourhoods_query[int(filters[1])][0]
+        filter_form.lift.data = int(filters[2])
+        filter_form.pet_friendly.data = int(filters[3])
+        filter_form.independent_heating.data = int(filters[4])
+        filter_form.air_conditioned.data = int(filters[5])
+        filter_form.furniture.data = int(filters[6])
+        filter_form.wifi.data = int(filters[7])
+
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
