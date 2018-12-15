@@ -942,6 +942,39 @@ def calendar():
 
         return redirect(url_for('personal_page'))
 
+    else:
+        calendar_availability.c1.data = int(current_user.calendar[0])
+        calendar_availability.c2.data = int(current_user.calendar[1])
+        calendar_availability.c3.data = int(current_user.calendar[2])
+        calendar_availability.c4.data = int(current_user.calendar[3])
+        calendar_availability.c5.data = int(current_user.calendar[4])
+        calendar_availability.c6.data = int(current_user.calendar[5])
+        calendar_availability.c7.data = int(current_user.calendar[6])
+        calendar_availability.c8.data = int(current_user.calendar[7])
+        calendar_availability.c9.data = int(current_user.calendar[8])
+        calendar_availability.c10.data = int(current_user.calendar[9])
+        calendar_availability.c11.data = int(current_user.calendar[10])
+        calendar_availability.c12.data = int(current_user.calendar[11])
+        calendar_availability.c13.data = int(current_user.calendar[12])
+        calendar_availability.c14.data = int(current_user.calendar[13])
+        calendar_availability.c15.data = int(current_user.calendar[14])
+        calendar_availability.c16.data = int(current_user.calendar[15])
+        calendar_availability.c17.data = int(current_user.calendar[16])
+        calendar_availability.c18.data = int(current_user.calendar[17])
+        calendar_availability.c19.data = int(current_user.calendar[18])
+        calendar_availability.c20.data = int(current_user.calendar[19])
+        calendar_availability.c21.data = int(current_user.calendar[20])
+        calendar_availability.c22.data = int(current_user.calendar[21])
+        calendar_availability.c23.data = int(current_user.calendar[22])
+        calendar_availability.c24.data = int(current_user.calendar[23])
+        calendar_availability.c25.data = int(current_user.calendar[24])
+        calendar_availability.c26.data = int(current_user.calendar[25])
+        calendar_availability.c27.data = int(current_user.calendar[26])
+        calendar_availability.c28.data = int(current_user.calendar[27])
+        calendar_availability.c29.data = int(current_user.calendar[28])
+        calendar_availability.c30.data = int(current_user.calendar[29])
+        calendar_availability.c31.data = int(current_user.calendar[30])
+
     return render_template('private_booking.html',
                            pro_pic=pro_pic,
 
