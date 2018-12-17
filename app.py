@@ -730,6 +730,7 @@ def h_edit(house_id):
             house.amenities = "".join(amenities_list)
 
             db.session.commit()
+            redirect(url_for('h_edit', house_id=house_id))
 
         if request.method == 'GET':
             if house.type == types[0][1]:
@@ -751,35 +752,12 @@ def h_edit(house_id):
             house_form.price.data = house.price
             house_form.bills.data = house.bills
 
-            if house.amenities[0] == str(0):
-                house_form.lift.data = False
-            else:
-                house_form.lift.data = True
-
-            if house.amenities[1] == str(0):
-                house_form.pet_friendly.data = False
-            else:
-                house_form.pet_friendly.data = True
-
-            if house.amenities[2] == str(0):
-                house_form.independent_heating.data = False
-            else:
-                house_form.independent_heating.data = True
-
-            if house.amenities[3] == str(0):
-                house_form.air_conditioned.data = False
-            else:
-                house_form.air_conditioned.data = True
-
-            if house.amenities[4] == str(0):
-                house_form.furniture.data = False
-            else:
-                house_form.furniture.data = True
-
-            if house.amenities[5] == str(0):
-                house_form.wifi.data = False
-            else:
-                house_form.wifi.data = True
+            house_form.lift.data = bool(int(house.amenities[0]))
+            house_form.pet_friendly.data = bool(int(house.amenities[1]))
+            house_form.independent_heating.data = bool(int(house.amenities[2]))
+            house_form.air_conditioned.data = bool(int(house.amenities[3]))
+            house_form.furniture.data = bool(int(house.amenities[4]))
+            house_form.wifi.data = bool(int(house.amenities[5]))
 
     else:
         redirect(url_for('personal_page'))
