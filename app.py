@@ -492,7 +492,6 @@ def upload():
             db.session.commit()
             filename = str(current_user.user_id) + str(current_user.photo_id) + ".png"
             # saving new image to /uploads
-            # profile_picture.save(os.path.join(uploads_folder, filename))
             profile_picture.save(os.path.join(uploads_folder, filename))
             # deleting old image associated to the user
             filename = str(current_user.user_id) + str(current_user.photo_id - 1) + ".png"
