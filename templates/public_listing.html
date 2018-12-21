@@ -117,8 +117,8 @@
             top: 80px;
 
             background: transparent;
-            grid-template-rows: 2fr 2fr 2fr 0.05fr;
-            grid-template-columns: 0.25fr 1.25fr 0.1fr 0.75fr 0.25fr;
+            grid-template-rows: 2fr 2fr 0.05fr;
+            grid-template-columns: 0.10fr 1.25fr 0.05fr 0.75fr 0.10fr;
         }
 
         .listing-container {
@@ -185,6 +185,7 @@
         /* Slideshow container */
         .slideshow-container {
             max-width: 1000px;
+            height: 37%;
             position: relative;
             margin: auto;
         }
@@ -250,8 +251,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+            border: 1px solid white;
         }
 
         .house-bills { /*every info will have their block*/
@@ -262,8 +264,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+            border: 1px solid white;
         }
 
         .house-price { /*every info will have their block*/
@@ -274,8 +277,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+            border: 1px solid white;
         }
 
         .house-city { /*every info will have their block*/
@@ -286,8 +290,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+            border: 1px solid white;
         }
 
         .house-add { /*every info will have their block*/
@@ -298,8 +303,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+            border: 1px solid white;
         }
 
         .info_L {
@@ -311,7 +317,7 @@
             position: relative;
 
 
-            width: 15%;
+            width: 20%;
         }
 
         .info_I {
@@ -322,7 +328,7 @@
             position: relative;
 
 
-            width: 85%;
+            width: 80%;
         }
 
         .profile-card {
@@ -601,14 +607,7 @@
                 </div>
             </div>
 
-            <div class="house-add">
-                <div class="info_L">
-                    <label>ADDRESS:</label>
-                </div>
-                <div class="info_I">
-                    <p>{{ house.street }} {{ house.civic }}</p>
-                </div>
-            </div>
+
 
             <label style="text-align: center; margin-left: 0;">Housemates already living here:</label>
 
