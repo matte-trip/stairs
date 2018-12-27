@@ -344,7 +344,7 @@ def login_registration():
         if existing_user:
             if existing_user.check_password(login_form.login_password.data):
                 login_user(existing_user)
-                return redirect("http://127.0.0.1:5000/" + last_url)
+                return redirect(redirection_path + last_url)
             else:
                 errors_in_login_registration = 1
                 return redirect(url_for('login_registration'))
@@ -1035,11 +1035,12 @@ errors_in_existing = 0
 # paths to static and uploads folder in my os
 static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
 uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
+redirection_path = "http://127.0.0.1:5000/"
 
 # paths to static and uploads folder in python anywhere
-static_folder_p = '/home/voq82809/mysite/static'
-uploads_folder_p = '/home/voq82809/mysite/uploads'
-# also to run in python anywhere redirect("http://voq82809.pythonanywhere.com/" ... at line 344
+static_folder_p = '/home/housr/mysite/static'
+uploads_folder_p = '/home/housr/mysite/uploads'
+redirection_path_p = "http://housr.pythonanywhere.com/"
 
 # ======================================================================================================================
 # STARTUP
