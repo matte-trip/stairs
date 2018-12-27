@@ -295,19 +295,6 @@
 
         }
 
-        .house-add { /*every info will have their block*/
-            grid-row-start: 6;
-            grid-row-end: 7;
-            grid-column-start: 1;
-            grid-column-end: 2;
-            display: flex;
-            position: relative;
-            left: 5%;
-            width: 90%;
-            color: white;
-
-        }
-
         .info_L {
 
             grid-column-start: 1;
@@ -480,7 +467,7 @@
                         <!-- Full-width images with number and caption text -->
                         {% for i in range(0, house.photo_id + 1) %}
 
-                            <div class="mySlides fade">
+                            <div class="mySlides">
                                 <img class="slideshow_image" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
                             </div>
 
