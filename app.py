@@ -1,3 +1,4 @@
+# go to lines 1038-1039 and change the paths in order to run the website from your computer
 from flask import Flask, render_template, redirect, url_for, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
@@ -1033,6 +1034,7 @@ errors_in_existing = 0
 # 1 wrong secret code, user did not entered a valid house_sc
 
 # paths to static and uploads folder in my os
+# change these in order to run the website in your computer
 static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
 uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
 redirection_path = "http://127.0.0.1:5000/"

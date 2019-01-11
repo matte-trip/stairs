@@ -412,7 +412,7 @@
 
                 {% if house.photo_id != -1 %}
                     <a href="{{ url_for('h', house_id=current_user.house_id) }}">
-                        <img class="house_picture" src="../uploads/{{ house.house_id }}0.png" alt=""><!--===-->
+                        <img class="house_picture" src="../uploads/{{ house.house_id }}0.png" alt="">
                     </a>
                 {% else %}
                     <a href="{{ url_for('h', house_id=current_user.house_id) }}">

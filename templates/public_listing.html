@@ -464,7 +464,6 @@
 
                     <div class="slideshow-container">
 
-                        <!-- Full-width images with number and caption text -->
                         {% for i in range(0, house.photo_id + 1) %}
 
                             <div class="mySlides">
@@ -494,12 +493,6 @@
             </div>
 
             <div class="listing--amens">
-
-                {% if preferred_sex == 1 %}
-                    <span title="Male Only" class="mdi mdi-gender-male"></span>
-                {% elif preferred_sex == 2 %}
-                    <span title="Female Only" class="mdi mdi-gender-female"></span>
-                {% endif %}
 
                 {% if lift %}
                     <span title="Lift" class="mdi mdi-elevator"></span>
