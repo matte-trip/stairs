@@ -117,8 +117,8 @@
             top: 80px;
 
             background: transparent;
-            grid-template-rows: 2fr 2fr 2fr 0.05fr;
-            grid-template-columns: 0.25fr 1.25fr 0.1fr 0.75fr 0.25fr;
+            grid-template-rows: 2fr 2fr 0.05fr;
+            grid-template-columns: 0.1fr 1.25fr 0.05fr 0.75fr 0.1fr;
         }
 
         .listing-container {
@@ -185,6 +185,7 @@
         /* Slideshow container */
         .slideshow-container {
             max-width: 1000px;
+            height: 37%;
             position: relative;
             margin: auto;
         }
@@ -250,8 +251,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+
         }
 
         .house-bills { /*every info will have their block*/
@@ -262,8 +264,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+
         }
 
         .house-price { /*every info will have their block*/
@@ -274,8 +277,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
+
         }
 
         .house-city { /*every info will have their block*/
@@ -286,20 +290,9 @@
             display: flex;
             position: relative;
             left: 5%;
-            width: 82%;
+            width: 90%;
             color: white;
-        }
 
-        .house-add { /*every info will have their block*/
-            grid-row-start: 6;
-            grid-row-end: 7;
-            grid-column-start: 1;
-            grid-column-end: 2;
-            display: flex;
-            position: relative;
-            left: 5%;
-            width: 82%;
-            color: white;
         }
 
         .info_L {
@@ -311,7 +304,7 @@
             position: relative;
 
 
-            width: 15%;
+            width: 20%;
         }
 
         .info_I {
@@ -322,7 +315,7 @@
             position: relative;
 
 
-            width: 85%;
+            width: 80%;
         }
 
         .profile-card {
@@ -471,10 +464,9 @@
 
                     <div class="slideshow-container">
 
-                        <!-- Full-width images with number and caption text -->
                         {% for i in range(0, house.photo_id + 1) %}
 
-                            <div class="mySlides fade">
+                            <div class="mySlides">
                                 <img class="slideshow_image" src="../uploads/{{ house.house_id }}{{ i }}.png" alt="">
                             </div>
 
@@ -502,18 +494,12 @@
 
             <div class="listing--amens">
 
-                {% if preferred_sex == 1 %}
-                    <span title="Male Only" class="mdi mdi-gender-male"></span>
-                {% elif preferred_sex == 2 %}
-                    <span title="Female Only" class="mdi mdi-gender-female"></span>
-                {% endif %}
-
                 {% if lift %}
                     <span title="Lift" class="mdi mdi-elevator"></span>
                 {% endif %}
 
                 {% if pet_friendly %}
-                    <span title="Per Friendly" class="mdi mdi-paw"></span>
+                    <span title="Pet Friendly" class="mdi mdi-paw"></span>
                 {% endif %}
 
                 {% if independent_heating %}
@@ -601,14 +587,7 @@
                 </div>
             </div>
 
-            <div class="house-add">
-                <div class="info_L">
-                    <label>ADDRESS:</label>
-                </div>
-                <div class="info_I">
-                    <p>{{ house.street }} {{ house.civic }}</p>
-                </div>
-            </div>
+
 
             <label style="text-align: center; margin-left: 0;">Housemates already living here:</label>
 

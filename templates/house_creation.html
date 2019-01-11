@@ -118,8 +118,8 @@
 
             background: transparent;
             display: grid;
-            grid-template-rows: 2fr 2fr 2fr 0.05fr;
-            grid-template-columns: 0.25fr 1.25fr 0.1fr 0.75fr 0.25fr;
+            grid-template-rows: 2fr 2fr 0.05fr;
+            grid-template-columns: 0.1fr 1.25fr 0.05fr 0.75fr 0.1fr;
         }
 
         .listing-container {
@@ -141,7 +141,7 @@
             background-color: rgba(0, 0, 0, .5);
             flex-direction: column;
             text-align: justify;
-            height: 300px;
+            height: 100%;
         }
 
         .social-box > label {
@@ -155,7 +155,8 @@
         #save_information {
             display: block;
             height: 40px;
-            margin-left: 30%;
+            left: 52%;
+            margin-left: -65px;
             padding: 5px;
             border: 1px solid white;
             border-radius: 0;
@@ -181,8 +182,8 @@
 
         #street , #civic , #price , #type , #city , #neighbourhood {
             display: block;
-            width: 45%;
-            margin-left: 30%;
+            width: 90%;
+            margin-left: 5%;
             padding: 5px;
             border: 0;
             font-family: "Oswald", sans-serif;
@@ -192,11 +193,9 @@
         }
         #description, #rules, #bills {
             display: block;
-            width: 45%;
-            height: 100px;
-            margin-left: 30%;
-            padding: 5px;
-            border: 0;
+            width: 90%;
+            height: 50px;
+            margin-left: 5%;
             font-family: "Oswald", sans-serif;
             font-size: 14px;
             opacity: 0.4;

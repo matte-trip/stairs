@@ -1,9 +1,10 @@
+# go to lines 1038-1039 and change the paths in order to run the website from your computer
 from flask import Flask, render_template, redirect, url_for, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user, UserMixin
 from flask_wtf import FlaskForm
-from wtforms.fields.html5 import DecimalRangeField
 from wtforms import StringField, IntegerField, SubmitField, PasswordField, TextAreaField, SelectField, BooleanField
+from wtforms.fields.html5 import DecimalRangeField
 from wtforms.validators import DataRequired, EqualTo
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_bootstrap import Bootstrap
@@ -118,13 +119,16 @@ class User(UserMixin, db.Model):
     phone_number = db.Column('phone_number', db.String(10))
     calendar = db.Column('calendar', db.String(31), default="0000000000000000000000000000000")
 
+    # overrides get_id in UserMixin putting email as the attribute which identifies the user instead of id
     def get_id(self):
         return self.email
 
+    # password is a property of user, if read it raise an exception
     @property
     def password(self):
-        raise StandardError('Password is write-only')
+        raise StandardError('Password cannot be read')
 
+    # password is set through this method, by generating a hash value based on the user password
     @password.setter
     def password(self, value):
         self.password_hash = generate_password_hash(value)
@@ -341,7 +345,7 @@ def login_registration():
         if existing_user:
             if existing_user.check_password(login_form.login_password.data):
                 login_user(existing_user)
-                return redirect("http://127.0.0.1:5000/" + last_url)
+                return redirect(redirection_path + last_url)
             else:
                 errors_in_login_registration = 1
                 return redirect(url_for('login_registration'))
@@ -489,7 +493,6 @@ def upload():
             db.session.commit()
             filename = str(current_user.user_id) + str(current_user.photo_id) + ".png"
             # saving new image to /uploads
-            # profile_picture.save(os.path.join(uploads_folder, filename))
             profile_picture.save(os.path.join(uploads_folder, filename))
             # deleting old image associated to the user
             filename = str(current_user.user_id) + str(current_user.photo_id - 1) + ".png"
@@ -629,6 +632,16 @@ def s(filters):
             filters = "".join(filter_list)
             return redirect(url_for('s', filters=filters))
 
+    else:
+        filter_form.type.data = types_query[int(filters[0])][0]
+        filter_form.neighbourhood.data = neighbourhoods_query[int(filters[1])][0]
+        filter_form.lift.data = int(filters[2])
+        filter_form.pet_friendly.data = int(filters[3])
+        filter_form.independent_heating.data = int(filters[4])
+        filter_form.air_conditioned.data = int(filters[5])
+        filter_form.furniture.data = int(filters[6])
+        filter_form.wifi.data = int(filters[7])
+
     return render_template('results.html',
                            is_auth=current_user.is_authenticated,
                            pro_pic=pro_pic,
@@ -717,6 +730,7 @@ def h_edit(house_id):
             house.amenities = "".join(amenities_list)
 
             db.session.commit()
+            redirect(url_for('h_edit', house_id=house_id))
 
         if request.method == 'GET':
             if house.type == types[0][1]:
@@ -738,35 +752,12 @@ def h_edit(house_id):
             house_form.price.data = house.price
             house_form.bills.data = house.bills
 
-            if house.amenities[0] == str(0):
-                house_form.lift.data = False
-            else:
-                house_form.lift.data = True
-
-            if house.amenities[1] == str(0):
-                house_form.pet_friendly.data = False
-            else:
-                house_form.pet_friendly.data = True
-
-            if house.amenities[2] == str(0):
-                house_form.independent_heating.data = False
-            else:
-                house_form.independent_heating.data = True
-
-            if house.amenities[3] == str(0):
-                house_form.air_conditioned.data = False
-            else:
-                house_form.air_conditioned.data = True
-
-            if house.amenities[4] == str(0):
-                house_form.furniture.data = False
-            else:
-                house_form.furniture.data = True
-
-            if house.amenities[5] == str(0):
-                house_form.wifi.data = False
-            else:
-                house_form.wifi.data = True
+            house_form.lift.data = bool(int(house.amenities[0]))
+            house_form.pet_friendly.data = bool(int(house.amenities[1]))
+            house_form.independent_heating.data = bool(int(house.amenities[2]))
+            house_form.air_conditioned.data = bool(int(house.amenities[3]))
+            house_form.furniture.data = bool(int(house.amenities[4]))
+            house_form.wifi.data = bool(int(house.amenities[5]))
 
     else:
         redirect(url_for('personal_page'))
@@ -929,6 +920,39 @@ def calendar():
 
         return redirect(url_for('personal_page'))
 
+    else:
+        calendar_availability.c1.data = int(current_user.calendar[0])
+        calendar_availability.c2.data = int(current_user.calendar[1])
+        calendar_availability.c3.data = int(current_user.calendar[2])
+        calendar_availability.c4.data = int(current_user.calendar[3])
+        calendar_availability.c5.data = int(current_user.calendar[4])
+        calendar_availability.c6.data = int(current_user.calendar[5])
+        calendar_availability.c7.data = int(current_user.calendar[6])
+        calendar_availability.c8.data = int(current_user.calendar[7])
+        calendar_availability.c9.data = int(current_user.calendar[8])
+        calendar_availability.c10.data = int(current_user.calendar[9])
+        calendar_availability.c11.data = int(current_user.calendar[10])
+        calendar_availability.c12.data = int(current_user.calendar[11])
+        calendar_availability.c13.data = int(current_user.calendar[12])
+        calendar_availability.c14.data = int(current_user.calendar[13])
+        calendar_availability.c15.data = int(current_user.calendar[14])
+        calendar_availability.c16.data = int(current_user.calendar[15])
+        calendar_availability.c17.data = int(current_user.calendar[16])
+        calendar_availability.c18.data = int(current_user.calendar[17])
+        calendar_availability.c19.data = int(current_user.calendar[18])
+        calendar_availability.c20.data = int(current_user.calendar[19])
+        calendar_availability.c21.data = int(current_user.calendar[20])
+        calendar_availability.c22.data = int(current_user.calendar[21])
+        calendar_availability.c23.data = int(current_user.calendar[22])
+        calendar_availability.c24.data = int(current_user.calendar[23])
+        calendar_availability.c25.data = int(current_user.calendar[24])
+        calendar_availability.c26.data = int(current_user.calendar[25])
+        calendar_availability.c27.data = int(current_user.calendar[26])
+        calendar_availability.c28.data = int(current_user.calendar[27])
+        calendar_availability.c29.data = int(current_user.calendar[28])
+        calendar_availability.c30.data = int(current_user.calendar[29])
+        calendar_availability.c31.data = int(current_user.calendar[30])
+
     return render_template('private_booking.html',
                            pro_pic=pro_pic,
 
@@ -1009,8 +1033,16 @@ last_url = ''
 errors_in_existing = 0
 # 1 wrong secret code, user did not entered a valid house_sc
 
-static_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\static'
-uploads_folder = 'C:\\Users\\Matteo\\Desktop\\Drive\\Information Systems\\Housr - Information Systems\\stairs\\uploads'
+# paths to static and uploads folder in my os
+# change these in order to run the website in your computer
+static_folder = 'C:\\Users\\Matteo\\PyCharmProjects\\static'
+uploads_folder = 'C:\\Users\\Matteo\\PyCharmProjects\\uploads'
+redirection_path = "http://127.0.0.1:5000/"
+
+# paths to static and uploads folder in python anywhere
+static_folder_p = '/home/housr/mysite/static'
+uploads_folder_p = '/home/housr/mysite/uploads'
+redirection_path_p = "http://housr.pythonanywhere.com/"
 
 # ======================================================================================================================
 # STARTUP

@@ -99,7 +99,7 @@
 
             background: transparent;
             display: grid;
-            grid-template-columns: 0.25fr 1fr 0.1fr 1fr 0.25fr;
+            grid-template-columns: 0.1fr 1fr 0.05fr 1fr 0.1fr;
             grid-template-rows: 2fr 1fr 0.05fr;
         }
 
@@ -412,7 +412,7 @@
 
                 {% if house.photo_id != -1 %}
                     <a href="{{ url_for('h', house_id=current_user.house_id) }}">
-                        <img class="house_picture" src="../uploads/{{ house.house_id }}0.png" alt=""><!--===-->
+                        <img class="house_picture" src="../uploads/{{ house.house_id }}0.png" alt="">
                     </a>
                 {% else %}
                     <a href="{{ url_for('h', house_id=current_user.house_id) }}">
@@ -433,7 +433,6 @@
                     </button>
                 </a>
             </div>
-
         {% else %}
 
             <a style="display: block" href="{{ url_for('existing') }}">
@@ -442,7 +441,6 @@
             <a href="{{ url_for('house_creation') }}">
                 <button id="add_house_button">ADD NEW HOUSE</button>
             </a>
-
         {% endif %}
 
         <br>

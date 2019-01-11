@@ -21,6 +21,7 @@
             background-size: cover;
             width: 100%;
             height: 100%;
+            font-family: 'Oswald', sans-serif;
         }
 
         h1 {
@@ -74,7 +75,7 @@
             transition: all 0.25s;
         }
 
-        button:hover, #apply_filters:hover {
+        button:hover, #apply_filters:hover, #search_button:hover {
             background: sandybrown;
         }
 
@@ -82,174 +83,8 @@
             position: absolute;
             left: 0;
             width: 15%;
-        }
 
-        #pro_pic {
-            position: absolute;
-            right: 30%;
-            height: 40px;
-            width: 40px;
-            border: 1px solid white;
-        }
-
-        #account_button {
-            position: absolute;
-            right: 15%;
-            width: 15%;
-        }
-
-        #login_button, #logout_button {
-            position: absolute;
-            right: 0;
-            width: 15%;
-        }
-
-
-    </style><!--the style fo the menu bar-->
-    <style>
-
-        body {
-            font-family: 'Oswald', sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-
-        .container {
-            width: 100%;
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 0;
-        }
-
-        .download-cards {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .download-card {
-            min-height: 250px;
-
-            display: flex;
-            flex-direction: column;
-            width: calc(100% - 2em);
-            position: relative;
-            overflow: hidden;
-            border: 1px solid white;
-            background-color: rgba(0, 0, 0, .5);
-            margin: 0 1em 2em 1em;
-        }
-
-        .download-card__icon-box {
-            display: flex;
-            align-items: center;
-            background-color: rgba(0, 0, 0, .25);
-            text-align: center;
-            color: white;
-        }
-
-        @media (min-width: 100px) {
-            .download-card__icon-box {
-                justify-content: center;
-            }
-        }
-
-        .download-card__icon-box img {
-            height: 100%;
-            width: 100%;
-            max-width: 1000px;
-            margin: 0;
-        }
-
-        @media (min-width: 100px) {
-            .download-cards[data-view='list-view'] .download-card__icon-box {
-                width: 40%; /*found it mother fucker !!!!!!!*/
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                border-right: 1px solid white;
-
-            }
-        }
-
-        .download-card__content-box {
-            padding: 2em 2em 3em;
-            flex: 1;
-            height: 300px; /* this adjusts the height of the white block */
-        }
-
-        @media (min-width: 100px) {
-            .download-cards[data-view="list-view"] .download-card__content-box {
-                margin-left: calc(40% + 2em);
-            }
-        }
-
-        .download-card__content-box__catagory {
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 10px;
-            margin: 0 0 2em;
-        }
-
-        .download-card__content-box__catagory::before {
-            content: '| ';
-            color: sandybrown;
-        }
-
-        .download-card__content-box__title {
-            line-height: 1;
-            margin: 0 0 .5em;
-            font-size: 18px;
-        }
-
-        .download-card__content-box__description {
-            line-height: 1.5;
-            padding: 0;
-            margin: 0 0 1em;
-            clear: both;
-            font-size: 16px;
-        }
-
-        .download-card__content-box .button {
-            position: absolute;
-            bottom: 2em;
-            margin: 0;
-            color: sandybrown;
-            display: inline-block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 20px;
-        }
-
-        .listing--amens {
-            color: white;
-            font-size: 20px;
-        }
-
-        #the_box {
-            margin-top: 80px;
-            width: 100%;
-        }
-
-        .filter_box {
-            position: fixed;
-
-            font-size: 12px;
-            text-align: center;
-            text-transform: uppercase;
-            width: 15%;
-            background: rgba(0, 0, 0, .5);
-            border: 1px solid white;
-            color: white;
-            letter-spacing: 1px;
-            line-height: 30px;
-
-            margin-top: 80px;
+            top: 0;
         }
 
         #search_button {
@@ -264,16 +99,12 @@
             letter-spacing: 1px;
             transition: all 0.25s;
             opacity: 1;
-        }
 
-        #search_button:hover {
-            background-color: sandybrown;
-        }
-
-        #search_button {
             position: absolute;
             left: 15%;
             width: 15%;
+
+            top: 0;
         }
 
         #logo_button {
@@ -293,6 +124,8 @@
             transition: all 0.25s;
             opacity: 1;
             cursor: default;
+
+            top: 0;
         }
 
         #logo_button:hover {
@@ -300,8 +133,143 @@
             color: sandybrown;
         }
 
+        #pro_pic {
+            position: absolute;
+            right: 30%;
+            height: 38px;
+            width: 38px;
+            border: 1px solid white;
 
-    </style><!--the style for the rest of the site-->
+            top: 0;
+        }
+
+        #account_button {
+            position: absolute;
+            right: 15%;
+            width: 15%;
+
+            top: 0;
+        }
+
+        #login_button, #logout_button {
+            position: absolute;
+            right: 0;
+            width: 15%;
+
+            top: 0;
+        }
+
+        #the_box {
+            margin-top: 80px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .download-card {
+            min-height: 200px;
+
+            display: flex;
+            flex-direction: column;
+            width: 82%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid white;
+            background-color: rgba(0, 0, 0, .5);
+            margin: 0 1em 2em 1em;
+
+            left: 15%;
+        }
+
+        .download-card__icon-box {
+            color: white;
+
+            width: 40%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-right: 1px solid white;
+        }
+
+        .download-card__icon-box img {
+            height: 100%;
+            width: 100%;
+
+            object-fit: cover;
+        }
+
+        .download-card__content-box {
+            padding: 1em;
+            margin-left: 40%;
+        }
+
+        .download-card__content-box__category {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 10px;
+            margin: 0 0 1em;
+        }
+
+        .download-card__content-box__category::before {
+            content: '| ';
+            color: sandybrown;
+        }
+
+        .download-card__content-box__title {
+            line-height: 1;
+            margin: 0 0 .5em;
+            font-size: 18px;
+        }
+
+        .download-card__content-box__description {
+            line-height: 1;
+        }
+
+        .listing--amens {
+            color: white;
+            font-size: 20px;
+        }
+
+        .download-card__content-box .button {
+            color: sandybrown;
+            font-size: 20px;
+        }
+
+        .filter_box {
+            position: fixed;
+
+            font-size: 12px;
+            text-align: center;
+            text-transform: uppercase;
+            width: 15%;
+            background: rgba(0, 0, 0, .5);
+            border: 1px solid white;
+            color: white;
+            letter-spacing: 1px;
+            line-height: 30px;
+        }
+
+
+        #neighbourhood, #type {
+            display: block;
+            width: 90%;
+            margin-left: 5%;
+            padding: 5px;
+            border: 0;
+            border-radius: 0;
+            font-family: "Oswald", sans-serif;
+            font-size: 14px;
+            opacity: 0.4;
+            transition: all 0.1s;
+        }
+
+        #neighbourhood:hover, #type:hover {
+            opacity: .9;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -340,87 +308,77 @@
     {{ wtf.quick_form(filter_form) }}
 </div>
 
-<div class="container">
-    <div data-view="list-view" class="download-cards">
 
-        <div id="the_box">
+<div id="the_box">
 
-            {% for house in all_houses %}
+    {% for house in all_houses %}
 
-                <a href="{{ url_for('h', house_id=house.house_id) }}">
-                    <article class="download-card">
+        <a href="{{ url_for('h', house_id=house.house_id) }}">
+            <article class="download-card">
 
-                        {% if house.photo_id != -1 %}
-                            <div class="download-card__icon-box">
+                {% if house.photo_id != -1 %}
+                    <div class="download-card__icon-box">
+                        <img src="../uploads/{{ house.house_id }}0.png" alt="">
+                    </div>
+                {% else %}
+                    <div class="download-card__icon-box">This house doesn't have photos yet</div>
+                {% endif %}
 
-                                <img src="../uploads/{{ house.house_id }}0.png" alt="">
-                            </div>
-                        {% else %}
-                            <div class="download-card__icon-box">This house doesn't have photos yet</div>
+                <div class="download-card__content-box">
+
+                    <h2 class="download-card__content-box__category">
+                        {{ house.neighbourhood }}
+                    </h2>
+
+                    <a href="{{ url_for('h', house_id=house.house_id) }}">
+                        <h2 class="download-card__content-box__title">
+                            {{ house.name }}
+                        </h2>
+                    </a>
+
+                    <p class="download-card__content-box__description">
+                        {{ house.description }}
+                    </p>
+
+                    <div class="listing--amens">
+
+                        {% if house.amenities[0] == "1" %}
+                            <span title="Lift" class="mdi mdi-elevator"></span>
                         {% endif %}
 
-                        <div class="download-card__content-box">
-                            <div class="content">
+                        {% if house.amenities[1] == "1" %}
+                            <span title="Pet Friendly" class="mdi mdi-paw"></span>
+                        {% endif %}
 
-                                <h2 class="download-card__content-box__catagory">
-                                    {{ house.neighbourhood }}
-                                </h2>
+                        {% if house.amenities[2] == "1" %}
+                            <span title="Independent Heating" class="mdi mdi-thermometer"></span>
+                        {% endif %}
 
-                                <a href="{{ url_for('h', house_id=house.house_id) }}">
-                                    <h2 class="download-card__content-box__title">
-                                        {{ house.name }}
-                                    </h2>
-                                </a>
+                        {% if house.amenities[3] == "1" %}
+                            <span title="Air Conditioned" class="mdi mdi-snowflake"></span>
+                        {% endif %}
 
-                                <p class="download-card__content-box__description">
-                                    {{ house.description }}
-                                </p>
+                        {% if house.amenities[4] == "1" %}
+                            <span title="Furniture" class="mdi mdi-pillar"></span>
+                        {% endif %}
 
-                                <div class="listing--amens">
+                        {% if house.amenities[5] == "1" %}
+                            <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
+                        {% endif %}
 
-                                    {% if house.amenities[0] == "1" %}
-                                        <span title="Lift" class="mdi mdi-elevator"></span>
-                                    {% endif %}
+                    </div>
 
-                                    {% if house.amenities[1] == "1" %}
-                                        <span title="Pet Friendly" class="mdi mdi-paw"></span>
-                                    {% endif %}
+                    <a class="button">
+                        {{ house.price }}€
+                    </a>
 
-                                    {% if house.amenities[2] == "1" %}
-                                        <span title="Independent Heating" class="mdi mdi-thermometer"></span>
-                                    {% endif %}
+                </div>
 
-                                    {% if house.amenities[3] == "1" %}
-                                        <span title="Air Conditioned" class="mdi mdi-snowflake"></span>
-                                    {% endif %}
+            </article>
+        </a>
 
-                                    {% if house.amenities[4] == "1" %}
-                                        <span title="Furniture" class="mdi mdi-pillar"></span>
-                                    {% endif %}
+    {% endfor %}
 
-                                    {% if house.amenities[5] == "1" %}
-                                        <span title="Wi-fi" class="mdi mdi-signal-variant"></span>
-                                    {% endif %}
-
-                                </div>
-
-                                <br>
-                                <br>
-
-                                <a class="button">
-                                    {{ house.price }}€
-                                </a>
-
-                            </div>
-                        </div>
-
-                    </article>
-                </a>
-
-            {% endfor %}
-
-        </div>
-
-    </div>
 </div>
+
 </body>
