@@ -6,130 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Oswald:200,300,400,500,600,700" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
 
-    <style>
-
-        img {
-            object-fit: cover;
-        }
-
-        body {
-            margin: 0;
-        }
-
-        .title {
-            font-size: 60px;
-            margin-bottom: 0;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        h1 {
-            font-family: 'Oswald', sans-serif;
-            color: white;
-            font-size: 30px;
-        }
-
-        h2 {
-            font-family: 'Oswald', sans-serif;
-            color: white;
-            font-size: 16px;
-            text-transform: uppercase;
-        }
-
-        p {
-            font-family: 'Nunito', sans-serif;
-            color: white;
-            font-size: 16px;
-        }
-
-        button {
-            font-size: 12px;
-            text-align: center;
-            text-transform: uppercase;
-            font-family: 'Oswald', sans-serif;
-            cursor: pointer;
-            height: 40px;
-            width: 130px;
-            background: transparent;
-            border: 1px solid white;
-            color: white;
-            letter-spacing: 1px;
-            transition: all 0.25s;
-        }
-
-        button:hover {
-            background: sandybrown;
-        }
-
-        .background1 {
-            background: url('../static/homepage-background-1.png') fixed center;
-        }
-
-        .background2 {
-            background: url('../static/homepage-background-2.png') fixed center;
-        }
-
-        .background3 {
-            background: url('../static/homepage-background-3.png') fixed center;
-        }
-
-        .background {
-            background-size: cover;
-            height: 100%;
-            text-align: center;
-        }
-
-        .container {
-            width: 400px;
-            height: 300px;
-            margin-left: -200px;
-            margin-top: -150px;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-        }
-
-        .container2 {
-            width: 600px;
-            height: 250px;
-            margin-left: -300px;
-            margin-top: -125px;
-            position: absolute;
-            left: 50%;
-            top: 150%;
-        }
-
-        .container3 {
-            width: 550px;
-            height: 600px;
-            margin-left: -275px;
-            margin-top: -300px;
-            position: absolute;
-            left: 50%;
-            top: 250%;
-        }
-
-        #pro_pic {
-            position: absolute;
-            right: 30%;
-            height: 38px;
-            width: 38px;
-            border: 1px solid white;
-        }
-
-        #account_button {
-            position: absolute;
-            right: 15%;
-            width: 15%;
-        }
-
-        #login_button, #logout_button {
-            position: absolute;
-            right: 0;
-            width: 15%;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/homepage.css') }}">
 </head>
 
 <body>
@@ -201,7 +78,7 @@
         important choice</p>
         <img style="width: 64px; height: 64px" src="../static/homepage-image-3.png" alt="">
         <h2>Sliders Characterization system</h2>
-        <p>We gamified you social presentation, now giving information about yourself
+        <p>We gamified your social presentation, now giving information about yourself
         will be even funnier</p>
         <img src="../static/homepage-image-2.png" alt="">
         <h2>Calendar availability system</h2>

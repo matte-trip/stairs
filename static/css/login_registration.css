@@ -1,0 +1,166 @@
+body {
+    margin: 0;
+}
+
+.background {
+    background: url('../login_registration-background.png') fixed center;
+    background-size: cover;
+    min-height: 100%;
+}
+
+.grid {
+    background: transparent;
+    display: grid;
+    grid-template-columns: 0.4fr 1fr 0.4fr 1fr 0.4fr;
+    position: relative;
+    top: 80px;
+}
+
+.login_form {
+    grid-column-start: 2;
+    background-color: rgba(0, 0, 0, .25);
+    border: 1px solid white;
+    margin-bottom: 40px;
+}
+
+.registration_form {
+    grid-column-start: 4;
+    background-color: rgba(0, 0, 0, .25);
+    border: 1px solid white;
+    margin-bottom: 40px;
+}
+
+/*Forms Classes*/
+/* the two following classes are standard for Bootstrap
+they control label and input dimension and fonts
+Study the documentation of bootstrap to change css even further*/
+label {
+    font-family: "Oswald", sans-serif;
+    display: block;
+    margin-left: 5%;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+
+    text-transform: uppercase;
+}
+
+input, #city {
+    display: block;
+    width: 90%;
+    margin-left: 5%;
+    padding: 5px;
+    border: 0;
+    border-radius: 0;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    opacity: 0.4;
+    transition: all 0.1s;
+}
+
+input:hover, #city:hover {
+    opacity: .9;
+}
+
+#home_button, #search_button {
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    height: 40px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    opacity: 1;
+}
+
+#home_button:hover, #search_button:hover {
+    background-color: sandybrown;
+}
+
+#home_button {
+    position: absolute;
+    left: 0;
+    width: 15%;
+}
+
+#search_button {
+    position: absolute;
+    left: 15%;
+    width: 15%;
+}
+
+#logo_button {
+    position: absolute;
+    margin-left: -7.5%;
+    left: 50%;
+    width: 15%;
+
+    font-size: 22px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    height: 40px;
+    background: transparent;
+    border: 3px solid sandybrown;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    opacity: 1;
+    cursor: default;
+}
+
+#logo_button:hover {
+    background: white;
+    color: sandybrown;
+}
+
+/* "#" identifies an element by variable name in python script: login_button = SubmitField('Login')*/
+#login_button, #registration_button {
+    position: relative;
+    margin-top: 10px;
+
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    height: 40px;
+    width: 130px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    opacity: 1;
+}
+
+#login_button:hover, #registration_button:hover {
+    background-color: sandybrown;
+}
+
+#wrong_login_registration {
+    position: relative;
+    margin-top: 10px;
+    margin-left: 5%;
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    height: 40px;
+    width: 90%;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    opacity: 1;
+}
+
+#wrong_login_registration:hover {
+    background-color: sandybrown;
+}

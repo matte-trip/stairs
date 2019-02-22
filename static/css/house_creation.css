@@ -1,0 +1,250 @@
+body {
+    margin: 0;
+    background: url('../house_creation.png') fixed center;
+    background-size: cover;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    text-align: center;
+}
+
+img {
+    object-fit: cover;
+}
+
+h1 {
+    font-family: 'Oswald', sans-serif;
+    color: white;
+    font-size: 36px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+h2 {
+    font-family: 'Oswald', sans-serif;
+    color: white;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+p {
+    font-family: 'Nunito', sans-serif;
+    color: white;
+    font-size: 16px;
+    width: 90%;
+}
+
+label {
+    font-family: "Oswald", sans-serif;
+    display: block;
+    margin-left: 5%;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: white;
+
+    text-transform: uppercase;
+}
+
+button {
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    height: 40px;
+    width: 130px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+}
+
+button:hover {
+    background: sandybrown;
+}
+
+#home_button {
+    position: absolute;
+    left: 0;
+    width: 15%;
+}
+
+#pro_pic {
+    position: absolute;
+    right: 30%;
+    height: 40px;
+    width: 40px;
+    border: 1px solid white;
+    box-sizing: border-box;
+}
+
+#account_button {
+    position: absolute;
+    right: 15%;
+    width: 15%;
+}
+
+#logout_button {
+    position: absolute;
+    right: 0;
+    width: 15%;
+}
+
+.container {
+    position: absolute;
+    width: 100%;
+    margin-left: -50%;
+    margin-top: 0;
+    left: 50%;
+    top: 80px;
+
+    background: transparent;
+    display: grid;
+    grid-template-rows: 2fr 2fr 0.05fr;
+    grid-template-columns: 0.1fr 1.25fr 0.05fr 0.75fr 0.1fr;
+}
+
+.listing-container {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 2;
+
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, .5);
+
+    flex-direction: column;
+}
+
+.social-box {
+    grid-row-start: 1;
+    grid-row-end: 3;
+    grid-column-start: 4;
+    border: 1px solid white;
+    background-color: rgba(0, 0, 0, .5);
+    flex-direction: column;
+    text-align: justify;
+    height: 100%;
+}
+
+.social-box > label {
+    width: 90%;
+}
+
+
+#save_information {
+    display: block;
+    height: 40px;
+    left: 52%;
+    margin-left: -65px;
+    padding: 5px;
+    border: 1px solid white;
+    border-radius: 0;
+    background: transparent;
+    position: relative;
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    width: 130px;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    opacity: 1;
+
+}
+
+#save_information:hover {
+    background-color: sandybrown;
+}
+
+#street, #civic, #price, #type, #city, #neighbourhood {
+    display: block;
+    width: 90%;
+    margin-left: 5%;
+    padding: 5px;
+    border: 0;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    opacity: 0.4;
+    transition: all 0.1s;
+}
+
+#description, #rules, #bills {
+    display: block;
+    width: 90%;
+    height: 50px;
+    margin-left: 5%;
+    font-family: "Oswald", sans-serif;
+    font-size: 14px;
+    opacity: 0.4;
+    transition: all 0.1s;
+
+}
+
+#street:hover,
+#civic:hover,
+#price:hover,
+#type:hover,
+#city:hover,
+#neighbourhood:hover,
+#description:hover,
+#rules:hover,
+#bills:hover {
+    opacity: .9;
+}
+
+#search_button {
+    font-size: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    height: 40px;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    opacity: 1;
+}
+
+#search_button:hover {
+    background-color: sandybrown;
+}
+
+#search_button {
+    position: absolute;
+    left: 15%;
+    width: 15%;
+}
+
+#logo_button {
+    position: absolute;
+    margin-left: -7.5%;
+    left: 50%;
+    width: 15%;
+
+    font-size: 22px;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: 'Oswald', sans-serif;
+    height: 40px;
+    background: transparent;
+    border: 3px solid sandybrown;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    opacity: 1;
+    cursor: default;
+}
+
+#logo_button:hover {
+    background: white;
+    color: sandybrown;
+}

@@ -1035,13 +1035,15 @@ errors_in_existing = 0
 
 # paths to static and uploads folder in my os
 # change these in order to run the website in your computer
-static_folder = 'C:\\Users\\Matteo\\PyCharmProjects\\static'
-uploads_folder = 'C:\\Users\\Matteo\\PyCharmProjects\\uploads'
+static_folder = 'C:\\Users\\Matteo\\PyCharmProjects\\stairs\\static'
+uploads_folder = 'C:\\Users\\Matteo\\PyCharmProjects\\stairs\\uploads'
+templates_folder = 'C:\\Users\\Matteo\\PyCharmProjects\\stairs\\templates'
 redirection_path = "http://127.0.0.1:5000/"
 
 # paths to static and uploads folder in python anywhere
 static_folder_p = '/home/housr/mysite/static'
 uploads_folder_p = '/home/housr/mysite/uploads'
+templates_folder_p = '/home/housr/mysite/templates'
 redirection_path_p = "http://housr.pythonanywhere.com/"
 
 # ======================================================================================================================
